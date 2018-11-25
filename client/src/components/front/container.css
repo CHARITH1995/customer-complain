@@ -1,0 +1,26 @@
+.containers{
+    border:1px solid black;
+    
+}
+.text-centers{
+    background-color:white;
+    text-align: center;
+    padding: 15px;
+    font-size: 20px;
+}
+.msg{
+    font-size:15px;
+    text-transform: lowercase;
+    text-align: center;
+}
+.btn{
+    margin-bottom:5px;
+}
+.bg-primary{
+    background-color:rgb(5, 92, 192);
+}
+.formtext{
+    font-size:13px;
+    color:black;
+    font-weight: bold;
+}

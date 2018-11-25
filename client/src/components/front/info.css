@@ -1,0 +1,31 @@
+.jumbotron {
+    margin-top:50px;
+    color: #fff;
+    background-color:blue;
+    padding: 0px 0px 0px 0px;
+    font-family: Montserrat, sans-serif; 
+  }
+.jumbotron h1{
+  color:blue;
+}
+.jumbotron p{
+  color:blue;
+}
+.slideshow{
+  padding:none;
+  
+}
+.cycle-slideshow img{
+  height: 691px;
+  width:1690px;
+}
+.carousel-control.right, .carousel-control.left {
+  background-image: none;
+  color: #1026ec;
+}
+.carousel-indicators li {
+  border-color: #1026ec;
+}
+.carousel-indicators li.active {
+  background-color: #3c14ee;
+}

@@ -1,0 +1,14 @@
+.container-fluid {
+    padding: 60px 50px;
+  }
+  .slideanim {visibility:hidden;}
+.slide {
+  animation-name: slide;
+  -webkit-animation-name: slide;
+  animation-duration: 1s;
+  -webkit-animation-duration: 1s;
+  visibility: visible;
+}
+.glyphicon{
+  color:rgb(87, 154, 218);
+}

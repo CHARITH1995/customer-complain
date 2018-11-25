@@ -1,0 +1,32 @@
+{
+  "name": "project",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.2",
+    "react": "^16.4.2",
+    "react-alert": "^4.0.4",
+    "react-alert-template-basic": "^1.0.0",
+    "react-bar-chart": "^0.1.2",
+    "react-bootstrap": "^0.32.3",
+    "react-dom": "^16.4.2",
+    "react-easy-chart": "^1.0.0",
+    "react-forms-validator": "^1.0.8",
+    "react-js-pagination": "^3.0.2",
+    "react-navigate": "^0.6.0",
+    "react-redirect": "^1.0.0",
+    "react-reload-component": "^1.2.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.5",
+    "react-svg-piechart": "^2.1.1",
+    "react-validation": "^3.0.7"
+  },
+  "proxy": "http://localhost:4000",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
