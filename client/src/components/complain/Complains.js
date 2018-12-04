@@ -35,7 +35,7 @@ class Complains extends Component {
             })
             .then(data => {
                 this.setState({
-                    complains: data.complains,
+                    complains:data.complains,
                     total: data.count
                 })
             })
@@ -49,9 +49,9 @@ class Complains extends Component {
                         <Nav />
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">COMPLAINS</h3>
+                        <h3 className="title">COMPLAINS HOME PAGE</h3>
                         <div className="row content">
-                            <div className="col-sm-2 sidenav well">
+                            <div className="col-sm-2 sidenav">
                                 <div className="list-group ">
                                     <a className="list-group-item active">SUB-AREAS</a>
                                     <a className="list-group-item"><Link to={"/Subarea/" + "kandy"}>Kandy</Link></a>
@@ -85,13 +85,6 @@ class Complains extends Component {
                             </div>
                         </div>
                         <div className="text-center">
-                            <Pagination
-                                activePage={this.state.activePage}
-                                itemsCountPerPage={1}
-                                totalItemsCount={this.state.total}
-                                pageRangeDisplayed={5}
-                                onChange={this.handlePageChange.bind(this)}
-                          />
                         </div>
                     </div>
                 </div>

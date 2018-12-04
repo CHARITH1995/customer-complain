@@ -22,9 +22,17 @@ router.get('/Status/:status/:subarea' ,jwtHelper.verifyJwtToken,complain.substat
 router.get('/Subarea/:subarea' , jwtHelper.verifyJwtToken,complain.subcomplains);
 router.post('/newitem',jwtHelper.verifyJwtToken,store.addnewItem);
 router.post('/newdetails',jwtHelper.verifyJwtToken,store.addnewDetail);
+router.post('/onlinestore',jwtHelper.verifyJwtToken,store.viewitems);
+router.post('/search',jwtHelper.verifyJwtToken,store.searchitems);
+router.get('/getitemdetails/:id',jwtHelper.verifyJwtToken,store.getitemdetails);
+router.get('/edititemdetails/:id',jwtHelper.verifyJwtToken,store.editdetails);
+router.put('/edititem/:id',jwtHelper.verifyJwtToken,store.updatedetails);//removeitem
+router.delete('/removeitem/:serialnumber',jwtHelper.verifyJwtToken,store.deleteitem);//removeitem
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);
-
+router.get('/manualreports/:year/:month',jwtHelper.verifyJwtToken,reports.manualreports);//
+router.get('/manualsoldreports/:year/:month',jwtHelper.verifyJwtToken,reports.manualsalesreports);
+router.get('/manualreports/:subarea',jwtHelper.verifyJwtToken,reports.manualsubareareports);//http://localhost:4000/stores/viewitems
 
 
 

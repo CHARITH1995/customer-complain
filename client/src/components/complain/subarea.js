@@ -55,6 +55,7 @@ class Subarea extends Component {
                 return response.json();
             })
             .then(data => {
+                console.log(data)
                 this.setState({
                     complains:data
                 })
@@ -70,10 +71,11 @@ class Subarea extends Component {
                     {this.navbar()}
                 </div>
                 <div className="container-fluid">
-                <h3 className="title">COMPLAINS -{this.props.match.params.subarea}</h3>
+                <h3 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea}</h3>
                     <div className="row content">
-                        <div className="col-sm-2 sidenav"> 
-                        </div>
+                    <div className="col-sm-2 sidenav">
+                              
+                            </div>
                         <div class="col-sm-8 text-left">
                             {this.state.complains.map(complain =>
                                 <div >
@@ -89,7 +91,7 @@ class Subarea extends Component {
                             )
                             }
                         </div>
-                        <div className="col-sm-2 sidenav well">
+                        <div className="col-sm-2 sidenav">
                             <div class="list-group">
                                 <a class="list-group-item active">JOB-STATUS</a>
                                 <a  class="list-group-item"><Link to={"/Status/"+"notdone"+"/"+this.props.match.params.subarea}>Not-Done</Link></a>

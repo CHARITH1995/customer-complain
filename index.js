@@ -32,6 +32,7 @@ app.use('/complain',routerComplain);
 app.use('/register',routerRegister);
 app.use('/stores',routerstores);
 app.use('/reports',routerreport);
+
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });

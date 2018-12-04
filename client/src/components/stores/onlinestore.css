@@ -1,0 +1,37 @@
+.storeimage{
+    height: 180px;
+    width:200px;
+    margin:none;
+    
+}
+.storesbutton{
+    display: inline-block;
+    margin:none;
+    padding:none;
+}
+.card-show{
+    display: inline;
+}
+.storesbuttongroup{
+    margin-left:0%;
+    margin-top:5%;
+    margin-bottom:none;
+}
+.card-body ul li{
+    list-style:none;
+}
+.card-body{
+    margin-left:20%;
+}
+.row{
+    margin-left:12%; 
+}
+.showlist{
+    margin-bottom:10%;
+}
+.searcharea{
+    width:100%;
+    float:left;
+    margin:none;
+    padding:none;
+}

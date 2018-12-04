@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 const Stores = new schema({
     serialnumber:{
         type:Number,
-        unique:true,
+        unique:false,
         require:[true,'serial number field is required']
     },
     brand:{
@@ -14,13 +14,17 @@ const Stores = new schema({
     },
     status:{
         type:String,
-        default:'sold',
+        default:'unsold',
         require:[true,'status field is require']
     },
     color:{
         type:String,
         unique:false,
         require:[true,'color field is required']
+    },
+    identifier:{
+        type:String,
+        require:[true,'identifier field is required']
     },
     item:{
         type:String,
@@ -34,6 +38,7 @@ const Stores = new schema({
     },
     insertdate:{
         type:Date,
+        unique:true,
         require:[true,'date field is required']
     },
     description:{

@@ -1,0 +1,12 @@
+.searchbar{
+    margin-bottom:5%;
+    margin-top:none;
+}
+.searchbutton{
+    float:right;
+    margin-top:1%;
+    margin-bottom:1%;
+}
+.list-group a{
+    list-style: none;
+}

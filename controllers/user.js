@@ -17,7 +17,7 @@ module.exports.log = (req, res, next) => {
         } else {
           if (bcrypt.compareSync(req.body.password, user.password)) {
             var token = jwt.sign(user.toJSON(), 'secretkey', { expiresIn: '24h' });
-            res.json({ success: true, token: 'JWT ' + token, fname: user.fname });
+            res.json({ success: true, token: 'JWT ' + token, fname: user.fname ,lname:user.lname});
           } else {
             res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.', token: true });
           }

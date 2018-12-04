@@ -8,18 +8,15 @@ var jwt = require('jsonwebtoken');
 module.exports.view=(req,res,next)=>{
     var today = new Date();
     var num;
-    var month = today.getMonth()+1; //January is 0!
+    var thismonth = today.getMonth()+1; //January is 0!
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if(err){
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-            Complain.find({"month":{ $month: "$date" }}).countDocuments().then(function(total){//{$match:{thismonth:{ $month: "$date" } , thisyear:{ $year: "$date" }}}
-                num=total
-            });
-            Complain.find({"month":{ $month: "$date" } }).then(function(details){
-                    res.json({complains:details,count:num});
-            });
+          Complain.aggregate([{$match:{month:thismonth}}]).then(function(details){
+            res.json({complains:details});
+        })
            
              }
         });
@@ -48,10 +45,7 @@ module.exports.addcomplain=(req,res,next)=>{
                 else{
                     console.log('Error in sending Employees :'+ JSON.stringify(err,undefined,2));
                 }
-            });  
-           
-             
-        
+            });       
 }
 
 module.exports.removecomplain=(req,res,next)=>{
@@ -85,41 +79,36 @@ module.exports.viewcomplain=(req, res, next)=> {
   
   }
 module.exports.substatcomplains=(req, res, next)=> {
+    var today = new Date();
+    var num;
+    var thismonth = today.getMonth()+1; //January is 0!
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if(err){
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-            Complain.find({
-                status:req.params.status,
-                subarea:req.params.subarea
-            },function(err,info){
-                if(err){
-                    res.json({success:false})
-                }else{
-                    res.json(info)
-                }
-            })
+            Complain.aggregate([{$match:{month:thismonth , status:req.params.status,
+                subarea:req.params.subarea}}]).then(function(details){
+                        res.json(details);
+                    
+                 })
              }
-        });   
-  
-
+        });
   }
 module.exports.subcomplains=(req, res, next)=> {
+    var today = new Date();
+    var num;
+    var thismonth = today.getMonth()+1; //January is 0!
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if(err){
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-            Complain.find({
-                subarea:req.params.subarea
-            },function(err,info){
-                if(!err){
-                    res.json(info)
-                }else{
-                    res.json({success:false})
-                }
-            })
+            Complain.aggregate([{$match:{month:thismonth ,
+                subarea:req.params.subarea}}]).then(function(details){
+                        res.json(details);
+                    
+                 })
              }
         });   
   

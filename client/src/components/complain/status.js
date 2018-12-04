@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Image} from 'react-bootstrap';
 import { withRouter } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 class Status extends Component{
     constructor(props) {
@@ -16,6 +17,7 @@ class Status extends Component{
         this.props.history.push("/");
     }
     componentDidMount() {
+       
         var authToken = localStorage.token;
         fetch("http://localhost:4000/complain/Status/"+this.props.match.params.status+"/"+this.props.match.params.subarea, {
             method: "GET",
@@ -70,10 +72,17 @@ class Status extends Component{
                     {this.navbar()}
                 </div>
                 <div className="container-fluid">
-                <h3 className="title">COMPLAINS - {this.props.match.params.subarea} - ( {this.props.match.params.status} )</h3>
+                <h3 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea} - ( {this.props.match.params.status} )</h3>
                     <div className="row content">
-                        <div className="col-sm-2 sidenav"> 
-                        </div>
+                    <div className="col-sm-2 sidenav">
+                                <div className="list-group ">
+                                    <a className="list-group-item active">SUB-AREAS</a>
+                                    <a className="list-group-item"><Link to={"/Subarea/" + "kandy"}>Kandy</Link></a>
+                                    <a className="list-group-item"><Link to={"/Subarea/" + "galle"}>Galle</Link></a>
+                                    <a className="list-group-item"><Link to={"/Subarea/" + "gampaha"}>Gampaha</Link></a>
+                                    <a className="list-group-item"><Link to={"/Subarea/" + "colombo"}>Colombo</Link></a>
+                                </div>
+                            </div>
                         <div class="col-sm-8 text-left">
                         {this.state.complains.map(complain =>
                                 <div >
@@ -89,7 +98,7 @@ class Status extends Component{
                             )
                             }
                         </div>
-                        <div className="col-sm-2 sidenav well">
+                        <div className="col-sm-2 sidenav">
                         </div>
                     </div>
                 </div>
@@ -98,4 +107,4 @@ class Status extends Component{
     }
 }
 }
-export default withRouter(Status);
+export default Status;

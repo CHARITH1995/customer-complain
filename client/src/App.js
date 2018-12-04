@@ -11,6 +11,11 @@ import Customerids from './components/registerids/customerids';
 import Employeeids from './components/registerids/employeeids';
 import Reports from './components/reports/reports';
 import Stores from './components/stores/stores';
+import Onlinestore from './components/stores/onlinestore';
+import viewitem from './components/stores/viewitem';
+import Edititem from './components/stores/edititem';
+import Datewise from './components/reports/manualreports/datewise';
+import Areawise from './components/reports/manualreports/areawise';
 import Error from './components/error';
 
 class App extends Component {
@@ -65,9 +70,34 @@ class App extends Component {
             <Redirect from="/reports" to="/Error" />
           </Switch>
           <Switch>
-            {(localStorage.token) ? <Route path="/stores" component={Stores} /> : null}
+            {(localStorage.token) ? <Route path="/addstores" component={Stores} /> : null}
             <Route path="/Error" component={Error} />
-            <Redirect from="/stores" to="/Error" />
+            <Redirect from="/addstores" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/onlinestore" component={Onlinestore} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/onlinestore" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/edititem/:id" component={Edititem} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/edititem/:serialnumber" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/viewitem/:id" component={viewitem} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/viewitem/:id" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/manualreports/:year/:month" component={Datewise} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/manualreports/:year/:month" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/manualsoldreports/:subarea" component={Areawise} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/manualreports/:subarea" to="/Error" />
           </Switch>
         </div>
 

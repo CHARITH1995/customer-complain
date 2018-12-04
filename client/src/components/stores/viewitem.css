@@ -1,0 +1,16 @@
+.viewbuttongroup{
+    margin-left:30%;
+    margin-top:5%;
+}
+.viewcard-body{
+    margin-right:0%;
+    width:150%;
+
+}
+.viewcard-body ul li{
+    list-style: none;
+}
+.viewbutton{
+    display: inline;
+    margin:2%;
+}

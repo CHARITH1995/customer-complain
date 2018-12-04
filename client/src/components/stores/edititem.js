@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
-import Nav from '../front/nav';
+import { Image } from 'react-bootstrap';
 import './stores.css';
 
-class Stores extends Component {
+class Edititem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            SerialNumber: '',
+            item: [],
             imagename: '',
+            path: "../../stores/",
+            Serialnumber: '',
             Brand: '',
-            Color: '',
             Item: '',
             Price: '',
             Description: '',
+            image: '',
             successmsg: '',
             showalert: false,
             showsuccess: false,
             addError: '',
-            imagepath: [],
             file: null,
-            background: '#fff'
+            background: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,11 +36,60 @@ class Stores extends Component {
         console.log(e.target.files[0]);
         this.setState({
             file: e.target.files[0],
-            imagename: name.name,
-            showalert: false,
-            showsuccess: false
+            imagename: name.name
         })
         console.log(name.name)
+
+    }
+    nav() {
+        return (
+            <div >
+                <nav className="navbar navbar-default navbar-fixed-top">
+                    <div className="container">
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                            <a className="navbar-brand" href="/home"><Image src="../../assets/1.jpg" className="Imagedetails" /></a>
+                        </div>
+                        <div className="collapse navbar-collapse" id="myNavbar">
+                            <ul className="nav navbar-nav navbar-right">
+                                <li><a href="/Home">HOME</a></li>
+                                <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
+                                <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        )
+    }
+    componentDidMount() {
+        var authToken = localStorage.token;
+        fetch("http://localhost:4000/stores/edititemdetails/" + this.props.match.params.id, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer' + authToken
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            this.setState({
+                Serialnumber: data.serialnumber,
+                Brand: data.brand,
+                background: data.color,
+                Item: data.item,
+                Price: data.price,
+                Description: data.description,
+                image: data.imagepath
+            });
+            // console.log(this.state.Description)
+        });
+
+        //console.log(this.state.Description)
     }
     handleChange(e) {
         let target = e.target;
@@ -47,46 +97,45 @@ class Stores extends Component {
         let name = target.name;
         this.setState({
             [name]: value,
-            showalert: false,
-            showsuccess: false
+            showalert:false,
+            showsuccess:false
         });
     }
     handleSubmit(e) {
         var authToken = localStorage.token;
-      
-        const fd = new FormData();
-        fd.append('file', this.state.file);
-        this.state.image = this.state.path + this.state.imagename
-        console.log(this.state.image);
+        e.preventDefault();
+        if (this.state.file !== null) {
+            this.state.image = this.state.path + this.state.imagename
+            const fd = new FormData();
+            fd.append('file', this.state.file);
+            fetch("http://localhost:4000/stores/newitem", {
+                method: "POST",
+                headers: {
+                    'Authorization': 'Bearer' + authToken
+                },
+                body: fd
+            });
+        }
         const stores = {
-            serialnumber: this.state.SerialNumber,
+            id: this.props.match.params.id,
+            serialnumber: this.state.Serialnumber,
             brand: this.state.Brand,
             color: this.state.background,
             description: this.state.Description,
             Item: this.state.Item,
             price: this.state.Price,
-            imagepath: this.state.image,
-            enterby:this.state.adminname
+            imagepath: this.state.image
         }
-        //console.log(customer)
-        e.preventDefault();
-        fetch("http://localhost:4000/stores/newitem", {
-            method: "POST",
-            headers: {
-                'Authorization': 'Bearer' + authToken
-            },
-            body: fd
-        });
-        fetch("http://localhost:4000/stores/newdetails", {
-            method: "POST",
+        fetch("http://localhost:4000/stores/edititem/" + this.props.match.params.id, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer' + authToken
             },
             body: JSON.stringify(stores)
-        })
-            .then(res => res.json())
+        }).then(res => res.json())
             .then(json => {
+                console.log(json)
                 if (json.success) {
                     console.log(json.msg)
                     this.setState({
@@ -95,7 +144,7 @@ class Stores extends Component {
                     })
                     this.resetForm();
                 } else {
-                    console.log(json.msg)
+                    //console.log(json.msg)
                     this.setState({
                         showalert: true,
                         addError: json.msg
@@ -124,12 +173,12 @@ class Stores extends Component {
     resetForm = () => {
         this.setState({
             ...this.state,
-            SerialNumber: '',
+            Serialnumber: '',
             Brand: '',
             Color: '',
             Item: '',
             Price: '',
-            imagepath: '',
+            Image: '',
             Description: '',
         })
     }
@@ -137,11 +186,10 @@ class Stores extends Component {
         return (
             <div>
                 <div className="container">
-                <div>
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1"> Serial Number :</label>
-                            <input type="number" className="form-control" id="exampleFormControlInput1" name="SerialNumber" placeholder=" Serial Number" value={this.state.SerialNumber} onChange={this.handleChange} required />
+                            <input type="number" className="form-control" id="exampleFormControlInput1" name="Serialnumber" placeholder=" Serial Number" value={this.state.Serialnumber} onChange={this.handleChange} required />
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Pick device color :</label>
@@ -161,10 +209,6 @@ class Stores extends Component {
                             </select>
                         </div>
                         <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Image :</label>
-                            <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} />
-                        </div>
-                        <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Price :</label>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} />
                         </div>
@@ -176,10 +220,9 @@ class Stores extends Component {
                         </div>
                         <br /><br />
                         <div className="form-group col-md-8">
-                            <input type="submit" name="submit" value="Submit" className="btn btn-info" />
+                            <input type="submit" name="update" value="Submit" className="btn btn-info" />
                         </div>
                     </form>
-                </div>
                 </div>
             </div>
         )
@@ -189,7 +232,7 @@ class Stores extends Component {
             return (
                 <div>
                     <div className="head">
-                        <Nav />
+                        {this.nav()}
                     </div>
                     <div className="container-fluid">
                         <h3 className="title">NEW-ITEM</h3>
@@ -201,17 +244,20 @@ class Stores extends Component {
                                 <div>
                                     {this.alert()}
                                 </div>
-                                <div>
+                                <div class="container">
                                     {this.formfield()}
                                 </div>
-                                <div >
-                                    <div className="storesbutton ">
-                                        <a href="/onlinestore" className="glyphicon glyphicon-circle-arrow-left">Store</a>
-                                    </div>
+                                <div className="storesbutton ">
+                                    <a href="/onlinestore" className="glyphicon glyphicon-circle-arrow-left">Store</a>
                                 </div>
                                 <hr />
                             </div>
                             <div className="col-md-2">
+                                <div>
+                                    <Image src={"../../stores/"+this.state.image} className="storeimage" />
+                                    <label htmlFor="exampleFormControlInput1">Image :</label>
+                                    <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -221,4 +267,4 @@ class Stores extends Component {
     }
 }
 
-export default Stores;
+export default Edititem;

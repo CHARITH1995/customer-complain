@@ -50,7 +50,8 @@ class SignInForm extends Component {
                 if (json.success) {
                     sessionStorage.setItem('fname', json.fname);
                     localStorage.setItem('token', json.token);
-                    //console.log(localStorage.fname);
+                    sessionStorage.setItem('lname', json.lname);
+                    console.log(sessionStorage.lname+sessionStorage.fname);
                     console.log(localStorage.token);
                     this.setState({
                         signInError: json.success,

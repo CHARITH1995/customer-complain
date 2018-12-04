@@ -25,7 +25,12 @@ class Reports extends Component {
             details: []
         }
     }
-
+    logout=(e)=>{
+        e.preventDefault();
+        localStorage.clear();
+        sessionStorage.clear();
+        this.props.history.push("/");
+    }
     componentDidMount() {
         var authToken = localStorage.token;
         fetch("http://localhost:4000/reports/complainreports", {
@@ -42,19 +47,14 @@ class Reports extends Component {
                 complains: reports
             })
             for (var i = 1; i <= this.state.complains.length; i++) {
-                //var letters = 'ABCDE'.split('');
-                var color = '#';
-                var number = Math.floor(Math.random() * 1195) + 1345
-                var colors = color + number
                 this.setState({
                     data: {
-                        title: this.state.complains[i - 1]._id,
+                        title: this.state.complains[i - 1]._id.subarea,
                         value: parseInt(this.state.complains[i - 1].total),
-                        color: colors
+                        color: this.state.complains[i - 1]._id.color, 
                     }
                 })
                 this.state.details.push(this.state.data)
-                //console.log(this.state.details)
             }
         })
         //console.log(this.state.details)
@@ -73,19 +73,15 @@ class Reports extends Component {
                 sales: details
             })
             for (var i = 1; i <= this.state.sales.length; i++) {
-                //var letters = 'ABCDE'.split('');
-                var color = '#';
-                var number = Math.floor(Math.random() * 1195) + 1345;
-                var colors = color + number
                 this.setState({
                     salesdata: {
-                        title: this.state.sales[i - 1]._id,
+                        title: this.state.sales[i - 1]._id.item,
                         value: parseInt(this.state.sales[i - 1].total),
-                        color: colors
+                        color: this.state.sales[i - 1]._id.color
                     }
                 })
                 this.state.salesdetails.push(this.state.salesdata)
-                //console.log(this.state.salesdetails)
+                console.log(this.state.salesdata)
             }
         })
     }
@@ -106,9 +102,9 @@ class Reports extends Component {
                                     expandOnHover
                                     onSectorHover={(d, i, e) => {
                                         if (d) {
-                                            console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
+                                            //console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
                                         } else {
-                                            console.log("Mouse leave - Index:", i, "Event:", e)
+                                            //console.log("Mouse leave - Index:", i, "Event:", e)
                                         }
                                     }
                                     }
@@ -117,14 +113,14 @@ class Reports extends Component {
                             <div className="col-md-5">
                                 <div className="area">
                                     {   
-                                        this.state.details.map(detail =>
+                                        this.state.complains.map(complain =>
                                             <div className="row">
                                             <div className="card">
-                                                <div className="cards-body" style={{ background: detail.color }}>
+                                                <div className="cards-body" style={{ background: complain._id.color }}>
                                                     <div >
                                                         <ul>
-                                                            <li><Link to={"/Subarea/" + detail.title}><span className="attribute">Subarea : </span>{detail.title}</Link></li>
-                                                            <li><span className="attribute">Total Complains : </span>{detail.value}</li>
+                                                            <li><Link to={"/Subarea/" + complain._id.subarea}><span className="attribute">Subarea : </span>{complain._id.subarea}</Link></li>
+                                                            <li><span className="attribute">Total Complains : </span>{complain.total}</li>
                                                         </ul>
                                                         <hr />
                                                     </div>
@@ -138,7 +134,6 @@ class Reports extends Component {
                         </div>
                         <br /><br />
                     </div>
-
                     <div className="container col-md-12 slideanim ">
                         <div className="col-md-5">
                             <h3 className="text-center">Sold Items</h3>
@@ -147,9 +142,9 @@ class Reports extends Component {
                                 expandOnHover
                                 onSectorHover={(d, i, e) => {
                                     if (d) {
-                                        console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
+                                        //console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
                                     } else {
-                                        console.log("Mouse leave - Index:", i, "Event:", e)
+                                       // console.log("Mouse leave - Index:", i, "Event:", e)
                                     }
                                 }
                                 }
@@ -157,14 +152,14 @@ class Reports extends Component {
                         </div>
                         <div className="col-md-5">
                             <div className="area">
-                                {this.state.salesdetails.map(detail =>
+                                {this.state.sales.map(sale =>
                                     <div className="row">
                                         <div className="card">
-                                            <div className="cards-body" style={{ background: detail.color }}>
+                                            <div className="cards-body" style={{ background: sale._id.color }}>
                                                 <div >
                                                     <ul>
-                                                        <li><span className="attribute">Item Type : </span>{detail.title}</li>
-                                                        <li><span className="attribute">Sold Items : </span>{detail.value}</li>
+                                                        <li><span className="attribute">Item Type : </span>{sale._id.item}</li>
+                                                        <li><span className="attribute">Sold Items : </span>{sale.total}</li>
                                                     </ul>
                                                     <hr />
                                                 </div>

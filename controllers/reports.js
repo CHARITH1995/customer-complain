@@ -13,13 +13,14 @@ module.exports.complainreport = (req, res, next) => {
     var today = new Date();
     var num;
     var thismonth = today.getMonth()+1; //January is 0!
+    console.log(thismonth)
     var thisyear = today.getFullYear();
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if(err){
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-          Complain.aggregate([{$match:{month:thismonth , year:thisyear}},{$group:{_id:"$subarea",total:{$sum:1}}}]).then(function(details){
+          Complain.aggregate([{$match:{month:thismonth,year:thisyear}},{$group:{_id:{subarea:"$subarea",color:"$color"},total:{$sum:1}}}]).then(function(details){
             res.json(details);
           })
              }
@@ -35,14 +36,58 @@ module.exports.salesreport = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-            Stores.aggregate([{$match:{soldmonth:thismonth , soldyear:thisyear,status:"sold"}},{$group:{_id:"$item",total:{$sum:1}}}]).then(function(solddetails){
-              //console.log(solddetails)
-               res.json(solddetails);
-          })
+            Stores.aggregate([{$match:{soldmonth:thismonth,soldyear:thisyear,status:"sold"}},{$group:{_id:{item:"$item",color:"$identifier"},total:{$sum:1}}}]).then(function(details){
+                //console.log(details)
+                 res.json(details);
+            })
+                 }
+            });
+    }
+module.exports.manualreports=(req, res, next) => {
+    var reqmonth = parseInt(req.params.month);
+    var reqyear = parseInt(req.params.year);
+    //console.log(thismonth);
+    //console.log(thisyear)
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if(err){
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({success:false,msg:'please log again'});
+        } else {
+        Complain.aggregate([{$match:{month:reqmonth,year:reqyear}},{$group:{_id:{subarea:"$subarea",color:"$color"},total:{$sum:1}}}]).then(function(details){
+           // console.log(details)
+            res.json(details)
+        })
+           
              }
         });
 }
-
+module.exports.manualsalesreports = (req, res, next) => {
+    var reqmonth = parseInt(req.params.month);
+    var reqyear = parseInt(req.params.year);
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if(err){
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({success:false,msg:'please log again'});
+        } else {
+            Stores.aggregate([{$match:{soldmonth:reqmonth,soldyear:reqyear,status:"sold"}},{$group:{_id:{item:"$item",color:"$identifier"},total:{$sum:1}}}]).then(function(details){
+               // console.log(details) 
+                res.json(details);
+            })
+                 }
+            });
+    }
+    module.exports.manualsubareareports = (req, res, next) => {
+        jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+            if(err){
+                console.log('ERROR: Could not connect to the protected route');
+                res.send({success:false,msg:'please log again'});
+            } else {
+                Complain.aggregate([{$match:{subarea:req.params.subarea}},{$group:{_id:{status:"$status"},total:{$sum:1}}}]).then(function(details){
+                    res.json(details);
+                  })
+                     }
+                });
+        }
 
 /*router.delete('/del/:id',function(req,res,next){
     Details.findByIdAndRemove({_id:req.params.id}).then(function(details){

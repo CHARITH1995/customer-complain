@@ -6,6 +6,10 @@ const Complains = new schema({
         type:String,
         require:[true,'Name field is required']
     },
+    color:{
+        type:String,
+        require:[true,'color field is required']
+    },
     email:{
         type:String,
         unique:false,
@@ -39,6 +43,11 @@ const Complains = new schema({
     address:{
         type:String,
         require:[true,'address field is required']
+    },
+    doneDate:{
+        type:Date,
+        default:null,
+        require:[true,'doneDate field is required']
     }
 
 });
