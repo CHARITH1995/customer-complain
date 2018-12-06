@@ -9,7 +9,7 @@ class Container extends Component {
     this.state = {
       fname: '',
       lname: '',
-      email: '',
+      email: '',                                              
       password: '',
       cmfpassword:'',
       default:true,
@@ -28,7 +28,7 @@ class Container extends Component {
       passwordValid: false,
       nameValid:false,
       cmfValidate:false,
-      formValid: false
+      formValid:false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -54,7 +54,7 @@ class Container extends Component {
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
     let emailValid = this.state.emailValid;
-    let passwordValid = this.state.passwordValid;
+    let passwordValid = this.state.passwordValid;// let cmfValidate=this.state.cmfValidate;
     let fnameValid = this.state.fnameValid;
     let lnameValid = this.state.lnameValid;
     let cmfValidate=this.state.cmfValidate;
@@ -148,8 +148,6 @@ class Container extends Component {
         break;
     } 
   }
-
-
   handleSubmit(e) {
     var authToken = localStorage.token;
     this.setState({

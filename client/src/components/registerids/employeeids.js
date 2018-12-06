@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Nav from '../front/nav';
 import { Image } from 'react-bootstrap';
+import './employee.css';
 
 class Employeeid extends Component {
     constructor(props) {
@@ -157,7 +158,7 @@ class Employeeid extends Component {
                   this.success();
                   this.resetForm();
             } else {
-                    console.log(json.msg)
+                    //console.log(json.msg)
                     this.setState({
                       mail:true,
                     })
@@ -311,12 +312,11 @@ class Employeeid extends Component {
                     <div className="head">
                         <Nav />
                     </div>
-                    <div className="container-fluid">
-                    <h3 className="title">NEW-EMPLOYEE</h3>
+                    <div className="container">
+                    <hr />
+                    <h3 className="custitle">NEW-EMPLOYEE</h3>
                         <div className="row content">
-                            <div className="col-sm-2 sidenav">
-                            </div>
-                            <div className="col-sm-8 text-left">
+                            <div className="col-sm-8">
                             <div>
                                 {this.err()}
                                 {this.alert()}
@@ -324,15 +324,11 @@ class Employeeid extends Component {
                                 {this.success()}
                             </div>
                                 <div>
-                                    <hr />
-                                    {this.formfield()}
-                                    <hr />
-                                </div>
-                            </div>
-                            <div className="col-sm-2 sidenav">
-
+                                    {this.formfield()}  
+                                </div>    
                             </div>
                         </div>
+                        <hr />
                     </div>
                 </div>
         );

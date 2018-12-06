@@ -17,7 +17,6 @@ class Status extends Component{
         this.props.history.push("/");
     }
     componentDidMount() {
-       
         var authToken = localStorage.token;
         fetch("http://localhost:4000/complain/Status/"+this.props.match.params.status+"/"+this.props.match.params.subarea, {
             method: "GET",

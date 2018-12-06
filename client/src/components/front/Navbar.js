@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Image } from 'react-bootstrap';
-import { withRouter } from "react-router-dom";
+import { withRouter , Link } from "react-router-dom";
 import './Navbar.css';
-
-
 
 class Navbar extends Component {
   logout=(e)=>{
@@ -30,7 +28,7 @@ class Navbar extends Component {
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#services">SERVICES</a></li>
                 <li><a href="#contact">CONTACT</a></li>
-                <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
+                <li className="custname"><Link to ={"/editprofile/"+localStorage.token}>{sessionStorage.getItem('fname')}</Link></li>
                 <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
               </ul>
             </div>

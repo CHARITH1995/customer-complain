@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image } from 'react-bootstrap';
 import './SignInForm.css';
-import { withRouter } from "react-router-dom";
+import { Link , withRouter} from "react-router-dom";
 
 class SignInForm extends Component {
     constructor(props) {
@@ -49,10 +49,8 @@ class SignInForm extends Component {
             .then(json => {
                 if (json.success) {
                     sessionStorage.setItem('fname', json.fname);
-                    localStorage.setItem('token', json.token);
+                    localStorage.setItem('token',json.token,'lname',json.lname,'fname');
                     sessionStorage.setItem('lname', json.lname);
-                    console.log(sessionStorage.lname+sessionStorage.fname);
-                    console.log(localStorage.token);
                     this.setState({
                         signInError: json.success,
                         token: json.token
@@ -69,8 +67,7 @@ class SignInForm extends Component {
                         console.log(json.flag);
                     } else {
                         this.resetForm();
-                    }
-                    //console.log(this.state.signInError);    
+                    }   
                 }
             })
 
@@ -104,7 +101,7 @@ class SignInForm extends Component {
             <div className="back">
                 <div id="about" className="container-fluid">
                     <div className="row">
-                        <div className="col-md-2">
+                        <div className="col-md-1">
                         </div>
                         <div className="col-md-8 slideanim">
                             <div className="modal-dialog modal-login">
@@ -131,6 +128,7 @@ class SignInForm extends Component {
                                             <div className="form-group">
                                                 <input type="submit" name="login" className="btn btn-primary btn-lg btn-block login-btn" value="Login" />
                                             </div>
+                                            <Link to ="/passwordreset">forget password?</Link>
                                         </form>
                                     </div>
 

@@ -12,9 +12,10 @@ class Complains extends Component {
         this.state = {
             isLoading: true,
             complains: [],
-            activePage:1,
+            activePage: 1,
             total: 0,
-            value:1
+            value: 1,
+            length:true,
         };
     }
     handlePageChange(pageNumber) {
@@ -34,10 +35,19 @@ class Complains extends Component {
                 return response.json();
             })
             .then(data => {
-                this.setState({
-                    complains:data.complains,
-                    total: data.count
-                })
+                console.log(data.success)
+                if (data.success) {
+                    this.setState({
+                        length:true,
+                        complains: data.details,
+                    })
+                } else {
+                    this.setState({
+                         length:false
+                    })
+                }
+                console.log(this.state.length)
+                console.log(data.details)
             })
     }
 
@@ -49,42 +59,49 @@ class Complains extends Component {
                         <Nav />
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">COMPLAINS HOME PAGE</h3>
-                        <div className="row content">
-                            <div className="col-sm-2 sidenav">
-                                <div className="list-group ">
-                                    <a className="list-group-item active">SUB-AREAS</a>
-                                    <a className="list-group-item"><Link to={"/Subarea/" + "kandy"}>Kandy</Link></a>
-                                    <a className="list-group-item"><Link to={"/Subarea/" + "galle"}>Galle</Link></a>
-                                    <a className="list-group-item"><Link to={"/Subarea/" + "gampaha"}>Gampaha</Link></a>
-                                    <a className="list-group-item"><Link to={"/Subarea/" + "colombo"}>Colombo</Link></a>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                {this.state.complains.map(complain =>
-                                    <div className="row">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <div >
-                                                    <ul>
-                                                        <li><span className="attribute">NAME : </span>"{complain.name}"</li>
-                                                        <li><span className="attribute">EMAIL: </span>{complain.email}</li>
-                                                        <li><span className="attribute">DESCRIPTION : </span>{complain.description}</li>
-                                                        <div className="buttonlist">
-                                                            <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
-                                                        </div>
-                                                    </ul>
-                                                    <hr />
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                                }
+                        <h3 className="title">Online Store Items Page</h3>
+                        <div className="col-sm-2 sidenav">
+                            <div className="list-group ">
+                                <a className="list-group-item active">SUB-AREAS</a>
+                                <a className="list-group-item"><Link to={"/Subarea/" + "kandy"}>Kandy</Link></a>
+                                <a className="list-group-item"><Link to={"/Subarea/" + "galle"}>Galle</Link></a>
+                                <a className="list-group-item"><Link to={"/Subarea/" + "gampaha"}>Gampaha</Link></a>
+                                <a className="list-group-item"><Link to={"/Subarea/" + "colombo"}>Colombo</Link></a>
                             </div>
                         </div>
-                        <div className="text-center">
+                        <div class="col-sm-8">
+                             {
+                                this.state.length ? (
+                                    <div class="col-sm-8">
+                                    <div className="col-md-2"></div>
+                                    {this.state.complains.map(complain =>
+                                        <div className="row">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <div >
+                                                        <ul>
+                                                            <li><span className="attribute">NAME : </span>"{complain.name}"</li>
+                                                            <li><span className="attribute">EMAIL: </span>{complain.email}</li>
+                                                            <li><span className="attribute">DESCRIPTION : </span>{complain.description}</li>
+                                                            <div className="buttonlist">
+                                                                <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
+                                                            </div>
+                                                        </ul>
+                                                        <hr />
+                                                    </div>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                    }
+                                </div>
+                                ):(
+                                <div class="col-sm-8 bg-danger">
+                                <h2>No complains to show</h2>
+                            </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>

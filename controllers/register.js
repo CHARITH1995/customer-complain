@@ -14,12 +14,42 @@ module.exports.customerreg=(req,res,next) =>{
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
+            console.log(req.body.postalcode)
+            console.log(req.body.city)
+            console.log(req.body.laneone)
+            Customer.findOne({
+                email:req.body.email
+            },function(err,infor){
+                if(infor){
+                    return res.json({suceess:false,msg:'email already taken!'})
+                }
+            });
+            Customer.findOne({
+                accountNumber:req.body.accountNumber
+            },function(err,infor){
+                if(infor){
+                    return res.json({suceess:false,msg:'account number already taken!!'})
+                }
+            });
+            Customer.findOne({
+                id:req.body.id
+            },function(err,infor){
+                if(infor){
+                    return res.json({suceess:false,msg:'id already taken!!'})
+                }
+            });
             var customer = new Customer({
                 firstname: req.body.fname,
                 lastname: req.body.lname,
                 email:req.body.email,
                 address:req.body.address,
                 Id:req.body.id,
+                address:{
+                    laneone:req.body.laneone,
+                    lanetwo:req.body.lanetwo,
+                    city:req.body.city,
+                    postalcode:parseInt(req.body.postalcode),
+                },
                 subarea:req.body.subarea,
                 accountNumber:req.body.accountNumber,
                 deviceOne:req.body.deviceOne,
@@ -29,16 +59,9 @@ module.exports.customerreg=(req,res,next) =>{
             });
             customer.save((err,doc)=>{
                 if(!err){
-                    console.log("success")
-                    res.json({success:true});
-                }
-                else{
-                        if(Customer.find()=== req.body.id){
-                            console.log("Id duplicate")
-                            res.json({msg:"ID duplicate"})
-                        }
-                    console.log("err")
-                    res.json({success:false});
+                  return  res.json({success:true});
+                }else{
+                    return err;
                 }
             });  
            

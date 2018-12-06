@@ -34,6 +34,22 @@ const Customers = new schema({
         unique:true,
         require:[true,'Id field is require']
     },
+    address:{
+        laneone:{
+            type:String,
+            require:[true,'Id field is require']
+        },lanetwo:{
+            type:String,
+            
+        },city:{
+            type:String,
+            require:[true,'Id field is require']
+        },
+        postalcode:{
+            type:Number,
+            require:[true,'Id field is require']
+        }      
+    },
     deviceOne:{
         type:String,
         require:[true,'this field is required']

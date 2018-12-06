@@ -11,8 +11,11 @@ const reports = require('../controllers/reports');
 
 
 router.post('/log',user.log);
+router.get('/editprofile/:token',jwtHelper.verifyJwtToken,user.editdetail);
 router.post('/Customerreg',jwtHelper.verifyJwtToken, register.customerreg);
-router.post('/Employeereg' ,jwtHelper.verifyJwtToken, register.employeereg);
+router.post('/Employeereg' ,jwtHelper.verifyJwtToken, register.employeereg);///resetpwd
+router.put('/resetpwd/:id/:password',user.resetpwd);
+router.post('/forgetpwd',user.mailverify);
 router.post('/newid' ,jwtHelper.verifyJwtToken, register.newadmin);
 router.post('/comp',jwtHelper.verifyJwtToken,complain.view);
 router.post('/complains',complain.addcomplain);
@@ -26,7 +29,7 @@ router.post('/onlinestore',jwtHelper.verifyJwtToken,store.viewitems);
 router.post('/search',jwtHelper.verifyJwtToken,store.searchitems);
 router.get('/getitemdetails/:id',jwtHelper.verifyJwtToken,store.getitemdetails);
 router.get('/edititemdetails/:id',jwtHelper.verifyJwtToken,store.editdetails);
-router.put('/edititem/:id',jwtHelper.verifyJwtToken,store.updatedetails);//removeitem
+router.put('/edititem/:id',jwtHelper.verifyJwtToken,store.updatedetails);//removeitem viewitems
 router.delete('/removeitem/:serialnumber',jwtHelper.verifyJwtToken,store.deleteitem);//removeitem
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);

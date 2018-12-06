@@ -14,20 +14,36 @@ import Stores from './components/stores/stores';
 import Onlinestore from './components/stores/onlinestore';
 import viewitem from './components/stores/viewitem';
 import Edititem from './components/stores/edititem';
+import Forgetpwd from './components/profile/forgetpassword';
+import Editpassword from './components/profile/editpassword';
 import Datewise from './components/reports/manualreports/datewise';
+import Adminprofile from './components/profile/adminprofile';
 import Areawise from './components/reports/manualreports/areawise';
 import Error from './components/error';
-
+//editprofile/"+localStorage.token Adminprofile
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
-          <Route exact path="/" component={SignInForm} />
+          <Switch>
+            <Route exact path="/" component={SignInForm} />
+            <Route path="/passwordreset" component={Forgetpwd} />
+          </Switch>
           <Switch>
             {(localStorage.token) ? <Route path="/Home" component={Home} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/Home" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/editprofile/:token" component={Adminprofile} /> : null} 
+            <Route path="/Error" component={Error} />
+            <Redirect from="/editprofile/:token" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/editpassword/:id/:password" component={Editpassword} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="editpassword/:password" to="/Error" />
           </Switch>
           <Switch>
             {(localStorage.token) ? <Route path="/Complain" component={Complains} /> : null}

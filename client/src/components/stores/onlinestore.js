@@ -23,7 +23,6 @@ class Onlinestore extends Component {
     handlePageChange(pageNumber) {
         this.setState({ activePage: pageNumber });
     }
-
     componentDidMount() {
         var authToken = localStorage.token;
         fetch("http://localhost:4000/stores/onlinestore", {
@@ -39,7 +38,7 @@ class Onlinestore extends Component {
                 items: data,
             })
         })
-        console.log(this.state.items)
+        //console.log(this.state.items)
     }
     removeitem(serialnumber){
         var authToken = localStorage.token;
@@ -55,7 +54,7 @@ class Onlinestore extends Component {
         }).then(data => {
             if (data.success) {
                 this.setState({
-                    msg: data.msg,
+                    msg:data.msg,
                 })
                 alert(this.state.msg)
                 window.location.reload();

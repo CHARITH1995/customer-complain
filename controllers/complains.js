@@ -9,13 +9,19 @@ module.exports.view=(req,res,next)=>{
     var today = new Date();
     var num;
     var thismonth = today.getMonth()+1; //January is 0!
-    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1],'secretkey', (err, authorizedData) => {
         if(err){
-            console.log('ERROR: Could not connect to the protected route');
+           console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-          Complain.aggregate([{$match:{month:thismonth}}]).then(function(details){
-            res.json({complains:details});
+          Complain.aggregate([{$match:{month:thismonth}}]).then(function(data){
+            //console.log(details.length)
+            if(data.length==0){
+               return res.json({success:false});
+            }else{
+               return res.json({success:true,details:data});
+            }
+            
         })
            
              }

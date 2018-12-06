@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import Nav from '../front/nav';
 import { Image } from 'react-bootstrap';
+import './employee.css';
 
 class Customerid extends Component {
     constructor(props) {
         super(props);
         this.state = {
             fname: '',
+            laneone:'',
+            lanetwo:'',
+            city:'',
+            postalcode:null,
+            backmsg:'',
             lname: '',
             accountNumber: '',
             email: '',
@@ -30,7 +36,11 @@ class Customerid extends Component {
             accountNUmValidate:'',
             emailValid: false,
             nameValid: false,
-            formValid: false
+            formValid: false,
+            addressvalid:false,
+            addressvaliderr:'',
+            postalvaliderr:'',
+            postalvalid:false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -45,7 +55,7 @@ class Customerid extends Component {
             [name]: value,
             default: false,
             showalert: false,
-            mail: false,
+            mail:false,
             successmsg: false
         },
             () => {
@@ -59,6 +69,7 @@ class Customerid extends Component {
         let fnameValid = this.state.fnameValid;
         let lnameValid = this.state.lnameValid;
         let accountNUmValidate = this.state.accountNUmValidate;
+        let postalvalid = this.state.postalvalid;
         switch (fieldName) {
             case 'fname':
                 fnameValid = value.match(/^[a-zA-Z]{3,}$/i);
@@ -97,8 +108,8 @@ class Customerid extends Component {
                 if (!emailValid) {
                     this.setState({
                         errname: "your email is not in correct format",
-                        err: true,
-                        emailerr: true,
+                        err:true,
+                        emailerr:true,
                     })
                 } else {
                     this.setState({
@@ -124,26 +135,8 @@ class Customerid extends Component {
                         iderr: false
                     })
                 }
-                break;
-            case 'accountNumber':
-            accountNUmValidate =value.match(/^[Cc][Rr][0-9]{9}$/i)
-                if (!accountNUmValidate) {
-                    this.setState({
-                        ...this.state,
-                        errname: "account number can't be accepted",
-                        err: true,
-                        accountnumerr: true
-                    })
-                } else {
-                    this.setState({
-                        ...this.state,
-                        succname: "account number confirmed!",
-                        err:false,
-                        accountnumerr:false
-                    })
-                }
-                break;
-            default:
+                    break;
+                  default:
                 break;
         }
     }
@@ -158,14 +151,16 @@ class Customerid extends Component {
             lname: this.state.lname,
             subarea: this.state.subarea,
             accountNumber: this.state.accountNumber,
+            laneone:this.state.laneone,
+            lanetwo:this.state.lanetwo,
+            city:this.state.city,
+            postalcode:parseInt(this.state.postalcode),
             id: this.state.id,
             deviceOne: this.state.deviceOne,
             deviceTwo: this.state.deviceTwo,
             deviceThird: this.state.deviceThird,
             email: this.state.email,
-
         }
-        //console.log(customer)
         e.preventDefault();
         if(!this.state.lnameerr &&!this.state.fnameerr && !this.state.emailerr && !this.state.iderr){
         fetch("http://localhost:4000/register/Customerreg", {
@@ -185,9 +180,9 @@ class Customerid extends Component {
                       this.success();
                       this.resetForm();
                 } else {
-                        console.log(json.msg)
                         this.setState({
                           mail:true,
+                          backmsg:json.msg
                         })
                         this.alert();
                 }
@@ -204,13 +199,17 @@ class Customerid extends Component {
             ...this.state,
             fname: '',
             lname: '',
+            laneone:'',
+            lanetwo:'',
+            city:'',
+            postalcode:'',
             accountNumber: '',
             email: '',
             id: '',
-            deviceOne: '',
-            deviceTwo: '',
-            deviceThird: '',
-            subarea: ''
+            deviceOne:1,
+            deviceTwo: 1,
+            deviceThird:1,
+            subarea: 1
         })
     }
     err = () => {
@@ -263,6 +262,12 @@ class Customerid extends Component {
                         <h2 className="msg">check your last name field once again</h2>
                     </div>
                 )
+            }else if (this.state.postalvaliderr) {
+                return (
+                    <div className="alert alert-danger" role="alert">
+                        <h2 className="msg">check your address fields once again</h2>
+                    </div>
+                )
             }
         }
     }
@@ -278,10 +283,9 @@ class Customerid extends Component {
     }
     mailvalid() {
         if (this.state.mail) {
-            console.log("err")
             return (
-                <div className="alert alert-danger" role="alert">
-                    <h2 className="msg">email is already taken!!</h2>
+                <div className="container alert alert-danger" role="alert">
+                    <h2 className="msg">{this.state.backmsg}</h2>
                 </div>
             )
         }
@@ -313,9 +317,16 @@ class Customerid extends Component {
                             <input type="text" className="form-control" id="exampleFormControlInput1" name="id" placeholder="0000000000V" value={this.state.id} onChange={this.handleChange} />
                         </div>
                         <div className="form-group col-md-8">
+                            <label htmlFor="exampleFormControlInput1">Address :</label>
+                            <input type="text" className="form-control" id="exampleFormControlInput1" name="laneone" placeholder="1st lane" value={this.state.laneone} onChange={this.handleChange} required />
+                            <input type="text" className="form-control" id="exampleFormControlInput1" name="lanetwo" placeholder="2nd lane" value={this.state.lanetwo} onChange={this.handleChange} />
+                            <input type="text" className="form-control" id="exampleFormControlInput1" name="city" placeholder="city" value={this.state.city} onChange={this.handleChange} required />
+                            <input type="number" className="form-control" id="exampleFormControlInput1" name="postalcode" placeholder="postal code" value={this.state.postalcode} onChange={this.handleChange} required />
+                        </div>
+                        <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Sub Area :</label>
                             <select className="form-control" id="exampleFormControlSelect1" name="subarea" value={this.state.subarea} onChange={this.handleChange} required>
-                                <option >--Select Sub-Area--</option>
+                                <option value="1" >--Select Sub-Area--</option>
                                 <option value="kandy">Kandy</option>
                                 <option value="galle">Galle</option>
                                 <option value="gampaha">Gampaha</option>
@@ -344,7 +355,7 @@ class Customerid extends Component {
                         <div class="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Device #3 :</label>
                             <select className="form-control" id="exampleFormControlSelect1" name="deviceThird" value={this.state.deviceThird} onChange={this.handleChange} >
-                                <option >--Select device #3--</option>
+                                <option>--Select device #3--</option>
                                 <option value="1">NO-3rd-DEVICE</option>
                                 <option value="ADSL">ADSL</option>
                                 <option value="VOICE">VOICE</option>
@@ -360,7 +371,6 @@ class Customerid extends Component {
             </div>
         )
     }
-
     render() {
         if(localStorage.token){
         return (
@@ -368,27 +378,24 @@ class Customerid extends Component {
                 <div className="head">
                     <Nav />
                 </div>
-                <div className="container-fluid">
-                    <h3 className="title">NEW-CUSTOMER</h3>
+                    <h3 className="custitle">NEW-CUSTOMER</h3>
+                <div className="container">
+                <hr />
                     <div className="row content">
-                        <div className="col-sm-2 sidenav">
-                        </div>
-                        <div className="col-sm-8 text-left">
-                            <div>
+                        <div className="col-md-8">
+                        <div className="message">
                                 {this.err()}
                                 {this.alert()}
                                 {this.mailvalid()}
                                 {this.success()}
-                            </div>
+                                </div>    
                             <div>
-                                <hr />
                                 {this.formfield()}
-                                <hr />
                             </div>
-                        </div>
-                        <div className="col-sm-2 sidenav">
                         </div>
                     </div>
+                    
+                    <hr />
                 </div>
             </div>
         );
