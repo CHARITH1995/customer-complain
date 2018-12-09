@@ -172,3 +172,23 @@ module.exports.searchitems = (req, res, next) => {
         }
     });
 }//searchitems
+module.exports.showbyitem=(req, res, next)=> {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if(err){
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({success:false,msg:'please log again'});
+        } else {
+            console.log(req.params.item)
+            Stores.aggregate([{$match:{
+                item:req.params.item}}]).then(function(details){
+                    console.log(details)
+                    if(details.length ==0){
+                        return res.json({success:false , msg:'no items to show'})
+                    }else{
+                        return res.json({success:true , data:details})
+                    }   
+                 })
+             }
+        });   
+  
+  }

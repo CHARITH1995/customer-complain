@@ -1,44 +1,76 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Nav from '../front/nav';
-import './onlinestore.css';
-import { Image, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Link, withRouter } from 'react-router-dom';
+import { Image, OverlayTrigger, Popover ,Panel } from 'react-bootstrap';
 import Searchitems from './searchitems';
 
 
-class Onlinestore extends Component {
+class Viewbyitems extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: true,
             items: [],
-            activePage: 1,
-            total: 0,
-            value: 1,
-            path: '',
             msg: '',
-            showPopup: false
+            show: true
         };
     }
-    handlePageChange(pageNumber) {
-        this.setState({ activePage: pageNumber });
+    logout = (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        sessionStorage.clear();
+        this.props.history.push("/");
+    }
+    navbar() {
+        return (
+            <div >
+                <nav className="navbar navbar-default navbar-fixed-top">
+                    <div className="container">
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                            <a className="navbar-brand" href="/home"><Image src="../assets/1.jpg" className="Imagedetails" /></a>
+                        </div>
+                        <div className="collapse navbar-collapse" id="myNavbar">
+                            <ul className="nav navbar-nav navbar-right">
+                                <li><a href="/Home">HOME</a></li>
+                                <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
+                                <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        );
     }
     componentDidMount() {
         var authToken = localStorage.token;
-        fetch("http://localhost:4000/stores/onlinestore", {
-            method: "POST",
+        fetch("http://localhost:4000/stores/getitems/"+this.props.match.params.item, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer' + authToken
             },
-        }).then(function (response) {
-            return response.json();
-        }).then(data => {
-            this.setState({
-                items: data,
-            })
         })
-        //console.log(this.state.items)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    this.setState({
+                        items: data.data,
+                    })
+                } else {
+                    this.setState({
+                        msg: data.msg,
+                        show: false
+                    })
+                }
+
+            })
+
     }
     removeitem(serialnumber){
         var authToken = localStorage.token;
@@ -75,21 +107,21 @@ class Onlinestore extends Component {
             return (
                 <div>
                     <div className="head">
-                        <Nav />
+                       {this.navbar()}
                     </div>
                     <div className="container-fluid">
                         <h3 className="title">Online Store Items Page</h3>
                         <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
-                                <a className="list-group-item active">Item Types</a>
-                                <a className="list-group-item"><Link to={"/show/" + "voice"}>Voice</Link></a>
-                                <a className="list-group-item"><Link to={"/show/" + "router"}>Routers</Link></a>
-                                <a className="list-group-item"><Link to={"/show/" + "peo-tv"}>Peo-tv</Link></a>
+                            <div className="list-group ">
+                                <a className="list-group-item active">QUICK LINKS</a>
+                                <a className="list-group-item"><Link to={"/onlinestore"}>Back to Store</Link></a>
+                            </div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <Searchitems />
-                            {this.state.items.map(item =>
+                            {   this.state.show ?( this.state.items.map(item =>
                                 <div className="row">
                                     <div className="card-show">
                                         <Image src={"../../stores/" + item.imagepath} className="storeimage" rounded />
@@ -114,20 +146,25 @@ class Onlinestore extends Component {
                                     </div>
                                 </div>
                             )
-                            }
-                        </div>
-                        <div className="col-sm-2 sidenav ">
-                            <div className="list-group ">
-                                <a className="list-group-item active">Quick LInks</a>
-                                <a className="list-group-item"><Link to={"/reports"}>Monthly Reports</Link></a>
-                                <a className="list-group-item"><Link to={"/addstores"}>Add Item</Link></a>
-                            </div>
-                        </div>
+                            ):(
+                                <div>
+                                <Panel bsStyle="danger">
+                                <Panel.Heading>
+                                    <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                </Panel.Heading>
+                            </Panel>
+                                </div>
+                            )
+                        }
+                        </div>      
                     </div>
                 </div>
             );
         }
     }
-}
-
-export default Onlinestore;
+        }
+            
+            
+            
+            
+            export default withRouter(Viewbyitems);

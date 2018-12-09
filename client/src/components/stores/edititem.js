@@ -237,8 +237,6 @@ class Edititem extends Component {
                     <div className="container-fluid">
                         <h3 className="title">NEW-ITEM</h3>
                         <div className="row content">
-                            <div className="col-md-2">
-                            </div>
                             <div className="col-md-8">
                                 <hr />
                                 <div>

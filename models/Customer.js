@@ -12,7 +12,11 @@ const Customers = new schema({
     },
     email:{
         type:String,
-        unique:true,
+        unique:false,
+        require:[true,'email field is required']
+    },
+    Tp:{
+        type:String,
         require:[true,'email field is required']
     },
     address:{
@@ -26,12 +30,12 @@ const Customers = new schema({
     },
     accountNumber:{
         type:String,
-        unique:true,
+        unique:false,
         require:[true,'account number field is required']
     },
     Id:{
         type:String,
-        unique:true,
+        unique:false,
         require:[true,'Id field is require']
     },
     address:{

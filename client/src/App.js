@@ -9,8 +9,13 @@ import Status from './components/complain/status';
 import Register from './components/registerids/register';
 import Customerids from './components/registerids/customerids';
 import Employeeids from './components/registerids/employeeids';
+import Viewcustomers from './components/registerids/showcustomers';
+import ViewEmployees from './components/registerids/showallemployess';//Updatecustomer
+import Updatecustomer from './components/registerids/updatecustomer';//Updatecustomer
+import Updateemployee from './components/registerids/employeeupdate';//Updatecustomer
 import Reports from './components/reports/reports';
 import Stores from './components/stores/stores';
+import Viewbyitems from './components/stores/item';
 import Onlinestore from './components/stores/onlinestore';
 import viewitem from './components/stores/viewitem';
 import Edititem from './components/stores/edititem';
@@ -19,8 +24,9 @@ import Editpassword from './components/profile/editpassword';
 import Datewise from './components/reports/manualreports/datewise';
 import Adminprofile from './components/profile/adminprofile';
 import Areawise from './components/reports/manualreports/areawise';
+import Itemtypes from './components/itemtypes/itemtypes';
 import Error from './components/error';
-//editprofile/"+localStorage.token Adminprofile
+//editprofile/"+localStorage.token Adminprofile Viewcustomers
 class App extends Component {
   render() {
     return (
@@ -76,6 +82,26 @@ class App extends Component {
             <Redirect from="/customerids" to="/Error" />
           </Switch>
           <Switch>
+            {(localStorage.token) ? <Route path="/showcustomer" component={Viewcustomers} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/showcustomer" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/showemployees" component={ViewEmployees} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/showemployees" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/updatecustomer/:id" component={Updatecustomer} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/updatecustomer/:id" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/updateemployee/:id" component={Updateemployee} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/updateemployee/:id" to="/Error" />
+          </Switch>
+          <Switch>
             {(localStorage.token) ? <Route path="/employeeids" component={Employeeids} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/employeeids" to="/Error" />
@@ -96,6 +122,11 @@ class App extends Component {
             <Redirect from="/onlinestore" to="/Error" />
           </Switch>
           <Switch>
+            {(localStorage.token) ? <Route path="/show/:item" component={Viewbyitems} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/show/:item" to="/Error" />
+          </Switch>
+          <Switch>
             {(localStorage.token) ? <Route path="/edititem/:id" component={Edititem} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/edititem/:serialnumber" to="/Error" />
@@ -114,6 +145,11 @@ class App extends Component {
             {(localStorage.token) ? <Route path="/manualsoldreports/:subarea" component={Areawise} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/manualreports/:subarea" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/itemstypes" component={Itemtypes} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/itemstypes" to="/Error" />
           </Switch>
         </div>
 

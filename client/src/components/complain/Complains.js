@@ -59,7 +59,7 @@ class Complains extends Component {
                         <Nav />
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">Online Store Items Page</h3>
+                        <h3 className="title">Complains of this Month</h3>
                         <div className="col-sm-2 sidenav">
                             <div className="list-group ">
                                 <a className="list-group-item active">SUB-AREAS</a>

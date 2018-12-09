@@ -72,7 +72,6 @@ class Status extends Component{
                 </div>
                 <div className="container-fluid">
                 <h3 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea} - ( {this.props.match.params.status} )</h3>
-                    <div className="row content">
                     <div className="col-sm-2 sidenav">
                                 <div className="list-group ">
                                     <a className="list-group-item active">SUB-AREAS</a>
@@ -83,6 +82,7 @@ class Status extends Component{
                                 </div>
                             </div>
                         <div class="col-sm-8 text-left">
+                        <div className="row content">
                         {this.state.complains.map(complain =>
                                 <div >
                                     <ul>

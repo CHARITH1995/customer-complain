@@ -12,10 +12,12 @@ const Employees = new schema({
     },
     email:{
         type:String,
-        unique:true,
         require:[true,'email field is required']
     },
-    
+    Tp:{
+        type:String,
+        require:[true,'email field is required']
+    },
     subarea:{
         type:String,
         require:[true,'subarea field is required']
@@ -23,7 +25,6 @@ const Employees = new schema({
    
     Id:{
         type:String,
-        unique:true,
         require:[true,'Id field is require']
     }
     

@@ -9,6 +9,9 @@
     margin:none;
     padding:none;
 }
+.search{
+    margin:10%;
+}
 .card-show{
     display: inline;
 }

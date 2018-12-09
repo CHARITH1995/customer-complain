@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'react-bootstrap';
+import { Image ,Panel } from 'react-bootstrap';
 import './SignInForm.css';
 import { Link , withRouter} from "react-router-dom";
 
@@ -75,8 +75,12 @@ class SignInForm extends Component {
     alert() {
         if (this.state.showalert) {
             return (
-                <div className="alert" role="alert">
-                    <span>{this.state.signInError}</span>
+                <div>
+                 <Panel bsStyle="danger">
+                 <Panel.Heading>
+                   <Panel.Title componentClass="h3">{this.state.signInError}</Panel.Title>
+                 </Panel.Heading>
+               </Panel>
                 </div>
             )
         }
