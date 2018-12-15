@@ -189,7 +189,6 @@ class Editpassword extends Component {
     }
   
     handleSubmit(e) {
-        var authToken = localStorage.token;
         this.setState({
             ...this.state,
             default: true
@@ -255,7 +254,6 @@ class Editpassword extends Component {
         )
     }
     render() {
-        if (localStorage.token) {
             return (
                 <div>
                     <div className="head">
@@ -282,5 +280,4 @@ class Editpassword extends Component {
             );
         }
     }
-}
 export default Editpassword;

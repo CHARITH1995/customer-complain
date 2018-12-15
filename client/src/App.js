@@ -47,11 +47,6 @@ class App extends Component {
             <Redirect from="/editprofile/:token" to="/Error" />
           </Switch>
           <Switch>
-            {(localStorage.token) ? <Route path="/editpassword/:id/:password" component={Editpassword} /> : null}
-            <Route path="/Error" component={Error} />
-            <Redirect from="editpassword/:password" to="/Error" />
-          </Switch>
-          <Switch>
             {(localStorage.token) ? <Route path="/Complain" component={Complains} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/Complain" to="/Error" />
@@ -151,6 +146,7 @@ class App extends Component {
             <Route path="/Error" component={Error} />
             <Redirect from="/itemstypes" to="/Error" />
           </Switch>
+          <Route path="/editpassword/:id/:password" component={Editpassword} />
         </div>
 
       </Router>

@@ -15,13 +15,13 @@ module.exports.log = (req, res, next) => {
     email: req.body.email
   }, function (err, user) {
     if (!user) {
-      res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
+      res.status(401).send({ success: false, msg: '-Authentication failed.User not found.-' });
     } else {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         var token = jwt.sign(user.toJSON(), 'secretkey', { expiresIn: '24h' });
         res.json({ success: true, token: 'JWT ' + token, fname: user.fname });
       } else {
-        res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.', token: true });
+        res.status(401).send({ success: false, msg: '-Authentication failed. wrong password-.', token: true });
       }
     }
   });
@@ -68,12 +68,12 @@ module.exports.mailverify = (req, res, next) => {
         }
       });
 
-     /* var mailOptions = {
+     var mailOptions = {
         to: infor.email,
         from: "charithprasanna009@gmail.com",
         subject: 'Sending Email using Node.js',
         text:link
-      }; */
+      }; 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           console.log(error);

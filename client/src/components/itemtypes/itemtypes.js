@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SwatchesPicker } from 'react-color';
 import {
     Image, OverlayTrigger, Popover, Panel, FormGroup, FormControl, HelpBlock, ControlLabel, Button
     , Table
@@ -12,6 +13,7 @@ class Itemtypes extends Component {
         super(props)
         this.state = {
             items: [],
+            identifier: '',
             show: true,
             name: '',
             nameerr: '',
@@ -20,12 +22,7 @@ class Itemtypes extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    logout = (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        sessionStorage.clear();
-        this.props.history.push("/");
+        this.handleChangeComplete = this.handleChangeComplete.bind(this);
     }
     navbar() {
         return (
@@ -44,7 +41,6 @@ class Itemtypes extends Component {
                             <ul className="nav navbar-nav navbar-right">
                                 <li><a href="/Home">HOME</a></li>
                                 <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
-                                <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
                             </ul>
                         </div>
                     </div>
@@ -57,32 +53,33 @@ class Itemtypes extends Component {
         var authToken = localStorage.token;
         const item = {
             name: this.state.name,
+            identifier: this.state.identifier
         }
         e.preventDefault();
-        if(this.handleValidation()){
-        fetch("http://localhost:4000/items/additemtype", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Bearer' + authToken
-            },
-            body: JSON.stringify(item)
-        })
-            .then(res => res.json())
-            .then(details => {
-                if (details.success) {
-                    this.setState({
-                        items: details.data,
-                        msg: details.msg
-                    })
-                } else {
-                    this.setState({
-                        show: false,
-                        msg: details.msg
-                    })
-                }
+        if (this.handleValidation()) {
+            fetch("http://localhost:4000/items/additemtype", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer' + authToken
+                },
+                body: JSON.stringify(item)
             })
-        window.location.reload();
+                .then(res => res.json())
+                .then(details => {
+                    if (details.success) {
+                        this.setState({
+                            items: details.data,
+                            msg: details.msg
+                        })
+                    } else {
+                        this.setState({
+                            show: false,
+                            msg: details.msg
+                        })
+                    }
+                })
+            window.location.reload();
         }
     }
     removeitem(id) {
@@ -101,7 +98,7 @@ class Itemtypes extends Component {
                 this.setState({
                     delmsg: data.msg,
                 })
-                alert(this.state.msg)
+                //alert(this.state.msg)
                 window.location.reload();
             } else {
                 this.setState({
@@ -110,20 +107,20 @@ class Itemtypes extends Component {
             }
         })
     }
-    handleValidation(){
-        let formvalid=true
-        if(!this.state.name){
+    handleValidation() {
+        let formvalid = true
+        if (!this.state.name) {
             this.setState({
-                nameerr:'field cannot be empty'
+                nameerr: 'field cannot be empty'
             })
-            formvalid=false;
+            formvalid = false;
         }
-        if(this.state.name !== "undefined"){
-            if(!this.state.name.match(/^[a-zA-Z]{3,}$/i)){
+        if (this.state.name !== "undefined") {
+            if (!this.state.name.match(/^[a-zA-Z]{3,}$/i)) {
                 this.setState({
-                    nameerr:'name field not valid'
+                    nameerr: 'name field not valid'
                 })
-                formvalid=false;
+                formvalid = false;
             }
         }
         return formvalid;
@@ -136,6 +133,9 @@ class Itemtypes extends Component {
             [name]: value,
         });
     }
+    handleChangeComplete = (color, event) => {
+        this.setState({ identifier: color.hex });
+    }
     form() {
         return (
             <div>
@@ -145,11 +145,14 @@ class Itemtypes extends Component {
                         <input type="text" className="form-control" id="exampleFormControlInput1" name="name" placeholder="Item Name" value={this.state.name} onChange={this.handleChange} required />
                         <span style={{ color: "#FD6571" }}>{this.state.nameerr}</span>
                     </div>
-                   
-                    <div className="form-group col-md-2">
-                         <div className="additembutton">
-                        <input type="submit" name="submit" value="Submit" className="btn btn-info" />
+                    <div className="form-group">
+                        <label htmlFor="exampleFormControlInput1">Enter Identify color</label>
+                        <SwatchesPicker onChangeComplete={this.handleChangeComplete} />
                     </div>
+                    <div className="form-group col-md-2">
+                        <div className="additembutton">
+                            <input type="submit" name="submit" value="Submit" className="btn btn-info" />
+                        </div>
                     </div>
                 </form>
             </div>
@@ -204,6 +207,7 @@ class Itemtypes extends Component {
                                         <thead>
                                             <tr>
                                                 <th>Item Type</th>
+                                                <th>Identify By</th>
                                                 <th>Inserted At</th>
                                                 <th></th>
                                             </tr>
@@ -212,6 +216,9 @@ class Itemtypes extends Component {
                                             this.state.items.map(item =>
                                                 <tr>
                                                     <td>{item.name}</td>
+                                                    <td><svg height="100" width="100"className="identifer">
+                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={item.identifier} />
+                                                    </svg></td>
                                                     <td>{item.date}</td>
                                                     <td><OverlayTrigger
                                                         trigger={['hover', 'focus']}

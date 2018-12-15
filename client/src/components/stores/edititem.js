@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
-import { Image } from 'react-bootstrap';
+import { Image ,Panel } from 'react-bootstrap';
 import './stores.css';
 
 class Edititem extends Component {
@@ -12,7 +12,8 @@ class Edititem extends Component {
             path: "../../stores/",
             Serialnumber: '',
             Brand: '',
-            Item: '',
+            type: '',
+            show:true,
             Price: '',
             Description: '',
             image: '',
@@ -58,7 +59,6 @@ class Edititem extends Component {
                             <ul className="nav navbar-nav navbar-right">
                                 <li><a href="/Home">HOME</a></li>
                                 <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
-                                <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
                             </ul>
                         </div>
                     </div>
@@ -81,15 +81,29 @@ class Edititem extends Component {
                 Serialnumber: data.serialnumber,
                 Brand: data.brand,
                 background: data.color,
-                Item: data.item,
+                type: data.item,
                 Price: data.price,
                 Description: data.description,
                 image: data.imagepath
             });
             // console.log(this.state.Description)
         });
-
-        //console.log(this.state.Description)
+        fetch("http://localhost:4000/items/showitems", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer' + authToken
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(details => {
+            console.log(details)
+            if (details.success) {
+                this.setState({
+                    items: details.data
+                })
+            } 
+        });
     }
     handleChange(e) {
         let target = e.target;
@@ -122,7 +136,7 @@ class Edititem extends Component {
             brand: this.state.Brand,
             color: this.state.background,
             description: this.state.Description,
-            Item: this.state.Item,
+            Item: this.state.type,
             price: this.state.Price,
             imagepath: this.state.image
         }
@@ -201,11 +215,23 @@ class Edititem extends Component {
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Item :</label>
-                            <select className="form-control" id="exampleFormControlSelect1" name="Item" value={this.state.Item} onChange={this.handleChange} required>
-                                <option >--Select Item--</option>
-                                <option value="voice">voice</option>
-                                <option value="router">Router</option>
-                                <option value="peo-tv">peo-tv</option>
+                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
+                            <option value="1">select type</option>
+                                {
+                                    this.state.show ? (
+                                        this.state.items.map(item=>
+                                            <option value={item.name}>{item.name}</option>
+                                        )
+                                    ):(
+                                        <div className="message">
+                                                <Panel bsStyle="success" className="text-center">
+                                                    <Panel.Heading>
+                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                    </Panel.Heading>
+                                                </Panel>
+                                        </div>
+                                    )
+                                } 
                             </select>
                         </div>
                         <div className="form-group col-md-8">

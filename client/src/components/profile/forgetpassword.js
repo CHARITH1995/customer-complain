@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import  './forgetpassword.css';
-import { Image } from 'react-bootstrap';
+import { Panel, Image } from 'react-bootstrap';
 
 class Forgetpwd extends Component {
     constructor(props) {

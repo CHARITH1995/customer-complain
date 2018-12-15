@@ -10,6 +10,10 @@ const Itemtypes = new schema({
         type:Date,
         require:[true,'date field is required']
     },
+    identifier:{
+        type:String,
+        require:[true,'date field is required']
+    }
 });
 
 const Itemtypesdetails = mongoose.model('Itemtypes',Itemtypes);//'details' is mongodb name Details is the schema name;

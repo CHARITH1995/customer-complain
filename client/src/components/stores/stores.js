@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
+import { Panel } from 'react-bootstrap';
 import Nav from '../front/nav';
 import './stores.css';
 
@@ -7,12 +8,14 @@ class Stores extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            items: [],
             SerialNumber: '',
             imagename: '',
             Brand: '',
             Color: '',
-            Item: '',
+            type: '',
             Price: '',
+            show:true,
             Description: '',
             successmsg: '',
             showalert: false,
@@ -63,12 +66,12 @@ class Stores extends Component {
             brand: this.state.Brand,
             color: this.state.background,
             description: this.state.Description,
-            Item: this.state.Item,
+            Item: this.state.type,
             price: this.state.Price,
             imagepath: this.state.image,
             enterby:this.state.adminname
         }
-        //console.log(customer)
+        console.log(stores)
         e.preventDefault();
         fetch("http://localhost:4000/stores/newitem", {
             method: "POST",
@@ -105,6 +108,25 @@ class Stores extends Component {
 
 
     }
+    componentDidMount() {
+        var authToken = localStorage.token;
+        fetch("http://localhost:4000/items/showitems", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer' + authToken
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(details => {
+            console.log(details)
+            if (details.success) {
+                this.setState({
+                    items: details.data
+                })
+            } 
+        });
+    }
     alert() {
         if (this.state.showalert) {
             return (
@@ -127,7 +149,7 @@ class Stores extends Component {
             SerialNumber: '',
             Brand: '',
             Color: '',
-            Item: '',
+            type: '',
             Price: '',
             imagepath: '',
             Description: '',
@@ -153,11 +175,23 @@ class Stores extends Component {
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Item :</label>
-                            <select className="form-control" id="exampleFormControlSelect1" name="Item" value={this.state.Item} onChange={this.handleChange} required>
-                                <option >--Select Item--</option>
-                                <option value="voice">voice</option>
-                                <option value="router">Router</option>
-                                <option value="peo-tv">peo-tv</option>
+                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
+                            <option value="1">select type</option>
+                                {
+                                    this.state.show ? (
+                                        this.state.items.map(item=>
+                                            <option value={item.name}>{item.name}</option>
+                                        )
+                                    ):(
+                                        <div className="message">
+                                                <Panel bsStyle="success" className="text-center">
+                                                    <Panel.Heading>
+                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                    </Panel.Heading>
+                                                </Panel>
+                                        </div>
+                                    )
+                                } 
                             </select>
                         </div>
                         <div className="form-group col-md-8">
