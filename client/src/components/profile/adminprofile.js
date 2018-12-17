@@ -218,12 +218,16 @@ class Adminprofile extends Component {
 
     componentDidMount() {
         var authToken = localStorage.token;
-        fetch("/reg/editprofile/" + localStorage.token, {
-            method: "GET",
+        const token={
+            token:authToken
+        }
+        fetch("/reg/editprofile", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer' + authToken
             },
+            body: JSON.stringify(token)
         }).then(function (response) {
             return response.json();
         }).then(detail => {
@@ -237,7 +241,7 @@ class Adminprofile extends Component {
                 imagepath: detail.data.imagepath
             });
         });
-        console.log(this.state.fname)
+       // console.log(this.state.fname)
     }
     formfield() {
         return (
@@ -283,7 +287,7 @@ class Adminprofile extends Component {
                                 </div>
                                 <div className="editbuttongroup">
                                     <div className="viewbutton">
-                                        <Link to={"/editpassword/"+ this.state.id+"/"+this.state.password  } className="glyphicon glyphicon-circle-arrow-right">EditPassword</Link>
+                                        <Link to={"/editpassword/"+this.state.id+"/"+this.state.password} className="glyphicon glyphicon-circle-arrow-right">EditPassword</Link>
                                     </div>
                                 </div>
                                 <hr />

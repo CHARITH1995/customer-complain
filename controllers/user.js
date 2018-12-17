@@ -19,7 +19,8 @@ module.exports.log = (req, res, next) => {
     } else {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         var token = jwt.sign(user.toJSON(), 'secretkey', { expiresIn: '24h' });
-        res.json({ success: true, token: 'JWT ' + token, fname: user.fname });
+        //console.log(user)
+        res.json({ success:true, token: 'JWT ' + token,fname: user.fname,id:user.Id });
       } else {
         res.status(401).send({ success: false, msg: '-Authentication failed. wrong password-.', token: true });
       }
@@ -28,29 +29,40 @@ module.exports.log = (req, res, next) => {
 }
 
 module.exports.editdetail = (req, res, next) => {
-  jwt.verify(req.params.token.split(' ')[1], 'secretkey', (err, authorizedData) => {
+  jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
     if (err) {
       console.log('ERROR: Could not connect to the protected route');
       res.send({ success: false, msg: 'please log again' });
     } else {
-      //console.log(authorizedData)
+     
       return res.json({ data: authorizedData });
     }
   })
 }//resetpwd
 module.exports.resetpwd = (req, res, next) => {
-  var salt = bcrypt.genSaltSync(10);
-  var hash = bcrypt.hashSync(req.body.password, salt);
-  var pwd = req.params.password;
-  var myquery = { password: pwd }
-  var newvalues = { $set: { _id: req.params.id, password: hash } };
-  Details.updateOne(myquery, newvalues, function (err, doc) {
-    if (doc) {
-      return res.status(401).send({ success: true, msg: 'successfully updated!' });
-    } else {
-      return res.status(401).send({ success: false, msg: 'cannot finish your request!!' });
+  Details.findOne({
+    _id:req.params.id
+  }).then(function(doc){
+    //console.log(err)
+    if(doc){
+      //console.log(doc)
+      var salt = bcrypt.genSaltSync(10);
+      var hash = bcrypt.hashSync(req.body.password, salt);
+      var pwd = doc.password;
+      var myquery = { password: pwd }
+      var newvalues = { $set: { _id: req.params.id, password: hash } };
+      Details.updateOne(myquery, newvalues, function (err, doc) {
+        if (doc) {
+          return res.send({ success: true, msg: 'successfully updated!' });
+        } else {
+          return res.send({ success: false, msg: 'ERROR!' });
+        }
+      });
+    }else{
+      return res.json({success:false,msg:'ERROR!'})
     }
-  });
+  })
+ 
 }//mailverify
 module.exports.mailverify = (req, res, next) => {
   // console.log(req.body.email)

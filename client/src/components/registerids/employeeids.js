@@ -22,6 +22,7 @@ class Employeeid extends Component {
             tperr: '',
             subareaerr: '',
             Iderr: '',
+            authorize_by:'',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -56,6 +57,7 @@ class Employeeid extends Component {
                 Id: this.state.Id,
                 Tp: this.state.tp,
                 email: this.state.email,
+                authorize_by:localStorage.id
             }
             fetch("http://localhost:4000/register/Employeereg", {
                 method: "POST",

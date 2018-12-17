@@ -14,6 +14,7 @@ class Stores extends Component {
             Brand: '',
             Color: '',
             type: '',
+            authorize_by:'',
             Price: '',
             show:true,
             Description: '',
@@ -69,7 +70,8 @@ class Stores extends Component {
             Item: this.state.type,
             price: this.state.Price,
             imagepath: this.state.image,
-            enterby:this.state.adminname
+            enterby:this.state.adminname,
+            authorize_by:localStorage.id,
         }
         console.log(stores)
         e.preventDefault();
@@ -119,7 +121,7 @@ class Stores extends Component {
         }).then(function (response) {
             return response.json();
         }).then(details => {
-            console.log(details)
+            //console.log(details)
             if (details.success) {
                 this.setState({
                     items: details.data

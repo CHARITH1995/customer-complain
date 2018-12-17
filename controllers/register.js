@@ -39,6 +39,7 @@ module.exports.customerreg=(req,res,next) =>{
                                         address:req.body.address,
                                         Id:req.body.id,
                                         Tp:req.body.Tp,
+                                        authorize_by:req.body.authorize_by,
                                         address:{
                                             laneone:req.body.laneone,
                                             lanetwo:req.body.lanetwo,
@@ -95,7 +96,8 @@ module.exports.employeereg=(req,res,next)=>{
                                 email:req.body.email,
                                 Id:req.body.Id,
                                 Tp:req.body.Tp,
-                                subarea:req.body.subarea,   
+                                subarea:req.body.subarea,
+                                authorize_by:req.body.authorize_by   
                             });
                             employee.save((err,doc)=>{
                                 console.log(err)
@@ -125,28 +127,40 @@ module.exports.newadmin=(req,res,next)=>{
                 res.json({success:false,msg:'plz pass valid inputs'})
             }else{
                 Details.findOne({
-                    email:req.body.email
+                    Id:req.body.id
                 }).then(function(data){
                     if(data){
-                        return res.json({success:false , msg:'email already exists'})
+                        return res.json({success:false , msg:'User id already in the System!'})
                     }else{
-                        var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(req.body.password, salt);
-                        var det = new Details({
-                            fname: req.body.fname,
-                            lname: req.body.lname,
-                            email:req.body.email,
-                            password:hash
-                           
-                        });
-                        det.save((err,doc)=>{
-                            if(!err){
-                               return res.json({success: true , msg :"successfully registerd!"});
+                        Details.findOne({
+                            email:req.body.email
+                        }).then(function(data){
+                            if(data){
+                                return res.json({success:false , msg:'email already exists'})
+                            }else{
+                                var salt = bcrypt.genSaltSync(10);
+                                var hash = bcrypt.hashSync(req.body.password, salt);
+                                var det = new Details({
+                                    fname: req.body.fname,
+                                    lname: req.body.lname,
+                                    email:req.body.email,
+                                    password:hash,
+                                    Id:req.body.id,
+                                    is_admin:req.body.is_admin,
+                                    Tp:req.body.tp,
+                                    isadmin:req.body.isadmin,
+                                });
+                               // console.log(det)
+                                det.save((err,doc)=>{
+                                    if(!err){
+                                       return res.json({success: true , msg :"successfully registerd!"});
+                                    }
+                                    else{
+                                        res.json({success:false,msg:'ERROR!'});
+                                    }
+                                });
                             }
-                            else{
-                                res.json({success:false,msg:'ERROR!'});
-                            }
-                        });
+                        })
                     }
                 })
             }  
@@ -161,7 +175,7 @@ module.exports.customerdata=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             Customer.find().then(function(details) {
-               console.log(details)
+               //console.log(details)
                 if(!details){
                     return res.json({success:false ,msg:'no customers to display'})
                 }else{
@@ -255,7 +269,7 @@ module.exports.updatecustomer=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             var condition = {_id:req.params.id}
-           console.log(req.body)
+           //console.log(req.body)
            Customer.updateOne(condition,req.body).then(doc =>{    
             if(doc){
               return res.json({ success: true, msg:'successfully updated!' });
@@ -275,7 +289,7 @@ module.exports.editemployee=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             Employee.findOne({_id:req.params.id}).then(function (details) {
-                console.log(details)
+                //console.log(details)
                 if(!details){
                     res.send({ success: false, msg: 'not success' });
                 }else{

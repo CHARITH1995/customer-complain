@@ -73,11 +73,13 @@ module.exports.addnewDetail = (req, res, next) => {
                                         price: req.body.price,
                                         item: req.body.Item,
                                         identifier: doc.identifier,
-                                        imagepath: imagename,
+                                        imagepath:imagename,
                                         insertdate: Date.now(),
+                                        authorize_by: req.body.authorize_by,
                                         description: req.body.description,
                                         serialnumber: req.body.serialnumber
                                     });
+                                    console.log(imagename)
                                     store.save((err, doc) => {
                                         if (!err) {
                                             res.json({ success: true, msg: 'successfully inserted!!' });
@@ -102,13 +104,26 @@ module.exports.updatedetails = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            var condition = { _id: req.params.id }
-            let number = parseInt(req.body.serialnumber)
-            Stores.updateOne(condition, req.body).then(doc => {
+            Items.findOne({
+                name: req.body.Item
+            }).then(function (doc) {
                 if (doc) {
-                    return res.status(401).send({ success: true, msg: 'successfully updated!' });
-                } else {
-                    return res.status(401).send({ success: false, msg: 'cannot finish your request!!' });
+                    Stores.update({
+                        brand: req.body.brand,
+                        color: req.body.color,
+                        price: req.body.price,
+                        item: req.body.Item,
+                        identifier: doc.identifier,
+                        imagepath:imagename,
+                        description: req.body.description,
+                        serialnumber: req.body.serialnumber
+                    }).then(function(data){
+                        if(data){
+                            return res.json({ success: true, msg: 'updated successfully' })
+                        }else{
+                            return res.json({ success: false, msg: 'ERROR' })
+                        }
+                    })
                 }
             })
 
@@ -125,7 +140,7 @@ module.exports.viewitems = (req, res, next) => {
                 if (details.length === 0) {
                     return res.json({ success: false, msg: 'nothing to show' })
                 } else {
-                    console.log(details)
+                    //console.log(details)
                     return res.json({ success: true, data: details })
                 }
             })

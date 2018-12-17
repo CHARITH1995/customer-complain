@@ -12,7 +12,7 @@ const items = require('../controllers/itemtypes');
 
 
 router.post('/log',user.log);
-router.get('/editprofile/:token',jwtHelper.verifyJwtToken,user.editdetail);
+router.post('/editprofile',jwtHelper.verifyJwtToken,user.editdetail);
 router.post('/Customerreg',jwtHelper.verifyJwtToken, register.customerreg);
 router.post('/Employeereg' ,jwtHelper.verifyJwtToken, register.employeereg);
 router.post('/getiddetails' ,jwtHelper.verifyJwtToken, register.customerdata);///resetpwd////http://localhost:4000/stores/getiddetails

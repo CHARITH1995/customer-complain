@@ -29,6 +29,7 @@ class Customerid extends Component {
             addresserr:'',
             postalcodeerr:'',
             showsuc:false,
+            authorize_by:'',
           showerr:false,
         };
 
@@ -70,6 +71,7 @@ class Customerid extends Component {
             id: this.state.id,
             Tp:this.state.tp,
             email: this.state.email,
+            authorize_by:localStorage.id
         }
         e.preventDefault();
         if(this.handleValidation()){

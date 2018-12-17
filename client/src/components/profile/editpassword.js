@@ -174,11 +174,11 @@ class Editpassword extends Component {
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
-                            <a className="navbar-brand" href="/home"><Image src="../../assets/1.jpg" className="Imagedetails" /></a>
+                            <a className="navbar-brand" href="/home"><Image src="../assets/1.jpg" className="Imagedetails" /></a>
                         </div>
                         <div className="collapse navbar-collapse" id="myNavbar">
                             <ul className="nav navbar-nav navbar-right">
-                                <li><a href="/Home">HOME</a></li>
+                                <li><a href="/">SIGN IN</a></li>
                             </ul>
                         </div>
                     </div>
@@ -195,6 +195,7 @@ class Editpassword extends Component {
         })
         e.preventDefault();
         if (!this.state.passerr && !this.state.cmfpasserr) {
+            console.log(this.state.password)
             const user = {
                 password:this.state.password    
             }
@@ -238,7 +239,7 @@ class Editpassword extends Component {
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">new password :</label>
-                            <input type="password" className="form-control" id="exampleFormControlInput1" name="password" placeholder="Enter your new password" value={this.state.password} onChange={this.handleChange} required />
+                            <input type="password" className="form-control" id="exampleFormControlInput2" name="password" placeholder="Enter your new password" value={this.state.password} onChange={this.handleChange} required />
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Comfirm Password :</label>

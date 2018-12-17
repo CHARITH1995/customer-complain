@@ -28,7 +28,7 @@ class Navbar extends Component {
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#services">SERVICES</a></li>
                 <li><a href="#contact">CONTACT</a></li>
-                <li className="custname"><Link to ={"/editprofile/"+localStorage.token}>{sessionStorage.getItem('fname')}</Link></li>
+                <li className="custname"><Link to ={"/editprofile"}>{sessionStorage.getItem('fname')}</Link></li>
                 <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
               </ul>
             </div>

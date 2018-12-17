@@ -42,7 +42,7 @@ class App extends Component {
             <Redirect from="/Home" to="/Error" />
           </Switch>
           <Switch>
-            {(localStorage.token) ? <Route path="/editprofile/:token" component={Adminprofile} /> : null} 
+            {(localStorage.token) ? <Route path="/editprofile" component={Adminprofile} /> : null} 
             <Route path="/Error" component={Error} />
             <Redirect from="/editprofile/:token" to="/Error" />
           </Switch>

@@ -7,19 +7,18 @@ class Edititem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: [],
+            items: [],
             imagename: '',
             path: "../../stores/",
             Serialnumber: '',
             Brand: '',
             type: '',
-            show:true,
             Price: '',
             Description: '',
-            image: '',
             successmsg: '',
             showalert: false,
             showsuccess: false,
+            show:true,
             addError: '',
             file: null,
             background: ''
@@ -39,7 +38,7 @@ class Edititem extends Component {
             file: e.target.files[0],
             imagename: name.name
         })
-        console.log(name.name)
+        //console.log(name.name)
 
     }
     nav() {
@@ -84,7 +83,7 @@ class Edititem extends Component {
                 type: data.item,
                 Price: data.price,
                 Description: data.description,
-                image: data.imagepath
+                imagename: data.imagepath
             });
             // console.log(this.state.Description)
         });
@@ -97,11 +96,12 @@ class Edititem extends Component {
         }).then(function (response) {
             return response.json();
         }).then(details => {
-            console.log(details)
             if (details.success) {
                 this.setState({
-                    items: details.data
+                    items: details.data,
+                    show:true
                 })
+                console.log(this.state.items)
             } 
         });
     }
@@ -138,7 +138,7 @@ class Edititem extends Component {
             description: this.state.Description,
             Item: this.state.type,
             price: this.state.Price,
-            imagepath: this.state.image
+            imagepath: this.state.imagename
         }
         fetch("http://localhost:4000/stores/edititem/" + this.props.match.params.id, {
             method: "PUT",
@@ -186,7 +186,6 @@ class Edititem extends Component {
     }
     resetForm = () => {
         this.setState({
-            ...this.state,
             Serialnumber: '',
             Brand: '',
             Color: '',
@@ -217,21 +216,11 @@ class Edititem extends Component {
                             <label htmlFor="exampleFormControlInput1">Item :</label>
                             <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
                             <option value="1">select type</option>
-                                {
-                                    this.state.show ? (
+                            {
                                         this.state.items.map(item=>
                                             <option value={item.name}>{item.name}</option>
                                         )
-                                    ):(
-                                        <div className="message">
-                                                <Panel bsStyle="success" className="text-center">
-                                                    <Panel.Heading>
-                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                    </Panel.Heading>
-                                                </Panel>
-                                        </div>
-                                    )
-                                } 
+                                }
                             </select>
                         </div>
                         <div className="form-group col-md-8">
@@ -240,9 +229,9 @@ class Edititem extends Component {
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Description :</label>
-                            <div class="input-group-prepend">
+                            <div className="input-group-prepend">
                             </div>
-                            <textarea class="form-control" aria-label="With textarea"className="form-control" id="exampleFormControlInput1" name="Description" placeholder="Description" value={this.state.Description} onChange={this.handleChange}></textarea>
+                            <textarea className="form-control" aria-label="With textarea"className="form-control" id="exampleFormControlInput1" name="Description" placeholder="Description" value={this.state.Description} onChange={this.handleChange}></textarea>
                         </div>
                         <br /><br />
                         <div className="form-group col-md-8">
@@ -268,7 +257,7 @@ class Edititem extends Component {
                                 <div>
                                     {this.alert()}
                                 </div>
-                                <div class="container">
+                                <div className="container">
                                     {this.formfield()}
                                 </div>
                                 <div className="storesbutton ">

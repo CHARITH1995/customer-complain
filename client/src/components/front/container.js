@@ -11,14 +11,16 @@ class Container extends Component {
       fname: '',
       lname: '',
       email: '',
-      msg:'',
+      msg: '',
+      tp:'',
+      id:'',
+      is_admin:false,
       password: '',
-      cmfpassword: '',
       passworderr: '',
       lnameerr: '',
       fnameerr: '',
       emailerr: '',
-      cmfpassworderr: '',
+      tperr:'',
       showsuc: false,
       showerr: false,
     };
@@ -37,12 +39,12 @@ class Container extends Component {
       lnameerr: '',
       fnameerr: '',
       emailerr: '',
+      tperr:'',
       cmfpassworderr: '',
       showsuc: false,
       showerr: false,
     });
   }
-
   handleSubmit(e) {
     var authToken = localStorage.token;
     e.preventDefault();
@@ -51,8 +53,12 @@ class Container extends Component {
         fname: this.state.fname,
         lname: this.state.lname,
         email: this.state.email,
-        password: this.state.password
+        is_admin:this.state.is_admin,
+        password:(Math.floor(Math.random() * 1000000) + 100000).toString(),
+        id: this.state.id,
+        tp:this.state.tp,
       }
+      console.log(user)
       fetch("http://localhost:4000/register/newid", {
         method: "POST",
         headers: {
@@ -63,18 +69,18 @@ class Container extends Component {
       })
         .then(res => res.json())
         .then(json => {
-          if(json.success){
+          if (json.success) {
             this.setState({
-                showsuc:true,
-                msg:json.msg
+              showsuc: true,
+              msg: json.msg
             })
             this.resetForm()
-        }else{
+          } else {
             this.setState({
-                showerr:true,
-                msg:json.msg
-            }) 
-        }
+              showerr: true,
+              msg: json.msg
+            })
+          }
         })
     }
   }
@@ -104,37 +110,29 @@ class Container extends Component {
         formvalid = false
       }
     }
-    if (this.state.password.length < 6) {
-      this.setState({
-        passworderr: 'password cannot accept',
-      })
-      this.reset();
-      formvalid = false
-    }
-    if (this.state.cmfpassword != this.state.password) {
-      this.setState({
-        cmfpassworderr: 'password comfirmation fail!',
-      })
-      this.reset();
-      formvalid = false
-    }
+    if(this.state.tp !== 'undefined'){
+      if(!this.state.tp.match(/^[0-9\-\+]{10}$/i)){
+          this.setState({
+              tperr:'telephone invalid!',
+            
+          })
+          formvalid=false
+      }
+  }
 
     return formvalid
-  }
-  reset=()=>{
-    this.setState({
-      password: '',
-      cmfpassword: '',
-    })
   }
   resetForm = () => {
     this.setState({
       fname: '',
       lname: '',
       email: '',
-      password: '',
-      cmfpassword: '',
+      id:'',
+      tp:'',
     })
+  }
+  handleCheck=()=>{
+    this.setState({is_admin:!this.state.is_admin});
   }
   render() {
     return (
@@ -204,17 +202,18 @@ class Container extends Component {
                   <input type="email" className="form-control" name="email" id="email" value={this.state.email} onChange={this.handleChange} required />
                   <span style={{ color: "#FD6571" }}>{this.state.emailerr}</span>
                 </div>
-                <div className="form-group col-sm-12" >
-                  <label htmlFor="pwd">Password:</label>
-                  <p className="formtext">use minimum 6 characters</p>
-                  <input type="password" className="form-control" name="password" id="pwd" value={this.state.password} onChange={this.handleChange} required />
-                  <span style={{ color: "#FD6571" }}>{this.state.passworderr}</span>
+                <div className="form-group col-md-12">
+                  <label htmlFor="exampleFormControlInput1">Telephone number :</label>
+                  <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="" value={this.state.tp} onChange={this.handleChange} />
+                  <span style={{ color: "#FD6571" }}>{this.state.tperr}</span>
                 </div>
-                <div className="form-group col-sm-12" >
-                  <label htmlFor="pwd">Comfirm Password:</label>
-                  <p className="formtext">once again enter your password</p>
-                  <input type="password" className="form-control" name="cmfpassword" id="pwdcmf" value={this.state.cmfpassword} onChange={this.handleChange} required />
-                  <span style={{ color: "#FD6571" }}>{this.state.cmfpassworderr}</span>
+                <div className="form-group col-md-12">
+                <label className="checkbox-inline"><input type="checkbox" defaultChecked={this.state.is_admin} onChange={this.handleCheck}/>Admin</label>
+                </div>
+                <div className="form-group col-md-12">
+                  <label htmlFor="exampleFormControlInput1">Company ID :</label>
+                  <input type="text" className="form-control" id="exampleFormControlInput1" name="id" placeholder="********" value={this.state.id} onChange={this.handleChange} />
+                  <span style={{ color: "#FD6571" }}>{this.state.Iderr}</span>
                 </div>
                 <input type="submit" name="submit" value="Submit" className="btn btn-info" />
               </form>

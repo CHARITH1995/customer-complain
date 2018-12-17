@@ -47,10 +47,11 @@ class SignInForm extends Component {
         })
             .then(res => res.json())
             .then(json => {
+                console.log(json)
                 if (json.success) {
                     sessionStorage.setItem('fname', json.fname);
-                    localStorage.setItem('token',json.token,'lname',json.lname,'fname');
-                    sessionStorage.setItem('lname', json.lname);
+                    localStorage.setItem('token',json.token,'lname',json.lname);
+                    localStorage.setItem('id',json.id)
                     this.setState({
                         signInError: json.success,
                         token: json.token
@@ -64,7 +65,7 @@ class SignInForm extends Component {
                     })
                     if (json.token) {
                         this.resetForm1();
-                        console.log(json.flag);
+                       // console.log(json.flag);
                     } else {
                         this.resetForm();
                     }   
