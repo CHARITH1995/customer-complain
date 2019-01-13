@@ -9,20 +9,19 @@ class Stores extends Component {
         super(props);
         this.state = {
             items: [],
-            SerialNumber: '',
             imagename: '',
             Brand: '',
             Color: '',
             type: '',
-            authorize_by:'',
+            authorize_by: '',
             Price: '',
-            show:true,
+            show: true,
             Description: '',
-            successmsg: '',
-            showalert: false,
-            showsuccess: false,
-            addError: '',
             imagepath: [],
+            showsuc: false,
+            msg: '',
+            qty: 1,
+            showerr: false,
             file: null,
             background: '#fff'
         }
@@ -36,14 +35,10 @@ class Stores extends Component {
     }
     fileChange = (e) => {
         const name = e.target.files[0];
-        console.log(e.target.files[0]);
         this.setState({
             file: e.target.files[0],
             imagename: name.name,
-            showalert: false,
-            showsuccess: false
         })
-        console.log(name.name)
     }
     handleChange(e) {
         let target = e.target;
@@ -51,36 +46,35 @@ class Stores extends Component {
         let name = target.name;
         this.setState({
             [name]: value,
-            showalert: false,
-            showsuccess: false
+            showsuc: false,
+            msg: '',
+            showerr: false,
         });
     }
     handleSubmit(e) {
         var authToken = localStorage.token;
-      
         const fd = new FormData();
         fd.append('file', this.state.file);
-        this.state.image = this.state.path + this.state.imagename
-        console.log(this.state.image);
+        this.state.image = this.state.imagename
         const stores = {
-            serialnumber: this.state.SerialNumber,
             brand: this.state.Brand,
             color: this.state.background,
             description: this.state.Description,
             Item: this.state.type,
+            qty: this.state.qty,
             price: this.state.Price,
-            imagepath: this.state.image,
-            enterby:this.state.adminname,
-            authorize_by:localStorage.id,
+            imagepath: this.state.imagename,
+            enterby: this.state.adminname,
+            authorize_by: localStorage.id,
         }
-        console.log(stores)
+        //console.log(stores)
         e.preventDefault();
         fetch("http://localhost:4000/stores/newitem", {
             method: "POST",
             headers: {
                 'Authorization': 'Bearer' + authToken
             },
-            body: fd
+            body:fd
         });
         fetch("http://localhost:4000/stores/newdetails", {
             method: "POST",
@@ -93,17 +87,15 @@ class Stores extends Component {
             .then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    console.log(json.msg)
                     this.setState({
-                        showsuccess: true,
-                        addError: json.msg
+                        showsuc: true,
+                        msg: json.msg
                     })
                     this.resetForm();
                 } else {
-                    console.log(json.msg)
                     this.setState({
-                        showalert: true,
-                        addError: json.msg
+                        showerr: true,
+                        msg: json.msg
                     })
                 }
             })
@@ -126,29 +118,13 @@ class Stores extends Component {
                 this.setState({
                     items: details.data
                 })
-            } 
+            }
         });
     }
-    alert() {
-        if (this.state.showalert) {
-            return (
-                <div className="alert text-center bg-danger" role="alert">
-                    <span>{this.state.addError}</span>
-                </div>
-            )
-        }
-        if (this.state.showsuccess) {
-            return (
-                <div className="success text-center bg-success" role="alert">
-                    <span>{this.state.addError}</span>
-                </div>
-            )
-        }
-    }
+
     resetForm = () => {
         this.setState({
             ...this.state,
-            SerialNumber: '',
             Brand: '',
             Color: '',
             type: '',
@@ -161,61 +137,62 @@ class Stores extends Component {
         return (
             <div>
                 <div className="container">
-                <div>
-                    <form onSubmit={this.handleSubmit} name="inventry">
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1"> Serial Number :</label>
-                            <input type="number" className="form-control" id="exampleFormControlInput1" name="SerialNumber" placeholder=" Serial Number" value={this.state.SerialNumber} onChange={this.handleChange} required />
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Pick device color :</label>
-                            <CirclePicker onChangeComplete={this.handleChangeComplete} />
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Brand :</label>
-                            <input type="text" className="form-control" id="exampleFormControlInput1" name="Brand" placeholder="Brand" value={this.state.Brand} onChange={this.handleChange} required />
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Item :</label>
-                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
-                            <option value="1">select type</option>
-                                {
-                                    this.state.show ? (
-                                        this.state.items.map(item=>
-                                            <option value={item.name}>{item.name}</option>
-                                        )
-                                    ):(
-                                        <div className="message">
-                                                <Panel bsStyle="success" className="text-center">
-                                                    <Panel.Heading>
-                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                    </Panel.Heading>
-                                                </Panel>
-                                        </div>
-                                    )
-                                } 
-                            </select>
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Image :</label>
-                            <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} />
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Price :</label>
-                            <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Description :</label>
-                            <div class="input-group-prepend">
+                    <div>
+                        <form onSubmit={this.handleSubmit} name="inventry">
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Item :</label>
+                                <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange} required>
+                                    <option value="1">select type</option>
+                                    {
+                                        this.state.show ? (
+                                            this.state.items.map(item =>
+                                                <option value={item.name}>{item.name}</option>
+                                            )
+                                        ) : (
+                                                <div className="message">
+                                                    <Panel bsStyle="success" className="text-center">
+                                                        <Panel.Heading>
+                                                            <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                        </Panel.Heading>
+                                                    </Panel>
+                                                </div>
+                                            )
+                                    }
+                                </select>
                             </div>
-                            <textarea class="form-control" aria-label="With textarea"className="form-control" id="exampleFormControlInput1" name="Description" placeholder="Description" value={this.state.Description} onChange={this.handleChange}></textarea>
-                        </div>
-                        <br /><br />
-                        <div className="form-group col-md-8">
-                            <input type="submit" name="submit" value="Submit" className="btn btn-info" />
-                        </div>
-                    </form>
-                </div>
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Pick device color :</label>
+                                <CirclePicker onChangeComplete={this.handleChangeComplete} />
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Brand :</label>
+                                <input type="text" className="form-control" id="exampleFormControlInput1" name="Brand" placeholder="Brand" value={this.state.Brand} onChange={this.handleChange} required />
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Available Stock :</label>
+                                <input type="number" className="form-control" id="exampleFormControlInput1" name="qty" placeholder="available stock" value={this.state.qty} onChange={this.handleChange} required />
+                            </div>
+
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Image :</label>
+                                <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} required />
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Price :</label>
+                                <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} required />
+                            </div>
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Description :</label>
+                                <div class="input-group-prepend">
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea" className="form-control" id="exampleFormControlInput1" name="Description" placeholder="Description" value={this.state.Description} onChange={this.handleChange} required></textarea>
+                            </div>
+                            <br /><br />
+                            <div className="form-group col-md-8">
+                                <input type="submit" name="submit" value="Submit" className="btn btn-info" />
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         )
@@ -228,14 +205,46 @@ class Stores extends Component {
                         <Nav />
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">NEW-ITEM</h3>
+                        <h2 className="title">NEW-ITEM</h2>
                         <div className="row content">
-                        <div className="col-md-1">
+                            <div className="col-md-1">
                             </div>
                             <div className="col-md-8">
                                 <hr />
                                 <div>
-                                    {this.alert()}
+                                </div>
+                                <div className="adminmsg">
+                                    {
+                                        this.state.showerr ? (
+                                            <div >
+                                                <Panel bsStyle="danger" className="text-center">
+                                                    <Panel.Heading>
+                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                    </Panel.Heading>
+                                                </Panel>
+                                            </div>
+                                        ) : (
+                                                <div>
+
+                                                </div>
+                                            )
+                                    }
+                                    {
+                                        this.state.showsuc ? (
+                                            <div className="adminmsg">
+                                                <Panel bsStyle="success" className="text-center">
+                                                    <Panel.Heading>
+                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                    </Panel.Heading>
+                                                </Panel>
+                                            </div>
+                                        ) : (
+                                                <div>
+
+                                                </div>
+                                            )
+                                    }
+
                                 </div>
                                 <div>
                                     {this.formfield()}
@@ -247,7 +256,7 @@ class Stores extends Component {
                                 </div>
                                 <hr />
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Nav from '../front/nav';
-import { Image, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './employee.css';
 
@@ -54,8 +54,8 @@ class Employeeid extends Component {
                 firstname: this.state.fname,
                 lastname: this.state.lname,
                 subarea: this.state.subarea,
-                Id: this.state.Id,
-                Tp: this.state.tp,
+                Id:this.state.Id,
+                Tp:this.state.tp,
                 email: this.state.email,
                 authorize_by:localStorage.id
             }
@@ -206,7 +206,7 @@ class Employeeid extends Component {
                     <div className="head">
                         <Nav />
                     </div>
-                    <h3 className="custitle">NEW-EMPLOYEE</h3>
+                    <h2 className="custitle">NEW-EMPLOYEE</h2>
                     <div className="col-sm-2 sidebar">
                         <div className="list-group ">
                             <a className="list-group-item active">show all users</a>

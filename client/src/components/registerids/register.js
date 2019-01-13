@@ -49,7 +49,7 @@ class Register extends Component {
                     <Nav />
                 </div>
                 <div className="container-fluid">
-                <h3 className="title">REGISTER PAGE</h3>
+                <h2 className="title">REGISTER PAGE</h2>
                     <div className="row content">
                         <div className="col-sm-2 sidenav">
                         </div>

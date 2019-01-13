@@ -71,7 +71,7 @@ class Status extends Component{
                     {this.navbar()}
                 </div>
                 <div className="container-fluid">
-                <h3 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea} - ( {this.props.match.params.status} )</h3>
+                <h2 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea} - ( {this.props.match.params.status} )</h2>
                     <div className="col-sm-2 sidenav">
                                 <div className="list-group ">
                                     <a className="list-group-item active">SUB-AREAS</a>

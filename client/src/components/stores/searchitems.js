@@ -14,11 +14,11 @@ class Searchitems extends Component {
     }
     handleSubmit(e) {
         var authToken = localStorage.token;
-        console.log("clicked")
         e.preventDefault();
         const search = {
             searchfield: this.state.searchfield
         }
+        console.log(search)
         fetch("http://localhost:4000/stores/search", {
             method: "POST",
             headers: {
@@ -40,10 +40,8 @@ class Searchitems extends Component {
                             isempty:true
                         })
                     }
-                }   
-            console.log(this.state.isempty)
+                }
             })
-
     }
     handleChange(e) {
         let target = e.target;
@@ -61,7 +59,7 @@ class Searchitems extends Component {
         return (
             <div className="searchbar">
                 <h2>Filterable List</h2>
-                <input className="form-control" id="myInput" type="number" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.handleChange} required />
+                <input className="form-control" id="myInput" type="text" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.handleChange} required />
                 <div className="searchbutton">
                     <input className="btn btn-sm btn-info" value="search" id="myInput" type="submit" onClick={this.handleSubmit} />
                 </div>

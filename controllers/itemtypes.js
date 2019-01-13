@@ -12,12 +12,11 @@ module.exports.additemtype = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            //console.log(req.body)
             Items.findOne({
                 name: req.body.name
             }).then(function (doc) {
                 if (doc) {
-                    return res.json({ success: false, msg: 'Item type already exists!' })
+                    return res.json({success: false, msg: 'Item type already exists!' })
                 } else {
                     Items.findOne({
                         identifier: req.body.identifier
@@ -54,7 +53,6 @@ module.exports.itemtypes = (req, res, next) => {
             res.send({ success: false, msg: 'please log again' });
         } else {
             Items.find().then(function (details) {
-                //console.log(details)
                 if (details.length == 0) {
                     res.send({ success: false, msg: 'no Items Types' });
                 } else {
@@ -64,7 +62,7 @@ module.exports.itemtypes = (req, res, next) => {
 
         }
     });
-}//removeitemtypes
+}
 module.exports.removeitemtypes = (req, res, next) => {
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if (err) {
@@ -72,7 +70,6 @@ module.exports.removeitemtypes = (req, res, next) => {
             res.send({ success: false, msg: 'please log again' });
         } else {
             Items.findOneAndDelete({ _id: req.params.id }).then(function (err) {
-                //console.log(err)
                 if (!err) {
                     res.send({ success: false, msg: 'not success' });
                 } else {
@@ -83,4 +80,4 @@ module.exports.removeitemtypes = (req, res, next) => {
         }
     });
 
-}//editcustomer
+}

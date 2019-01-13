@@ -108,7 +108,7 @@ class Viewcustomers extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">IDS DETAILS</h3>
+                        <h2 className="title">Registered Customer Details</h2>
                         <div className="col-sm-2 sidenav">
                             <div className="list-group ">
                                 <a className="list-group-item active">show all users</a>

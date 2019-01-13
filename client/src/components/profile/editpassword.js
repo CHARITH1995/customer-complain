@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'react-bootstrap';
+import { Image , Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
 import './editpassword.css';
@@ -8,6 +8,7 @@ class Editpassword extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            oldpassword:'',
             password: '',
             cmfpassword: '',
             cmfValidate: false,
@@ -157,6 +158,26 @@ class Editpassword extends Component {
 
         }
     }
+    componentDidMount() {
+        const id={
+            id:this.props.match.params.id
+        }
+        fetch("/reg/getpwd", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(id)
+        }).then(function (response) {
+            return response.json();
+        }).then(detail => {
+            console.log(detail.data)
+            this.setState({
+                oldpassword:detail.data.password,
+            });
+        });
+       // console.log(this.state.fname)
+    }
     logout = (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -255,6 +276,7 @@ class Editpassword extends Component {
         )
     }
     render() {
+        if((this.state.oldpassword.indexOf(this.props.match.params.password))>=0){
             return (
                 <div>
                     <div className="head">
@@ -279,6 +301,29 @@ class Editpassword extends Component {
                     </div>
                 </div>
             );
+        }else{
+          return(
+            <div>
+            <div className="head">
+                {this.navbar()}
+            </div>
+            <div className="container-fluid">
+                <h3 className="title">Change Profile Password</h3>
+                <div className="row content">
+                <div className="middle">
+                    <div className="col-md-8">
+                    <Panel bsStyle="danger" className="text-center">
+                        <Panel.Heading>
+                          <Panel.Title componentClass="h3">Link Expired!!</Panel.Title>
+                        </Panel.Heading>
+                      </Panel>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          )
         }
     }
+}
 export default Editpassword;

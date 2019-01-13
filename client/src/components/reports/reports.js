@@ -11,6 +11,7 @@ class Reports extends Component {
         this.state = {
             complains: [],
             sales: [],
+            is_mount:true,
             salesdata: [{
                 title: '',
                 value: 0,
@@ -33,6 +34,8 @@ class Reports extends Component {
     }
     componentDidMount() {
         var authToken = localStorage.token;
+        if(this.state.is_mount){
+            this.componentWillUnmount();
         fetch("http://localhost:4000/reports/complainreports", {
             method: "POST",
             headers: {
@@ -76,27 +79,32 @@ class Reports extends Component {
                 this.setState({
                     salesdata: {
                         title: this.state.sales[i - 1]._id.item,
-                        value: parseInt(this.state.sales[i - 1].total),
+                        value: parseInt(this.state.sales[i - 1]._id.soldqty),
                         color: this.state.sales[i - 1]._id.color
                     }
                 })
-                this.state.salesdetails.push(this.state.salesdata)
-                console.log(this.state.salesdata)
+                this.state.salesdetails.push(this.state.salesdata);
             }
         })
     }
-
+}
+componentWillUnmount(){
+    this.setState({
+        is_mount:false
+    })
+}
     render() {
         if (localStorage.token) {
             return (
                 <div>
                     <div id="services" className="container-fluid text-center">
                         <Nav />
-                        <h3 className="text-center">Reports Of this Month</h3>
+                        <h2 className="text-center">Reports</h2>
                         <br />
-                        <div className="container col-md-12 slideanim ">
-                            <div className="col-md-5">
-                                <h3 className="text-center"> Complains</h3>
+                        <div className="contain col-md-12 slideanim ">
+                            <div className="shadow p-3 mb-5 bg-white rounded">
+                            <div className="col-md-5 ">
+                                <h2 className="text-center"> Complains of this month</h2>
                                 <PieChart
                                     data={this.state.details}
                                     expandOnHover
@@ -119,7 +127,7 @@ class Reports extends Component {
                                                 <div className="cards-body" style={{ background: complain._id.color }}>
                                                     <div >
                                                         <ul>
-                                                            <li><Link to={"/Subarea/" + complain._id.subarea}><span className="attribute">Subarea : </span>{complain._id.subarea}</Link></li>
+                                                            <li key={complain._id}><Link to={"/Subarea/" + complain._id.subarea}><span className="attribute">Subarea : </span>{complain._id.subarea}</Link></li>
                                                             <li><span className="attribute">Total Complains : </span>{complain.total}</li>
                                                         </ul>
                                                         <hr />
@@ -131,12 +139,13 @@ class Reports extends Component {
                                     }
                                 </div>
                             </div>
+                            </div>
                         </div>
                         <br /><br />
-                    </div>
-                    <div className="container col-md-12 slideanim ">
+                    <div className="contain col-md-12 slideanim ">
+                            <div className="shadow p-3 mb-5 bg-white rounded">
                         <div className="col-md-5">
-                            <h3 className="text-center">Sold Items</h3>
+                            <h2 className="text-center">Sold Items</h2>
                             <PieChart
                                 data={this.state.salesdetails}
                                 expandOnHover
@@ -159,7 +168,7 @@ class Reports extends Component {
                                                 <div >
                                                     <ul>
                                                         <li><span className="attribute">Item Type : </span>{sale._id.item}</li>
-                                                        <li><span className="attribute">Sold Items : </span>{sale.total}</li>
+                                                        <li><span className="attribute">Sold Items : </span>{sale._id.soldqty}</li>
                                                     </ul>
                                                     <hr />
                                                 </div>
@@ -169,9 +178,13 @@ class Reports extends Component {
                                 )
                                 }
                             </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div>
                     <Searchreport />
+                    </div>
                 </div>
             )
         }

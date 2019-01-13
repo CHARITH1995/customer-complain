@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
-import { Image ,Panel } from 'react-bootstrap';
+import { Image, Panel } from 'react-bootstrap';
 import './stores.css';
 
 class Edititem extends Component {
@@ -8,38 +8,24 @@ class Edititem extends Component {
         super(props);
         this.state = {
             items: [],
-            imagename: '',
-            path: "../../stores/",
-            Serialnumber: '',
             Brand: '',
             type: '',
+            qty: 0,
             Price: '',
             Description: '',
-            successmsg: '',
-            showalert: false,
-            showsuccess: false,
-            show:true,
+            msg: '',
+            showsuc: false,
+            showerr: false,
+            show: true,
             addError: '',
-            file: null,
             background: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.fileChange = this.fileChange.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
     }
     handleChangeComplete = (color, event) => {
         this.setState({ background: color.hex });
-    }
-    fileChange = (e) => {
-        const name = e.target.files[0];
-        console.log(e.target.files[0]);
-        this.setState({
-            file: e.target.files[0],
-            imagename: name.name
-        })
-        //console.log(name.name)
-
     }
     nav() {
         return (
@@ -77,15 +63,14 @@ class Edititem extends Component {
             return response.json();
         }).then(data => {
             this.setState({
-                Serialnumber: data.serialnumber,
                 Brand: data.brand,
                 background: data.color,
                 type: data.item,
+                qty: data.qty,
                 Price: data.price,
                 Description: data.description,
                 imagename: data.imagepath
             });
-            // console.log(this.state.Description)
         });
         fetch("http://localhost:4000/items/showitems", {
             method: "POST",
@@ -99,10 +84,9 @@ class Edititem extends Component {
             if (details.success) {
                 this.setState({
                     items: details.data,
-                    show:true
+                    show: true
                 })
-                console.log(this.state.items)
-            } 
+            }
         });
     }
     handleChange(e) {
@@ -111,8 +95,9 @@ class Edititem extends Component {
         let name = target.name;
         this.setState({
             [name]: value,
-            showalert:false,
-            showsuccess:false
+            msg: '',
+            showsuc: false,
+            showerr: false,
         });
     }
     handleSubmit(e) {
@@ -132,13 +117,12 @@ class Edititem extends Component {
         }
         const stores = {
             id: this.props.match.params.id,
-            serialnumber: this.state.Serialnumber,
             brand: this.state.Brand,
             color: this.state.background,
             description: this.state.Description,
+            qty: this.state.qty,
             Item: this.state.type,
-            price: this.state.Price,
-            imagepath: this.state.imagename
+            price: parseFloat(this.state.Price),
         }
         fetch("http://localhost:4000/stores/edititem/" + this.props.match.params.id, {
             method: "PUT",
@@ -149,50 +133,31 @@ class Edititem extends Component {
             body: JSON.stringify(stores)
         }).then(res => res.json())
             .then(json => {
-                console.log(json)
+                // console.log(json)
                 if (json.success) {
-                    console.log(json.msg)
                     this.setState({
-                        showsuccess: true,
-                        addError: json.msg
+                        showsuc: true,
+                        msg: json.msg
                     })
                     this.resetForm();
                 } else {
-                    //console.log(json.msg)
                     this.setState({
-                        showalert: true,
-                        addError: json.msg
+                        showerr: true,
+                        msg: json.msg
                     })
                 }
             })
-
-
     }
-    alert() {
-        if (this.state.showalert) {
-            return (
-                <div className="alert text-center bg-danger" role="alert">
-                    <span>{this.state.addError}</span>
-                </div>
-            )
-        }
-        if (this.state.showsuccess) {
-            return (
-                <div className="success text-center bg-success" role="alert">
-                    <span>{this.state.addError}</span>
-                </div>
-            )
-        }
-    }
+
     resetForm = () => {
         this.setState({
-            Serialnumber: '',
             Brand: '',
             Color: '',
-            Item: '',
+            type: '',
             Price: '',
-            Image: '',
+            imagename: '',
             Description: '',
+            qty: '',
         })
     }
     formfield() {
@@ -201,8 +166,15 @@ class Edititem extends Component {
                 <div className="container">
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1"> Serial Number :</label>
-                            <input type="number" className="form-control" id="exampleFormControlInput1" name="Serialnumber" placeholder=" Serial Number" value={this.state.Serialnumber} onChange={this.handleChange} required />
+                            <label htmlFor="exampleFormControlInput1">Item :</label>
+                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
+                                <option value="1">select type</option>
+                                {
+                                    this.state.items.map(item =>
+                                        <option value={item.name}>{item.name}</option>
+                                    )
+                                }
+                            </select>
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Pick device color :</label>
@@ -213,16 +185,10 @@ class Edititem extends Component {
                             <input type="text" className="form-control" id="exampleFormControlInput1" name="Brand" placeholder="Brand" value={this.state.Brand} onChange={this.handleChange} required />
                         </div>
                         <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Item :</label>
-                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
-                            <option value="1">select type</option>
-                            {
-                                        this.state.items.map(item=>
-                                            <option value={item.name}>{item.name}</option>
-                                        )
-                                }
-                            </select>
+                            <label htmlFor="exampleFormControlInput1">Available Stock :</label>
+                            <input type="number" className="form-control" id="exampleFormControlInput1" name="qty" placeholder="available stock" value={this.state.qty} onChange={this.handleChange} required />
                         </div>
+
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Price :</label>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} />
@@ -231,7 +197,7 @@ class Edititem extends Component {
                             <label htmlFor="exampleFormControlInput1">Description :</label>
                             <div className="input-group-prepend">
                             </div>
-                            <textarea className="form-control" aria-label="With textarea"className="form-control" id="exampleFormControlInput1" name="Description" placeholder="Description" value={this.state.Description} onChange={this.handleChange}></textarea>
+                            <textarea className="form-control" aria-label="With textarea" className="form-control" id="exampleFormControlInput1" name="Description" placeholder="Description" value={this.state.Description} onChange={this.handleChange}></textarea>
                         </div>
                         <br /><br />
                         <div className="form-group col-md-8">
@@ -252,11 +218,39 @@ class Edititem extends Component {
                     <div className="container-fluid">
                         <h3 className="title">NEW-ITEM</h3>
                         <div className="row content">
+                            <div className="col-md-1"></div>
                             <div className="col-md-8">
                                 <hr />
-                                <div>
-                                    {this.alert()}
-                                </div>
+                                {
+                                    this.state.showerr ? (
+                                        <div >
+                                            <Panel bsStyle="danger" className="text-center">
+                                                <Panel.Heading>
+                                                    <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                </Panel.Heading>
+                                            </Panel>
+                                        </div>
+                                    ) : (
+                                            <div>
+
+                                            </div>
+                                        )
+                                }
+                                {
+                                    this.state.showsuc ? (
+                                        <div className="adminmsg">
+                                            <Panel bsStyle="success" className="text-center">
+                                                <Panel.Heading>
+                                                    <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                </Panel.Heading>
+                                            </Panel>
+                                        </div>
+                                    ) : (
+                                            <div>
+
+                                            </div>
+                                        )
+                                }
                                 <div className="container">
                                     {this.formfield()}
                                 </div>
@@ -264,13 +258,6 @@ class Edititem extends Component {
                                     <a href="/onlinestore" className="glyphicon glyphicon-circle-arrow-left">Store</a>
                                 </div>
                                 <hr />
-                            </div>
-                            <div className="col-md-2">
-                                <div>
-                                    <Image src={"../../stores/"+this.state.image} className="storeimage" />
-                                    <label htmlFor="exampleFormControlInput1">Image :</label>
-                                    <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} />
-                                </div>
                             </div>
                         </div>
                     </div>

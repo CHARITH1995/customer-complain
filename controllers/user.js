@@ -20,7 +20,7 @@ module.exports.log = (req, res, next) => {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         var token = jwt.sign(user.toJSON(), 'secretkey', { expiresIn: '24h' });
         //console.log(user)
-        res.json({ success:true, token: 'JWT ' + token,fname: user.fname,id:user.Id });
+        res.json({ success:true, token: 'JWT ' + token,fname: user.fname,id:user.Id,admin:user.is_admin });
       } else {
         res.status(401).send({ success: false, msg: '-Authentication failed. wrong password-.', token: true });
       }
@@ -43,9 +43,7 @@ module.exports.resetpwd = (req, res, next) => {
   Details.findOne({
     _id:req.params.id
   }).then(function(doc){
-    //console.log(err)
     if(doc){
-      //console.log(doc)
       var salt = bcrypt.genSaltSync(10);
       var hash = bcrypt.hashSync(req.body.password, salt);
       var pwd = doc.password;
@@ -58,9 +56,9 @@ module.exports.resetpwd = (req, res, next) => {
           return res.send({ success: false, msg: 'ERROR!' });
         }
       });
-    }else{
-      return res.json({success:false,msg:'ERROR!'})
-    }
+  }else{
+    return res.json({success:false,msg:'User Not FOUND!'})
+  }
   })
  
 }//mailverify
@@ -70,8 +68,9 @@ module.exports.mailverify = (req, res, next) => {
     email: req.body.email
   }, function (err, infor) {
     if (infor) {   ///resetpwd/:id/:password
+      //console.log(infor)
       link ='http://localhost:3000/editpassword/'+ infor._id +'/'+infor.password;
-      console.log(link)
+      //console.log(link)
       var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -79,7 +78,6 @@ module.exports.mailverify = (req, res, next) => {
           pass: '0771034162'
         }
       });
-
      var mailOptions = {
         to: infor.email,
         from: "charithprasanna009@gmail.com",
@@ -88,10 +86,10 @@ module.exports.mailverify = (req, res, next) => {
       }; 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          console.log(error);
+          //console.log(error);
           return res.json({ success: false, msg: 'message sending fail!!' })
         } else {
-          console.log('Email sent: ' + info.response);
+          //console.log('Email sent: ' + info.response);
           return res.json({ success: true, msg: 'check your inbox and reset the pwd' })
         }
       });
@@ -100,6 +98,14 @@ module.exports.mailverify = (req, res, next) => {
       return res.json({ success: false, msg: 'email incorrect!!' })
     }
   })
-}//resetpwd
+}//resetpwd  getpwd
+
+module.exports.getpwd = (req, res, next) => {
+    Details.findOne({
+      _id:req.body.id
+    }).then(function(details){
+      return res.json({data:details})
+    })
+}
 
 

@@ -59,7 +59,7 @@ class Complains extends Component {
                         <Nav />
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">Complains of this Month</h3>
+                        <h2 className="title">Complains of this Month</h2>
                         <div className="col-sm-2 sidenav">
                             <div className="list-group ">
                                 <a className="list-group-item active">SUB-AREAS</a>
@@ -75,7 +75,7 @@ class Complains extends Component {
                                     <div class="col-sm-8">
                                     <div className="col-md-2"></div>
                                     {this.state.complains.map(complain =>
-                                        <div className="row">
+                                        <div className=" row">
                                             <div className="card">
                                                 <div className="card-body">
                                                     <div >

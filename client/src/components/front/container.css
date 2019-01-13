@@ -20,8 +20,6 @@
 .bg-primary{
     background-color:rgb(5, 92, 192);
 }
-.formtext{
-    font-size:13px;
-    color:black;
-    font-weight: bold;
+.new{
+    margin-left:-100px;;
 }

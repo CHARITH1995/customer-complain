@@ -9,14 +9,8 @@ class Datewise extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_mount:true,
             complains: [],
-            sales: [],
-            salesdata: [{
-                title: '',
-                value: 0,
-                color: ''
-            }],
-            salesdetails: [],
             data: [{
                 title: '',
                 value: 0,
@@ -47,7 +41,7 @@ class Datewise extends Component {
                         <div className="collapse navbar-collapse" id="myNavbar">
                             <ul className="nav navbar-nav navbar-right">
                                 <li><a href="/Home">HOME</a></li>
-                                <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
+                                <li className="custname"><a href="#">{localStorage.getItem('fname')}</a></li>
                                 <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
                             </ul>
                         </div>
@@ -56,9 +50,9 @@ class Datewise extends Component {
             </div>
         )
     }
-    componentDidMount() {
+    details(){
         var authToken = localStorage.token;
-        fetch("http://localhost:4000/reports/manualreports/" + this.props.match.params.year + "/" + this.props.match.params.month, {
+        fetch("http://localhost:4000/reports/manualreports/"+this.props.match.params.year+"/"+this.props.match.params.month, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -67,11 +61,13 @@ class Datewise extends Component {
         }).then(function (response) {
             return response.json();
         }).then(data => {
+            if(this.state.is_mount){
+                this.state.is_mount=false
             this.setState({
                 complains: data
             })
-            //console.log(this.state.complains)
-            for (var i = 1; i <= this.state.complains.length; i++) {
+        }
+            for(var i = 1; i <= this.state.complains.length; i++) {
                 this.setState({
                     data: {
                         title: this.state.complains[i - 1]._id.subarea,
@@ -82,30 +78,9 @@ class Datewise extends Component {
                 this.state.details.push(this.state.data)
             }
         })
-        fetch("http://localhost:4000/reports/manualsoldreports/" + this.props.match.params.year + "/" + this.props.match.params.month, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Bearer' + authToken
-            },
-        }).then(function (response) {
-            return response.json();
-        }).then(response => {
-            this.setState({
-                sales: response
-            })
-            for (var i = 1; i <= this.state.sales.length; i++) {
-                this.setState({
-                    salesdata: {
-                        title: this.state.sales[i - 1]._id.item,
-                        value: parseInt(this.state.sales[i - 1].total),
-                        color: this.state.sales[i - 1]._id.color
-                    }
-                })
-                this.state.salesdetails.push(this.state.salesdata)
-                console.log(this.state.salesdata)
-            }
-        })
+    }
+    componentDidMount() {
+       this.details();
     }
     render() {
         if (localStorage.token) {
@@ -155,44 +130,6 @@ class Datewise extends Component {
                         </div>
                         <br /><br />
                     </div>
-                    <div className="container col-md-12 slideanim ">
-                        <div className="col-md-5">
-                            <h3 className="text-center">Sold Items</h3>
-                            <PieChart
-                                data={this.state.salesdetails}
-                                expandOnHover
-                                onSectorHover={(d, i, e) => {
-                                    if (d) {
-                                        console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
-                                    } else {
-                                        console.log("Mouse leave - Index:", i, "Event:", e)
-                                    }
-                                }
-                                }
-                            />
-                        </div>
-                        <div className="col-md-5">
-                            <div className="area">
-                                {this.state.sales.map(sale =>
-                                    <div className="row">
-                                        <div className="card">
-                                            <div className="cards-body" style={{ background: sale._id.color }}>
-                                                <div >
-                                                    <ul>
-                                                        <li><span className="attribute">Item Type : </span>{sale._id.title}</li>
-                                                        <li><span className="attribute">Sold Items : </span>{sale.total}</li>
-                                                    </ul>
-                                                    <hr />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                                }
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             )
         }

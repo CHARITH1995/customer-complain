@@ -71,7 +71,7 @@ class Subarea extends Component {
                     {this.navbar()}
                 </div>
                 <div className="container-fluid">
-                <h3 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea}</h3>
+                <h2 className="title"><Link to={"/Complain"}> COMPLAINS </Link> -{this.props.match.params.subarea}</h2>
                     <div className="row content">
                     <div className="col-sm-2 sidenav">
                               

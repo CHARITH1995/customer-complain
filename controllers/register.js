@@ -7,6 +7,7 @@ const Employee = require('../models/Employees');
 var ObjectID = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
 
 module.exports.customerreg=(req,res,next) =>{
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
@@ -83,10 +84,10 @@ module.exports.employeereg=(req,res,next)=>{
                 if(data){
                     return res.json({success:false,msg:'email already taken'})
                 }else{
-                    console.log(req.body)
                     Employee.findOne({
                         Id:req.body.Id
                     }).then(function(data){
+                        //console.log(data)
                         if(data){
                             return res.json({success:false,msg:'Id already taken'})
                         }else{
@@ -100,7 +101,6 @@ module.exports.employeereg=(req,res,next)=>{
                                 authorize_by:req.body.authorize_by   
                             });
                             employee.save((err,doc)=>{
-                                console.log(err)
                                 if(!err){
                                    return res.json({success:true ,msg:'successfully inserted'});
                                 }
@@ -150,13 +150,32 @@ module.exports.newadmin=(req,res,next)=>{
                                     Tp:req.body.tp,
                                     isadmin:req.body.isadmin,
                                 });
-                               // console.log(det)
                                 det.save((err,doc)=>{
                                     if(!err){
-                                       return res.json({success: true , msg :"successfully registerd!"});
+                                        link ='http://localhost:3000/editpassword/'+ doc._id +'/'+doc.password;
+                                        var transporter = nodemailer.createTransport({
+                                          service: 'gmail',
+                                          auth: {
+                                            user: "charithprasanna009@gmail.com",
+                                            pass: '0771034162'
+                                          }
+                                        });
+                                       var mailOptions = {
+                                          to: doc.email,
+                                          from: "charithprasanna009@gmail.com",
+                                          subject: 'Sending Email using Node.js',
+                                          text:link
+                                        }; 
+                                        transporter.sendMail(mailOptions, function (error, info) {
+                                          if (error) {
+                                                res.json({ success: false, msg: 'message sending fail!' })
+                                          } else {
+                                         return res.json({ success: true, msg: 'Join Link send to the new user!!' })
+                                          }
+                                        });
                                     }
                                     else{
-                                        res.json({success:false,msg:'ERROR!'});
+                                       return res.json({success:false,msg:'ERROR!'});
                                     }
                                 });
                             }
@@ -269,15 +288,37 @@ module.exports.updatecustomer=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             var condition = {_id:req.params.id}
-           //console.log(req.body)
-           Customer.updateOne(condition,req.body).then(doc =>{    
-            if(doc){
-              return res.json({ success: true, msg:'successfully updated!' });
-            }else{
-              return res.json({ success: false, msg:'cannot finish your request!!' }); 
-            }
-        }) 
-           
+           Customer.findOne({
+               Id:req.body.Id
+           }).then(data=>{
+               if((data === null)||(data._id !== req.params.id)){
+                   Customer.findOne({
+                       accountNumber:req.body.accountNumber
+                   }).then(doc=>{
+                       if((doc === null)||(doc._id !== req.params.id)){
+                           Customer.findOne({
+                               email:req.body.email
+                           }).then(detail =>{
+                            if((detail === null)||(detail._id !== req.params.id)){
+                                Customer.updateOne(condition,req.body).then(doc =>{    
+                                    if(doc){
+                                      return res.json({ success: true, msg:'successfully updated!' });
+                                    }else{
+                                      return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                                    }
+                                })
+                            }else{
+                                return res.json({success:false,msg:'check customer email once again'})
+                            }
+                           })
+                       }else{
+                        return res.json({success:false,msg:'check customer ACC number once again'})
+                       }
+                   })
+               }else{
+                    return res.json({success:false,msg:'check customer NIC once again'}) 
+               }
+           })
              }
         });
   
@@ -291,7 +332,7 @@ module.exports.editemployee=(req,res,next)=>{
             Employee.findOne({_id:req.params.id}).then(function (details) {
                 //console.log(details)
                 if(!details){
-                    res.send({ success: false, msg: 'not success' });
+                    res.send({ success: false, msg: 'no employees to show' });
                 }else{
                     res.send(details);
                 }
@@ -308,15 +349,30 @@ module.exports.updateemployee=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             var condition = {_id:req.params.id}
-            Employee.updateOne(condition,req.body).then(doc =>{    
-                if(doc){
-                  return res.json({ success: true, msg:'successfully updated!' });
-                }else{
-                  return res.json({ success: false, msg:'cannot finish your request!!' }); 
-                }
-            })
-           
+            console.log(req.body.Id)
+           Employee.findOne({
+               Id:req.body.Id
+           }).then(function(data){
+               if((data === null)||(data._id !== req.params.id)){
+                   Employee.findOne({
+                       email:req.body.email
+                   }).then(doc =>{
+                       if((doc === null)||(doc._id !== req.params.id)){
+                        Employee.updateOne(condition,req.body).then(doc =>{    
+                            if(doc){
+                              return res.json({ success: true, msg:'successfully updated!' });
+                            }else{
+                              return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                            }
+                        })
+                       }else{
+                        return res.json({success:false,msg:'check Technician email once again'}) 
+                       }
+                   })
+               }else{
+                    return res.json({success:false,msg:'check Technician NIC once again'}) 
+               }
+           })
              }
-        });
-  
-}//updateemployee
+        }); 
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Nav from '../../front/nav';
-import {Image} from 'react-bootstrap';
+import {Image , ProgressBar , Label} from 'react-bootstrap';
 import Searchreport from "../searchreport";
 import PieChart from "react-svg-piechart";
 import { Link } from 'react-router-dom';
@@ -10,11 +10,8 @@ class Areawise extends Component {
         super(props);
         this.state = {
             complains: [],
-            data: [{
-                title: '',
-                value: 0,
-                color: ''
-            }],
+            done:0,
+            notdone:0,
             details: []
         }
     }
@@ -63,29 +60,19 @@ class Areawise extends Component {
             this.setState({
                 complains: data
             })
-            //console.log(this.state.complains)
             for (var i = 1; i <= this.state.complains.length; i++) {
                 if(this.state.complains[i-1]._id.status === 'done'){
                     this.setState({
-                        data: {
-                            title: this.state.complains[i - 1]._id.status,
-                            value: parseInt(this.state.complains[i - 1].total),
-                            color: "blue"
-                        }
+                        done:parseInt(this.state.complains[i - 1].total)
                     })
                 }
                 if(this.state.complains[i-1]._id.status === 'notdone'){
                     this.setState({
-                        data: {
-                            title: this.state.complains[i - 1]._id.status,
-                            value: parseInt(this.state.complains[i - 1].total),
-                            color: "red"
-                        }
+                        notdone:parseInt(this.state.complains[i - 1].total)
                     })
                 }
-            
-                this.state.details.push(this.state.data)
-            }//this.props.match.params.status
+                this.state.details.push(this.state.data);
+            }
         })
     }
     render() {
@@ -94,47 +81,27 @@ class Areawise extends Component {
                 <div>
                     <div id="services" className="container-fluid text-center">
                         {this.nav()}
-                        <h3 className="text-center">Total <Link to={"/reports"}>Reports </Link>Of Subarea - {this.props.match.params.subarea}</h3>
+                        <h2 className="text-center">Total Reports Of Subarea - {this.props.match.params.subarea}</h2>
                         <br />
-                        <div className="container col-md-12 slideanim ">
-                            <div className="col-md-5">
-                                <h3 className="text-center"> Complains</h3>
-                                <PieChart
-                                    data={this.state.details}
-                                    expandOnHover
-                                    onSectorHover={(d, i, e) => {
-                                        if (d) {
-                                            console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
-                                        } else {
-                                            console.log("Mouse leave - Index:", i, "Event:", e)
-                                        }
-                                    }
-                                    }
-                                />
-                            </div>
-                            <div className="col-md-5">
-                                <div className="area">
-                                    {
-                                        this.state.details.map(detail =>
-                                            <div className="row">
-                                                <div className="card">
-                                                    <div className="cards-body" style={{ background: detail.color }}>
-                                                        <div >
-                                                            <ul>
-                                                                <li><span className="attribute">Status : </span>{detail.title}</li>
-                                                                <li><span className="attribute">Complains : </span>{detail.value}</li>
-                                                            </ul>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                            </div>
+                        <div className="col-md-2">
+                        <div className="list-group ">
+                            <a className="list-group-item active">Quick Links</a>
+                            <a className="list-group-item"><Link to={"/reports"} >Reports</Link></a>
                         </div>
+                        </div>
+                        <div className="col-md-10">
+                            <div className="lablename">
+                            <Label bsStyle="success">Finished jobs</Label>{' '}
+                            </div>
+                            <ProgressBar striped bsStyle="success" now={this.state.done} label={`${this.state.done}`} />
+                            
+                            <div className="lablename">
+                            <Label bsStyle="danger">Not Finished jobs</Label>
+                            </div>
+                            <ProgressBar striped bsStyle="danger" now={this.state.notdone} label={`${this.state.notdone}`}/>
+                            
                         <br /><br />
+                    </div>
                     </div>
                 </div>
             )

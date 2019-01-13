@@ -10,7 +10,7 @@ class Sevices extends Component {
       <div>
         <div id="services" className="container-fluid">
           <div className="servise-text">
-            <h2>DASHBOARD</h2>
+            <h2>Services</h2>
           </div>
           <br />
           <div className="row slideanim">
@@ -47,7 +47,7 @@ class Sevices extends Component {
             </div>
             <div className="col-sm-4">
               <a href="/itemstypes" className="glyphicon glyphicon-tasks logo-small"></a>
-              <h4 style={{ color: "#303030" }}>ADSL</h4>
+              <h4 style={{ color: "#303030" }}>ADD ITEM TYPES</h4>
               <Tooltip placement="bottom" className="in" id="tooltip-bottom">
                 add new item types to system
               </Tooltip>

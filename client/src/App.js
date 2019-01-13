@@ -25,8 +25,9 @@ import Datewise from './components/reports/manualreports/datewise';
 import Adminprofile from './components/profile/adminprofile';
 import Areawise from './components/reports/manualreports/areawise';
 import Itemtypes from './components/itemtypes/itemtypes';
+import Storedata from './components/reports/listview';
 import Error from './components/error';
-//editprofile/"+localStorage.token Adminprofile Viewcustomers
+//editprofile/"+localStorage.token Adminprofile Viewcustomers  Storedata
 class App extends Component {
   render() {
     return (
@@ -35,6 +36,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={SignInForm} />
             <Route path="/passwordreset" component={Forgetpwd} />
+          <Route path="/manualreports/:year/:month" component={Datewise} />
           </Switch>
           <Switch>
             {(localStorage.token) ? <Route path="/Home" component={Home} /> : null}
@@ -132,11 +134,6 @@ class App extends Component {
             <Redirect from="/viewitem/:id" to="/Error" />
           </Switch>
           <Switch>
-            {(localStorage.token) ? <Route path="/manualreports/:year/:month" component={Datewise} /> : null}
-            <Route path="/Error" component={Error} />
-            <Redirect from="/manualreports/:year/:month" to="/Error" />
-          </Switch>
-          <Switch>
             {(localStorage.token) ? <Route path="/manualsoldreports/:subarea" component={Areawise} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/manualreports/:subarea" to="/Error" />
@@ -145,6 +142,11 @@ class App extends Component {
             {(localStorage.token) ? <Route path="/itemstypes" component={Itemtypes} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/itemstypes" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/storedata" component={Storedata} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/storedata" to="/Error" />
           </Switch>
           <Route path="/editpassword/:id/:password" component={Editpassword} />
         </div>

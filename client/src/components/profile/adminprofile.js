@@ -292,11 +292,6 @@ class Adminprofile extends Component {
                                 </div>
                                 <hr />
                             </div>
-                            <div className="col-md-2">
-                                <div>
-                                    <Image src={"../../public/images/2.jpg"} className="storeimage" />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

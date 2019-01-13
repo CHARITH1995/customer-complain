@@ -15,10 +15,11 @@ class Itemtypes extends Component {
             items: [],
             identifier: '',
             show: true,
+            showinsert:false,
+            showmsg:false,
             name: '',
             nameerr: '',
             msg: '',
-            delmsg: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,12 +71,13 @@ class Itemtypes extends Component {
                     if (details.success) {
                         this.setState({
                             items: details.data,
-                            msg: details.msg
+                            msg:'successfully inserted!',
+                            showmsg:true
                         })
                     } else {
                         this.setState({
-                            show: false,
-                            msg: details.msg
+                            showmsg:true,
+                            msg:'cannot insert!',
                         })
                     }
                 })
@@ -96,13 +98,14 @@ class Itemtypes extends Component {
         }).then(data => {
             if (data.success) {
                 this.setState({
-                    delmsg: data.msg,
+                    showmsg:true,
+                    msg:'delete successfully!'
                 })
-                //alert(this.state.msg)
                 window.location.reload();
             } else {
                 this.setState({
-                    delmsg: data.msg
+                    showmsg:true,
+                    msg:'cannot delete!'
                 })
             }
         })
@@ -116,7 +119,7 @@ class Itemtypes extends Component {
             formvalid = false;
         }
         if (this.state.name !== "undefined") {
-            if (!this.state.name.match(/^[a-zA-Z]{3,}$/i)) {
+            if (!this.state.name.match("^[a-zA-Z\\s]*$")) {
                 this.setState({
                     nameerr: 'name field not valid'
                 })
@@ -131,6 +134,8 @@ class Itemtypes extends Component {
         let name = target.name;
         this.setState({
             [name]: value,
+            showmsg:false,
+            nameerr: '',
         });
     }
     handleChangeComplete = (color, event) => {
@@ -141,7 +146,7 @@ class Itemtypes extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlInput1">Enter the Item Type</label>
+                        <label htmlFor="exampleFormControlInput1">Enter the Item Type :</label>
                         <input type="text" className="form-control" id="exampleFormControlInput1" name="name" placeholder="Item Name" value={this.state.name} onChange={this.handleChange} required />
                         <span style={{ color: "#FD6571" }}>{this.state.nameerr}</span>
                     </div>
@@ -196,11 +201,23 @@ class Itemtypes extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">ITEM TYPES </h3>
+                        <h2 className="title">ITEM TYPES </h2>
                         <div className="col-sm-3">
                             {this.form()}
                         </div>
-                        <div className="col-sm-8">
+                        <div className="col-sm-8 contain">
+                        
+                        {
+                            this.state.showmsg ? (
+                                <Panel bsStyle="success" className="table">
+                                            <Panel.Heading>
+                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                            </Panel.Heading>
+                                        </Panel>
+                            ):(
+                                <div></div>
+                            )
+                        }
                             {
                                 this.state.show ? (
                                     <Table responsive className="table">

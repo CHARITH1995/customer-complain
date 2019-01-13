@@ -68,8 +68,8 @@ class Complainview extends Component{
                {this.navbar()}
             </div>
             <div className="container-fluid">
-                <h3 className="title">COMPLAIN DETAILS</h3>
-                <div className="row content">
+                <h2 className="title">COMPLAIN DETAILS</h2>
+                <div className="contain row content">
                     <div class="col-sm-2 sidenav">
                     </div>
                     <div class="col-sm-8 text-left">

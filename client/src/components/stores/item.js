@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Image, OverlayTrigger, Popover ,Panel } from 'react-bootstrap';
+import { Image, OverlayTrigger, Popover ,Panel , ProgressBar } from 'react-bootstrap';
 import Searchitems from './searchitems';
 
 
@@ -8,10 +8,13 @@ class Viewbyitems extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            storeitems: [],
+            searchfield: '',
             items: [],
             msg: '',
             show: true
         };
+        this.onSearch =this.onSearch.bind(this)
     }
     logout = (e) => {
         e.preventDefault();
@@ -59,7 +62,7 @@ class Viewbyitems extends Component {
                 console.log(data)
                 if (data.success) {
                     this.setState({
-                        items: data.data,
+                        storeitems:data.data,
                     })
                 } else {
                     this.setState({
@@ -96,6 +99,25 @@ class Viewbyitems extends Component {
             }
         })
     }
+    searching(searchfield){
+        return function(x){
+            var search=[]
+            search = x.description.toLowerCase().includes(searchfield.toLowerCase())||x.item.toLowerCase().includes(searchfield.toLowerCase())||!searchfield;
+            console.log(search)
+            if(search.length === 0){
+                this.setState({
+                    isempty:true
+                })
+            }else{
+                return search
+            }
+        }
+    }
+    onSearch(e){
+        this.setState({
+            searchfield:e.target.value
+        })
+    }
     render() {
         const popoverHoverFocus = (
             <Popover id="popover-trigger-hover-focus" title="Romove Button">
@@ -109,7 +131,7 @@ class Viewbyitems extends Component {
                        {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">Online Store Items Page</h3>
+                        <h2 className="title">Online Store Items Page</h2>
                         <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
                             <div className="list-group ">
@@ -119,16 +141,19 @@ class Viewbyitems extends Component {
                             </div>
                         </div>
                         <div class="col-sm-8">
-                            <Searchitems />
-                            {   this.state.show ?( this.state.items.map(item =>
-                                <div className="row">
+                        <div className="searchbar">
+                                <h2>Filterable List</h2>
+                                <input className="form-control" id="myInput" type="text" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.onSearch} required />
+                            </div>
+                            {   this.state.show ?( this.state.storeitems.filter(this.searching(this.state.searchfield)).map(item =>
+                                <div className=" contain rows">
                                     <div className="card-show">
                                         <Image src={"../../stores/" + item.imagepath} className="storeimage" rounded />
                                         <ul className="list-group list-group-flush">
                                         <li className="list-group-item">Description :{item.description}</li>
                                             <li key={item.id} className="list-group-item">Status :{item.status}</li>
-                                            <li className="list-group-item">Price: Rs {item.price}</li>
-                                            <li className="list-group-item">Serial Number: {item.serialnumber}</li>
+                                            <li className="list-group-item">Price: Rs: {item.price}</li>
+                                            <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="success" now={item.qty} label={`${item.qty}`} /></li>
                                             <li className="list-group-item">
                                                 <div className="storesbutton">
                                                     <Link to={"/viewitem/" + item._id} className="btn btn-info">View</Link>

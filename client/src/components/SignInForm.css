@@ -46,9 +46,8 @@
 .modal-login .modal-footer {
     text-align: center;
     justify-content: center;
-    margin: 0 -20px -20px;
     border-radius: 5px;
-    font-size: 13px;
+    font-size: 15px;
 }
 .modal-login .modal-footer a {
     color: #999;

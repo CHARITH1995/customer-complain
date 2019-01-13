@@ -52,6 +52,12 @@ class SignInForm extends Component {
                     sessionStorage.setItem('fname', json.fname);
                     localStorage.setItem('token',json.token,'lname',json.lname);
                     localStorage.setItem('id',json.id)
+                    if(json.admin){
+                        localStorage.setItem('admin','yes')
+                    }else{
+                        localStorage.setItem('admin','no')
+                    }
+                    
                     this.setState({
                         signInError: json.success,
                         token: json.token
@@ -77,7 +83,7 @@ class SignInForm extends Component {
         if (this.state.showalert) {
             return (
                 <div>
-                 <Panel bsStyle="danger">
+                 <Panel bsStyle="danger contain">
                  <Panel.Heading>
                    <Panel.Title componentClass="h3">{this.state.signInError}</Panel.Title>
                  </Panel.Heading>

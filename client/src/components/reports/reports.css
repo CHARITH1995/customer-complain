@@ -3,9 +3,15 @@
     margin-bottom:50px;
     margin-top:30px;
 }
-.container{
-    padding: none;
-    
+.contain{
+    padding:2%;
+    border-radius:1%;
+    margin-bottom:2%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.lablename{
+    margin-left:-94%;
+    margin-bottom:1%;
 }
 .container h4{
  margin-bottom:20px;
