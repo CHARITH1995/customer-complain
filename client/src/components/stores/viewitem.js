@@ -139,9 +139,9 @@ class Viewitem extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h2 className="title">ITEM DETAILS</h2>
+                        <h2 className="title">Item Details</h2>
                         <div className="contain row content">
-                            <div className="col-sm-8 text-left">
+                            <div className="col-sm-8 ">
                                 {
                                     this.state.showerr ? (
                                         <div >
@@ -188,17 +188,19 @@ class Viewitem extends Component {
                                                 )}
                                         </div>
                                     </div>
-                                    <div className="col-sm-6">
+                                    <div className="col-sm-8">
                                         <div className="viewcard-body">
                                             <div >
-                                                <ul>
-                                                    <li><span className="attribute">Description : </span>{this.state.item.description}</li>
-                                                    <li><span className="attribute">Price: </span>Rs :{this.state.item.price}</li>
-                                                    <li><span className="attribute">Insertdate : </span>{this.state.item.insertdate}</li>
-                                                    <li><span className="attribute">Item Type : </span>{this.state.item.item}</li>
-                                                    <li><span className="attribute">Status : </span>{this.state.item.status}</li>
-                                                    <li><span className="attribute">Inserted By : </span>{this.state.item.authorizedby}</li>
-                                                    <li><span className="attribute">Available Stock : </span>{this.state.item.authorizedby}</li>
+                                                <ul className="list-group list-group-flush">
+                                                    <li className="list-group-item">Description :  <span className="names"> {this.state.item.description} </span></li>
+                                                    <li className="list-group-item">Price:         <span className="names"> Rs :{this.state.item.price} /= </span> </li>
+                                                    <li className="list-group-item">Insertdate :   <span className="names"> {this.state.item.insertdate} </span> </li>
+                                                    <li className="list-group-item">Item Type :    <span className="names"> {this.state.item.item}       </span></li>
+                                                    <li className="list-group-item">Inserted By :  <span className="names"> {this.state.item.authorizedby}</span></li>
+                                                    <li className="list-group-item">Available Stock :<span className="names"> {this.state.item.authorizedby}</span></li>
+                                                    <li className="list-group-item">Device color :<svg height="100" width="100" className="identifies">
+                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={this.state.item.color} />
+                                                    </svg></li>
                                                     <div className="viewbuttongroup">
                                                         <div className="viewbutton">
                                                             <a href="/onlinestore" className="glyphicon glyphicon-circle-arrow-left">Stores</a>

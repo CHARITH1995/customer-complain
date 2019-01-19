@@ -288,37 +288,37 @@ module.exports.updatecustomer=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             var condition = {_id:req.params.id}
-           Customer.findOne({
-               Id:req.body.Id
-           }).then(data=>{
-               if((data === null)||(data._id !== req.params.id)){
-                   Customer.findOne({
-                       accountNumber:req.body.accountNumber
-                   }).then(doc=>{
-                       if((doc === null)||(doc._id !== req.params.id)){
-                           Customer.findOne({
-                               email:req.body.email
-                           }).then(detail =>{
-                            if((detail === null)||(detail._id !== req.params.id)){
-                                Customer.updateOne(condition,req.body).then(doc =>{    
-                                    if(doc){
-                                      return res.json({ success: true, msg:'successfully updated!' });
-                                    }else{
-                                      return res.json({ success: false, msg:'cannot finish your request!!' }); 
-                                    }
-                                })
-                            }else{
-                                return res.json({success:false,msg:'check customer email once again'})
-                            }
-                           })
-                       }else{
-                        return res.json({success:false,msg:'check customer ACC number once again'})
-                       }
-                   })
-               }else{
-                    return res.json({success:false,msg:'check customer NIC once again'}) 
-               }
-           })
+            Customer.findOne({
+                email:req.body.email
+            }).then(function(doc){
+                if((doc == null)||(doc._id == req.params.id)){
+                    Customer.findOne({
+                        accountNumber:req.body.accountNumber
+                    }).then(function(data){
+                        if((data == null)||(data._id) == (req.params.id)){
+                            Customer.findOne({
+                                Id:req.body.Id
+                            }).then(function(detail){
+                                if((detail == null)||(detail._id == req.params.id)){
+                                    Customer.updateOne(condition,req.body).then(doc =>{    
+                                        if(doc){
+                                          return res.json({ success: true, msg:'successfully updated!' });
+                                        }else{
+                                          return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                                        }
+                                    })
+                                }else{
+                                    return res.json({success:false , msg:'NIC is already taken!'}) 
+                                }
+                            })
+                        }else{
+                            return res.json({success:false , msg:'Account Number is already taken!'})
+                        }
+                    })
+                }else{
+                    return res.json({success:false , msg:'email is already taken!'})
+                }
+            })
              }
         });
   
@@ -349,15 +349,14 @@ module.exports.updateemployee=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             var condition = {_id:req.params.id}
-            console.log(req.body.Id)
            Employee.findOne({
                Id:req.body.Id
            }).then(function(data){
-               if((data === null)||(data._id !== req.params.id)){
+               if((data == null)||(data._id == req.params.id)){
                    Employee.findOne({
                        email:req.body.email
                    }).then(doc =>{
-                       if((doc === null)||(doc._id !== req.params.id)){
+                       if((doc == null)||(doc._id == req.params.id)){
                         Employee.updateOne(condition,req.body).then(doc =>{    
                             if(doc){
                               return res.json({ success: true, msg:'successfully updated!' });

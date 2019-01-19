@@ -10,6 +10,7 @@ class Edititem extends Component {
             items: [],
             Brand: '',
             type: '',
+            warrenty:'',
             qty: 0,
             Price: '',
             Description: '',
@@ -67,6 +68,7 @@ class Edititem extends Component {
                 background: data.color,
                 type: data.item,
                 qty: data.qty,
+                warrenty:data.warrenty,
                 Price: data.price,
                 Description: data.description,
                 imagename: data.imagepath
@@ -103,23 +105,12 @@ class Edititem extends Component {
     handleSubmit(e) {
         var authToken = localStorage.token;
         e.preventDefault();
-        if (this.state.file !== null) {
-            this.state.image = this.state.path + this.state.imagename
-            const fd = new FormData();
-            fd.append('file', this.state.file);
-            fetch("http://localhost:4000/stores/newitem", {
-                method: "POST",
-                headers: {
-                    'Authorization': 'Bearer' + authToken
-                },
-                body: fd
-            });
-        }
         const stores = {
             id: this.props.match.params.id,
             brand: this.state.Brand,
             color: this.state.background,
             description: this.state.Description,
+            warrenty:this.state.warrenty,
             qty: this.state.qty,
             Item: this.state.type,
             price: parseFloat(this.state.Price),
@@ -155,6 +146,7 @@ class Edititem extends Component {
             Color: '',
             type: '',
             Price: '',
+            warrenty:'',
             imagename: '',
             Description: '',
             qty: '',
@@ -188,7 +180,10 @@ class Edititem extends Component {
                             <label htmlFor="exampleFormControlInput1">Available Stock :</label>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="qty" placeholder="available stock" value={this.state.qty} onChange={this.handleChange} required />
                         </div>
-
+                        <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">warrenty period :</label>
+                                <input type="number" className="form-control" id="exampleFormControlInput1" name="warrenty" placeholder="warrenty period" value={this.state.warrenty} onChange={this.handleChange} required />
+                            </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Price :</label>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} />
@@ -216,7 +211,7 @@ class Edititem extends Component {
                         {this.nav()}
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">NEW-ITEM</h3>
+                        <h2 className="title">Update Item Details</h2>
                         <div className="row content">
                             <div className="col-md-1"></div>
                             <div className="col-md-8">

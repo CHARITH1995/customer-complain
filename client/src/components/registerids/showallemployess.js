@@ -116,10 +116,7 @@ class ViewEmployees extends Component {
                                 <a className="list-group-item"><Link to={"/showcustomers"}>Employees</Link></a>
                             </div>
                         </div>
-                        <div className="row content">
                             <div class="col-sm-8 text-left">
-                                    <div className="col-sm-6">
-                                    <div className="row">
                                         <div className="viewcard-body">
                                             {
                                                 this.state.show ? (
@@ -156,10 +153,7 @@ class ViewEmployees extends Component {
                                                     )
                                             }
                                         </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
                         <hr />
                     </div>
                 </div>

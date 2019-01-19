@@ -1,6 +1,6 @@
 .viewbuttongroup{
     margin-left:30%;
-    margin-top:5%;
+    margin-top:2%;
 }
 .viewcard-body{
     margin-right:0%;
@@ -23,4 +23,9 @@
     height: 180px;
     width:200px;
     margin:none;
+}
+.identifies{
+    margin-top:-8%;
+    margin-bottom:-9%;
+    margin-left:-5%;
 }

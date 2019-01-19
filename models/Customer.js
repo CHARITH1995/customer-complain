@@ -12,8 +12,11 @@ const Customers = new schema({
     },
     email:{
         type:String,
-        unique:false,
         require:[true,'email field is required']
+    },
+    Id:{
+        type:String,
+        require:[true,'Id field is require']
     },
     Tp:{
         type:String,
@@ -30,13 +33,7 @@ const Customers = new schema({
     },
     accountNumber:{
         type:String,
-        unique:false,
         require:[true,'account number field is required']
-    },
-    Id:{
-        type:String,
-        unique:false,
-        require:[true,'Id field is require']
     },
     address:{
         laneone:{
@@ -54,23 +51,12 @@ const Customers = new schema({
             require:[true,'Id field is require']
         }      
     },
-    deviceOne:{
+    authorizedby:{
         type:String,
-        require:[true,'this field is required']
-    },
-    deviceTwo:{
-        type:String
-    },
-    deviceThird:{
-        type:String
+        require:[true,'Id field is require']
     }
-
 });
 
-Customers.path('email').validate((val) =>{
-    emailRegx=/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return emailRegx.test(val);
-},'Ivalid e-mail');
 
 const Customerdetails = mongoose.model('Customers',Customers);//'details' is mongodb name Details is the schema name;
 module.exports=Customerdetails;

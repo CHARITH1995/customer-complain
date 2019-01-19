@@ -65,6 +65,7 @@ module.exports.addnewDetail = (req, res, next) => {
                                 price: req.body.price,
                                 item: req.body.Item,
                                 identifier: doc.identifier,
+                                warrenty:req.body.warrenty,
                                 imagepath: imagename,
                                 qty: req.body.qty,
                                 insertdate: Date.now(),
@@ -125,6 +126,7 @@ module.exports.updatedetails = (req, res, next) => {
                         item: req.body.Item,
                         identifier: docs.identifier,
                         qty: req.body.qty,
+                        warrenty:req.body.warrenty,
                         description: req.body.description,
                     }).then(function (det) {
                         if (det) {

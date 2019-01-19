@@ -4,10 +4,19 @@
     margin:none;
     
 }
+.identify{
+    margin-top:-5%;
+    margin-bottom: -5%;
+    margin-left:-2%;
+}
 .storesbutton{
     display: inline-block;
     margin:none;
     padding:none;
+}
+.names{
+    color:#000080;
+    font-weight:600;
 }
 .search{
     margin:10%;

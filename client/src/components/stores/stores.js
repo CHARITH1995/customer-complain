@@ -13,6 +13,7 @@ class Stores extends Component {
             Brand: '',
             Color: '',
             type: '',
+            warrenty:'',
             authorize_by: '',
             Price: '',
             show: true,
@@ -62,6 +63,7 @@ class Stores extends Component {
             description: this.state.Description,
             Item: this.state.type,
             qty: this.state.qty,
+            warrenty:this.state.warrenty,
             price: this.state.Price,
             imagepath: this.state.imagename,
             enterby: this.state.adminname,
@@ -128,6 +130,7 @@ class Stores extends Component {
             Brand: '',
             Color: '',
             type: '',
+            warrenty:'',
             Price: '',
             imagepath: '',
             Description: '',
@@ -172,7 +175,10 @@ class Stores extends Component {
                                 <label htmlFor="exampleFormControlInput1">Available Stock :</label>
                                 <input type="number" className="form-control" id="exampleFormControlInput1" name="qty" placeholder="available stock" value={this.state.qty} onChange={this.handleChange} required />
                             </div>
-
+                            <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">warrenty period :</label>
+                                <input type="number" className="form-control" id="exampleFormControlInput1" name="warrenty" placeholder="available stock" value={this.state.warrenty} onChange={this.handleChange} required />
+                            </div>
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Image :</label>
                                 <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} required />

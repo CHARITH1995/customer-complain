@@ -60,6 +60,7 @@ class Updatecustomer extends Component {
                 this.setState({
                     fnameerr:'first name invalid!',  
                 })
+                console.log("f")
                 formvalid=false
             }
         }
@@ -68,6 +69,7 @@ class Updatecustomer extends Component {
                 this.setState({
                     lnameerr:'first name invalid!',
                 })
+                console.log("l")
                 formvalid=false
             }
         }
@@ -76,6 +78,7 @@ class Updatecustomer extends Component {
                 this.setState({
                     emailerr:'email invalid!',  
                 })
+                console.log("e")
                 formvalid=false
             }
         }
@@ -85,6 +88,7 @@ class Updatecustomer extends Component {
                     tperr:'telephone invalid!',
                   
                 })
+                console.log("tp")
                 formvalid=false
             }
         }
@@ -93,15 +97,17 @@ class Updatecustomer extends Component {
                     subareaerr:'please select the subarea',
                    
                 })
+                console.log("sub")
                 formvalid=false
             
         }
         if(this.state.id !== 'undefined'){
-            if(!this.state.id.match(/^[1-9]{9}[vVxX]$/i)){
+            if(!this.state.id.match(/^[0-9]{9}[vVxX]$/i)){
                 this.setState({
                     Iderr:'NIC invalid!',
                  
                 })
+                console.log("nic")
                 formvalid=false
             }
         }
@@ -109,6 +115,7 @@ class Updatecustomer extends Component {
                 this.setState({
                     addresserr:'check address field',
                 })
+                console.log("add")
                 formvalid=false
             
         }
@@ -116,6 +123,7 @@ class Updatecustomer extends Component {
             this.setState({
                 postalcodeerr:'insert your postal code',
             })
+            console.log("pc")
             formvalid=false
         
     }
@@ -125,6 +133,7 @@ class Updatecustomer extends Component {
                 accountNumbererr:'Accountnumber Invalid!',
              
             })
+            console.log("ac")
             formvalid=false
         }
     
@@ -148,6 +157,7 @@ class Updatecustomer extends Component {
                 lname: data.lastname,
                 subarea: data.subarea,
                 accountNumber: data.accountNumber,
+                tp:data.Tp,
                 laneone:data.address.laneone,
                 lanetwo:data.address.lanetwo,
                 city:data.address.city,
@@ -164,12 +174,14 @@ class Updatecustomer extends Component {
             default:true
           })
         const customer = {
+            id:this.props.match.params.id,
             firstname: this.state.fname,
             lastname: this.state.lname,
             subarea: this.state.subarea,
             accountNumber: this.state.accountNumber,
             laneone:this.state.laneone,
             lanetwo:this.state.lanetwo,
+            Tp:this.state.tp,
             city:this.state.city,
             postalcode:parseInt(this.state.postalcode),
             Id: this.state.id,
@@ -221,7 +233,7 @@ class Updatecustomer extends Component {
     formfield() {
         return (
             <div>
-                <div className="container slideanim">
+                <div className="container">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1"> First Name :</label>
@@ -246,6 +258,11 @@ class Updatecustomer extends Component {
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">NIC number :</label>
                             <input type="text" className="form-control" id="exampleFormControlInput1" name="id" placeholder="0000000000V" value={this.state.id} onChange={this.handleChange} />
+                            <span style={{ color: "#FD6571" }}>{this.state.Iderr}</span>
+                        </div>
+                        <div className="form-group col-md-8">
+                            <label htmlFor="exampleFormControlInput1">Telephone Number :</label>
+                            <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="enter the customer phone number" value={this.state.tp} onChange={this.handleChange} />
                             <span style={{ color: "#FD6571" }}>{this.state.Iderr}</span>
                         </div>
                         <div className="form-group col-md-8">

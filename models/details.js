@@ -18,6 +18,19 @@ const Details = new schema({
         unique:true,
         require:'email cant be empty'
     },
+    Tp:{
+        type:String,
+        require:[true,'email field is required']
+    },
+    Id:{
+        type:String,
+        unique:false,
+        require:[true,'Id field is require']
+    },
+    is_admin:{
+        type:Boolean,
+        default:false
+    },
     password:{
         type:String,
         unique:false,

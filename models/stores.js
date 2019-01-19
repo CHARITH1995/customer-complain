@@ -1,21 +1,18 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
+mongoose.set('useCreateIndex', true);
 
 const Stores = new schema({
-    serialnumber:{
+    qty:{
         type:Number,
-        unique:false,
-        require:[true,'serial number field is required']
+        default:0,
+        require:[true,'available stock']
     },
     brand:{
         type:String,
         unique:false,
+        text: true,
         require:[true,'brand field is required']
-    },
-    status:{
-        type:String,
-        default:'unsold',
-        require:[true,'status field is require']
     },
     color:{
         type:String,
@@ -28,12 +25,14 @@ const Stores = new schema({
     },
     item:{
         type:String,
+        index: true,
         unique:false,
+        text:true,
         require:[true,'item field is required']
     },
     imagepath:{
         type:String,
-        unique:true,
+        unique:false,
         require:[true,'path field is required']
     },
     insertdate:{
@@ -41,29 +40,31 @@ const Stores = new schema({
         unique:true,
         require:[true,'date field is required']
     },
+    soldqty:{
+        type:Number,
+        default:0,
+        require:[true,'sold quantity']
+    },
     description:{
         type:String,
+        index: true,
+        text: true,
         require:[true,'description field is required']
     },
-    solddate:{
-        type:Date,
+    warrenty:{
+        type:Number,
         default:null,
         require:[true,'date field is required']
-    },
-    soldmonth:{
-        type:Number,
-        default:null,
-        require:[true,'month field is required']
-    },
-    soldyear:{
-        type:Number,
-        default:null,
-        require:[true,'month field is required']
     },
     price:{
         type:Number,
         unique:false,
         require:[true,'price field is require']
+    },
+    authorizedby:{
+        type:String,
+        text: true,
+        require:[true,'Id field is require']
     }
 });
 

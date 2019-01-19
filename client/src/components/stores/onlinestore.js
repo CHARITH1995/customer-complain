@@ -187,10 +187,14 @@ class Onlinestore extends Component {
                                             <div className="card-show">
                                                 <Image src={"../../stores/" + item.imagepath} className="storeimage" rounded />
                                                 <ul className="list-group list-group-flush">
-                                                    <li className="list-group-item">Description :{item.description}</li>
-                                                    <li key={item.id} className="list-group-item">Status :{item.status}</li>
-                                                    <li className="list-group-item">Price: Rs {item.price} /=</li>
+                                                    <li className="list-group-item">Description : <span className="names">{item.description}</span></li>
+                                                    <li className="list-group-item">Brand : <span className="names">{item.brand}</span></li>
+                                                    <li key={item.id} className="list-group-item">Warrenty Period : <span className="names">{item.warrenty} years </span></li>
+                                                    <li className="list-group-item">Price:  <span className="names">Rs {item.price} /=</span></li>
                                                     <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="success" now={item.qty} label={`${item.qty}`} /></li>
+                                                    <li className="list-group-item">Device color :<svg height="100" width="100"className="identify">
+                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={item.color} />
+                                                    </svg></li>
                                                     <li className="list-group-item">
                                                         <div className="storesbutton">
                                                             <Link to={"/viewitem/" + item._id} className="btn btn-info">View</Link>
