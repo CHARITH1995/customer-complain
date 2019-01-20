@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
-import './onlinestore.css';
-import { Image, OverlayTrigger, Popover, Panel, ProgressBar } from 'react-bootstrap';
+import '../stores/onlinestore.css';
+import { OverlayTrigger, Popover, Panel} from 'react-bootstrap';
 
 
 
-class Onlinestore extends Component {
+class Stockview extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,7 +33,7 @@ class Onlinestore extends Component {
     searching(searchfield) {
         return function (x) {
             var search = []
-            search = x.description.toLowerCase().includes(searchfield.toLowerCase()) || x.item.toLowerCase().includes(searchfield.toLowerCase()) || !searchfield;
+            search = x.serialnumber.includes(searchfield.toLowerCase()) || !searchfield;
             if (search.length === 0) {
                 this.setState({
                     isempty: true
@@ -56,7 +56,7 @@ class Onlinestore extends Component {
         this.setState({
             showdel:false
         })
-        fetch("http://localhost:4000/stores/onlinestore", {
+        fetch("http://localhost:4000/stock/estock", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -64,20 +64,21 @@ class Onlinestore extends Component {
             },
         }).then(function (response) {
             return response.json();
-        }).then(data => {
-            if (data.success) {
+        }).then(details => {
+            console.log(details.data)
+            if (details.success) {
                 this.setState({
-                    storeitems: data.data,
-                })
+                    storeitems:details.data,
+                }) 
             } else {
                 this.setState({
                     showitems: false,
                     showerr: true,
-                    msg: data.msg
+                    msg: details.msg
                 })
             }
-
         });
+        console.log(this.state.storeitems)
         fetch("http://localhost:4000/items/showitems", {
             method: "POST",
             headers: {
@@ -102,7 +103,7 @@ class Onlinestore extends Component {
     removeitem(id) {
         console.log(id)
         var authToken = localStorage.token;
-        fetch("http://localhost:4000/stores/removeitem/"+id, {
+        fetch("http://localhost:4000/stock/removestock/"+id, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -159,10 +160,10 @@ class Onlinestore extends Component {
                                 }
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div className="col-sm-8">
                             <div className="searchbar">
                                 <h2>Filterable List</h2>
-                                <input className="form-control" id="myInput" type="text" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.onSearch} required />
+                                <input className="form-control" id="myInput" type="text" placeholder="Search from serial number" name="searchfield" value={this.state.searchfield} onChange={this.onSearch} required />
                             </div>
                             {
                                     this.state.showdel ? (
@@ -182,22 +183,18 @@ class Onlinestore extends Component {
                                 }
                             {
                                 this.state.showitems ? (
-                                    this.state.storeitems.filter(this.searching(this.state.searchfield)).map(item =>
+                                    this.state.storeitems.map(item =>
                                         <div className="contain rows">
                                             <div className="card-show">
-                                                <Image src={"../../stores/" + item.imagepath} className="storeimage" rounded />
                                                 <ul className="list-group list-group-flush">
-                                                    <li className="list-group-item">Description : <span className="names">{item.description}</span></li>
                                                     <li className="list-group-item">Brand : <span className="names">{item.brand}</span></li>
                                                     <li key={item.id} className="list-group-item">Warrenty Period : <span className="names">{item.warrenty} years </span></li>
-                                                    <li className="list-group-item">Price:  <span className="names">Rs {item.price} /=</span></li>
-                                                    <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="success" now={item.qty} label={`${item.qty}`} /></li>
                                                     <li className="list-group-item">Device color :<svg height="100" width="100"className="identify">
                                                         <circle cx="50" cy="50" r="15"  stroke-width="3" fill={item.color} />
                                                     </svg></li>
                                                     <li className="list-group-item">
                                                         <div className="storesbutton">
-                                                            <Link to={"/viewitem/" + item._id} className="btn btn-info">View</Link>
+                                                            <Link to={"/view/" + item._id} className="btn btn-info">View</Link>
                                                             {(localStorage.admin == 'yes') || ((localStorage.id) === item.authorizedby) ? (
                                                                 <OverlayTrigger
                                                                     trigger={['hover', 'focus']}
@@ -242,8 +239,8 @@ class Onlinestore extends Component {
                         <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
                                 <a className="list-group-item active">Quick LInks</a>
-                                <a className="list-group-item"><Link to={"/reports"}>Monthly Reports</Link></a>
-                                <a className="list-group-item"><Link to={"/addstores"}>Add Items</Link></a>
+                                <a className="list-group-item"><Link to={"/stock"}>Add E-Stock</Link></a>
+                                <a className="list-group-item"><Link to={"/addstores"}>Add E-shop</Link></a>
                             </div>
                         </div>
                     </div>
@@ -253,4 +250,4 @@ class Onlinestore extends Component {
     }
 }
 
-export default Onlinestore;
+export default Stockview;

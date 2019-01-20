@@ -54,6 +54,10 @@ const Customers = new schema({
     authorizedby:{
         type:String,
         require:[true,'Id field is require']
+    },
+    password:{
+        type:String,
+        require:[true,'Id field is require']
     }
 });
 

@@ -26,8 +26,11 @@ import Adminprofile from './components/profile/adminprofile';
 import Areawise from './components/reports/manualreports/areawise';
 import Itemtypes from './components/itemtypes/itemtypes';
 import Storedata from './components/reports/listview';
+import Stock from './components/Stock/stock';
+import Stockview from './components/Stock/stockview';
+import Edit from './components/Stock/edit'; 
+import View from './components/Stock/view';
 import Error from './components/error';
-//editprofile/"+localStorage.token Adminprofile Viewcustomers  Storedata
 class App extends Component {
   render() {
     return (
@@ -147,6 +150,26 @@ class App extends Component {
             {(localStorage.token) ? <Route path="/storedata" component={Storedata} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/storedata" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/stock" component={Stock} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/stock" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/stockview" component={Stockview} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/stockview" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/view/:id" component={View} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/view/:id" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/editstockitem/:id" component={Edit} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/editstockitem/:id" to="/Error" />
           </Switch>
           <Route path="/editpassword/:id/:password" component={Editpassword} />
         </div>

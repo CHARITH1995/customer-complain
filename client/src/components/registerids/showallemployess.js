@@ -108,26 +108,26 @@ class ViewEmployees extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h2 className="title">EMPLOYEE IDS DETAILS</h2>
-                        <div className="col-sm-2 sidenav">
+                        <h2 className="title">Technician Details</h2>
+                        <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
                                 <a className="list-group-item active">show all users</a>
-                                <a className="list-group-item"><Link to={"/employeeids"}>Employee register</Link></a>
-                                <a className="list-group-item"><Link to={"/showcustomers"}>Employees</Link></a>
+                                <a className="list-group-item"><Link to={"/employeeids"}>Technician Register</Link></a>
+                                <a className="list-group-item"><Link to={"/showcustomers"}>Customer Details</Link></a>
                             </div>
                         </div>
                             <div class="col-sm-8 text-left">
-                                        <div className="viewcard-body">
                                             {
                                                 this.state.show ? (
                                                         this.state.ids.map(id =>
-                                                          <div className="row">
+                                                            <div className="contain rows">
                                                             <div className="card-show">
                                                                 <ul className="list-group list-group-flush">
                                                                     <li key={id._id} className="list-group-item">name :{id.firstname} {id.lastname}</li>
-                                                                    <li className="list-group-item">Status :{id.subarea}</li>
-                                                                    <li className="list-group-item">Status :{id.email}</li>
-                                                                    <li className="list-group-item">Status :{id.Id}</li>
+                                                                    <li className="list-group-item">Subarea :{id.subarea}</li>
+                                                                    <li className="list-group-item">Email :{id.email}</li>
+                                                                    <li className="list-group-item">Nic :{id.Id}</li>
+                                                                    <li className="list-group-item">Contact Number :{id.Tp}</li>
                                                                     <li className="list-group-item">
                                                                         <div className="storesbutton">
                                                                             <Link to={"/updateemployee/" +id._id} className="btn btn-info">Update</Link>
@@ -152,7 +152,6 @@ class ViewEmployees extends Component {
                                                         </Panel>
                                                     )
                                             }
-                                        </div>
                             </div>
                         <hr />
                     </div>

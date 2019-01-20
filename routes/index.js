@@ -5,7 +5,6 @@ const path=require("path");
 const routes=require('./routes/api');
 const routerComplain=require('./routes/api');
 const routerstores=require('./routes/api');
-const routerstock=require('./routes/api');
 const routerreport=require('./routes/api');
 const routeritem=require('./routes/api');
 const bodyParser=require('body-parser');
@@ -34,7 +33,6 @@ app.use('/complain',routerComplain);
 app.use('/register',routerRegister);
 app.use('/stores',routerstores);
 app.use('/reports',routerreport);
-app.use('/stock',routerstock);
 app.use('/items',routeritem);
 
 app.get("*", (req, res) => {

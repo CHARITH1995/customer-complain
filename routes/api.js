@@ -8,6 +8,7 @@ const complain = require('../controllers/complains');
 const store = require('../controllers/stores');
 const reports = require('../controllers/reports');
 const items = require('../controllers/itemtypes');
+const stock = require('../controllers/stock');
 
 
 
@@ -41,13 +42,18 @@ router.post('/newitem',jwtHelper.verifyJwtToken,store.addnewItem);
 router.get('/getitems/:item',jwtHelper.verifyJwtToken,store.showbyitem);
 router.post('/newdetails',jwtHelper.verifyJwtToken,store.addnewDetail);
 router.post('/onlinestore',jwtHelper.verifyJwtToken,store.viewitems);
-router.post('/search',jwtHelper.verifyJwtToken,store.searchitems);
 router.get('/getitemdetails/:id',jwtHelper.verifyJwtToken,store.getitemdetails);
 router.get('/edititemdetails/:id',jwtHelper.verifyJwtToken,store.editdetails);
 router.put('/edititem/:id',jwtHelper.verifyJwtToken,store.updatedetails); 
-router.put('/edititem/:id',jwtHelper.verifyJwtToken,store.updatedetails);
 router.put('/imageupload/:id',jwtHelper.verifyJwtToken,store.imageupload);
 router.delete('/removeitem/:id',jwtHelper.verifyJwtToken,store.deleteitem);
+
+router.post('/newstock',jwtHelper.verifyJwtToken,stock.addnewDetail);
+router.post('/estock',jwtHelper.verifyJwtToken,stock.viewitems);
+router.delete('/removestock/:id',jwtHelper.verifyJwtToken,stock.deleteitem);
+router.get('/getitem/:id',jwtHelper.verifyJwtToken,stock.getitem);
+router.get('/editstockitem/:id',jwtHelper.verifyJwtToken,stock.editdetails);
+router.put('/updateitem/:id',jwtHelper.verifyJwtToken,stock.updatedetails);
 
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);

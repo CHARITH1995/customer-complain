@@ -1,13 +1,16 @@
 .custitle{
-    margin-top:10%;
+    margin-top:7%;
     text-align:center;
     margin-bottom:2%;
 }
 .message{
-    width:120%;
+    width:100%;
 }
 .sidebar{
-    margin-top:3%;
+    
     margin-left:2%;
     width:20%;
+}
+.idform{
+    margin-left:20%;
 }

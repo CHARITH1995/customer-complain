@@ -39,10 +39,10 @@ class Sevices extends Component {
           <br /><br />
           <div className="row slideanim">
             <div className="col-sm-4">
-              <a href="/addstores" className="glyphicon glyphicon-briefcase logo-small"></a>
-              <h4>ADD ITEM</h4>
+              <a href="/stock" className="glyphicon glyphicon-briefcase logo-small"></a>
+              <h4>ADD ITEM TO STOCK</h4>
               <Tooltip placement="bottom" className="in" id="tooltip-bottom">
-                add new items to the online shopping page
+                add new items to stock
               </Tooltip>
             </div>
             <div className="col-sm-4">

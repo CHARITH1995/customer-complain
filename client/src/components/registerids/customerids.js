@@ -195,7 +195,7 @@ class Customerid extends Component {
     formfield() {
         return (
             <div>
-                <div className="container slideanim">
+                <div className="idform">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1"> First Name :</label>
@@ -263,19 +263,16 @@ class Customerid extends Component {
                     <div className="head">
                         <Nav />
                     </div>
-                    <h2 className="custitle">NEW-CUSTOMER</h2>
+                    <h2 className="custitle">New Customer Register</h2>
                     <div className="col-sm-2 sidebar">
                         <div className="list-group ">
                             <a className="list-group-item active">show all users</a>
-                            <a className="list-group-item"><Link to={"/showcustomer"}>Cutomers</Link></a>
-                            <a className="list-group-item"><Link to={"/showemployees"}>Employees</Link></a>
+                            <a className="list-group-item"><Link to={"/showcustomer"}>Customers</Link></a>
+                            <a className="list-group-item"><Link to={"/showemployees"}>Technician</Link></a>
                         </div>
                     </div>
-                    <div className="container">
-                        <hr />
-                        <div className="row content">
-                            <div className="col-md-8">
-                                <div className="message">
+                            <div className="col-md-8 contain">
+                            <hr />
                                     <div>
                                         {
                                             this.state.showerr ? (
@@ -308,15 +305,10 @@ class Customerid extends Component {
                                                 )
                                         }
                                     </div>
-                                </div>
                                 <div>
                                     {this.formfield()}
                                 </div>
                             </div>
-                        </div>
-
-                        <hr />
-                    </div>
                 </div>
             );
         }

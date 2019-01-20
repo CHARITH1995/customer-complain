@@ -124,11 +124,13 @@ class Viewcustomers extends Component {
                                             <div className="card-show">
                                                 <ul className="list-group list-group-flush">
                                                     <li key={id._id} className="list-group-item">Full Name : {id.firstname} {id.lastname}</li>
-                                                    <li className="list-group-item">Status : {id.subarea}</li>
+                                                    <li className="list-group-item">Subarea : {id.subarea}</li>
                                                     <li className="list-group-item">Email : {id.email}</li>
                                                     <li className="list-group-item">Address : {id.address.laneone},{id.address.lanetwo},{id.address.city}</li>
                                                     <li className="list-group-item">Postal Code : {id.address.postalcode}</li>
                                                     <li className="list-group-item">Account Number : {id.accountNumber}</li>
+                                                    <li className="list-group-item">NIC : {id.Id}</li>
+                                                    <li className="list-group-item">Contact Number : {id.Tp}</li>
                                                     <li className="list-group-item">
                                                         <div className="storesbutton">
                                                             <Link to={"/updatecustomer/" + id._id} className="btn btn-info">Update</Link>

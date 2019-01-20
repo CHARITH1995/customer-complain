@@ -168,7 +168,7 @@ module.exports.getitemdetails = (req, res, next) => {
             })
         }
     });
-}//deleteitem
+}
 module.exports.editdetails = (req, res, next) => {
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if (err) {
@@ -180,7 +180,7 @@ module.exports.editdetails = (req, res, next) => {
             })
         }
     });
-}//editdetails
+}
 module.exports.deleteitem = (req, res, next) => {
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if (err) {
@@ -193,23 +193,6 @@ module.exports.deleteitem = (req, res, next) => {
                 } else {
                     res.send({ success:true, msg: 'delete successfully'});
                 }
-            })
-        }
-    });
-}
-module.exports.searchitems = (req, res, next) => {
-    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
-        if (err) {
-            console.log('ERROR: Could not connect to the protected route');
-            res.send({ success: false, msg: 'please log again' });
-        } else {
-            Stores.index({ item: req.body.searchfield }).then(function (details) {
-                if (details.length == 0) {
-                    res.json({ success: false })
-                } else {
-                    res.json({ items: details, success: true })
-                }
-
             })
         }
     });
