@@ -14,8 +14,8 @@ class updateemployee extends Component {
             tp: '',
             subarea: '',
             msg: '',
-            show:false,
-            showerr:false,
+            show: false,
+            showerr: false,
             lnameerr: '',
             fnameerr: '',
             emailerr: '',
@@ -178,8 +178,8 @@ class updateemployee extends Component {
     }
     formfield() {
         return (
-            <div>
-                <div className="container">
+            <div className="idform">
+                <div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1"> First Name :</label>
@@ -204,7 +204,7 @@ class updateemployee extends Component {
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Sub Area :</label>
                             <select className="form-control" id="exampleFormControlSelect1" name="subarea" value={this.state.subarea} onChange={this.handleChange} required>
-                            <span style={{ color: "#FD6571" }}>{this.state.subareaerr}</span>
+                                <span style={{ color: "#FD6571" }}>{this.state.subareaerr}</span>
                                 <option >--Select Sub-Area--</option>
                                 <option value="kandy">Kandy</option>
                                 <option value="galle">Galle</option>
@@ -259,9 +259,7 @@ class updateemployee extends Component {
                     <div className="head">
                         {this.navbar()}
                     </div>
-                    <hr />
-                    <h2 className="custitle">UPDATE-EMPLOYEE</h2>
-                    <hr />
+                    <h2 className="custitle">Technician Details Update</h2>
                     <div className="col-sm-2 sidebar">
                         <div className="list-group ">
                             <a className="list-group-item active">show all users</a>
@@ -269,47 +267,43 @@ class updateemployee extends Component {
                             <a className="list-group-item"><Link to={"/showemployees"}>Employees</Link></a>
                         </div>
                     </div>
-                    <div className="container">
-                        <div className="row content">
-                            <div className="col-sm-8">
-                            <div>
-                                    {
-                                        this.state.showerr ? (
-                                            <div className="message">
-                                                <Panel bsStyle="danger" className="text-center">
-                                                    <Panel.Heading>
-                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                    </Panel.Heading>
-                                                </Panel>
-                                            </div>
-                                        ) : (
-                                                <div>
-
-                                                </div>
-                                            )
-                                    }
-                                    {
-                                        this.state.show ? (
-                                            <div className="message">
-                                                <Panel bsStyle="success" className="text-center">
-                                                    <Panel.Heading>
-                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                    </Panel.Heading>
-                                                </Panel>
-                                            </div>
-                                        ) : (
-                                                <div>
-
-                                                </div>
-                                            )
-                                    }
-                                </div>
-                                <div>
-                                    {this.formfield()}
-                                </div>
-                            </div>
-                        </div>
+                    <div className="col-sm-8 contain">
                         <hr />
+                        <div>
+                            {
+                                this.state.showerr ? (
+                                    <div className="message">
+                                        <Panel bsStyle="danger" className="text-center">
+                                            <Panel.Heading>
+                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                            </Panel.Heading>
+                                        </Panel>
+                                    </div>
+                                ) : (
+                                        <div>
+
+                                        </div>
+                                    )
+                            }
+                            {
+                                this.state.show ? (
+                                    <div className="message">
+                                        <Panel bsStyle="success" className="text-center">
+                                            <Panel.Heading>
+                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                            </Panel.Heading>
+                                        </Panel>
+                                    </div>
+                                ) : (
+                                        <div>
+
+                                        </div>
+                                    )
+                            }
+                        </div>
+                        <div>
+                            {this.formfield()}
+                        </div>
                     </div>
                 </div>
             );

@@ -4,8 +4,18 @@ mongoose.set('useCreateIndex', true);
 
 const Stock = new schema({
     serialnumber:{
-        type:Number,
+        type:String,
         require:[true,'serial number field is required']
+    },
+    purchid:{
+        type:String,
+        default:null,
+        require:[true,'this field is required']
+    },
+    status:{
+        type:String,
+        default:"unsold",
+        require:[true,'color field is required']
     },
     brand:{
         type:String,

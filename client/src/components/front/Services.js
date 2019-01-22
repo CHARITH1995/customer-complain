@@ -39,8 +39,8 @@ class Sevices extends Component {
           <br /><br />
           <div className="row slideanim">
             <div className="col-sm-4">
-              <a href="/stock" className="glyphicon glyphicon-briefcase logo-small"></a>
-              <h4>ADD ITEM TO STOCK</h4>
+              <a href="/stockview" className="glyphicon glyphicon-briefcase logo-small"></a>
+              <h4>E-STOCK</h4>
               <Tooltip placement="bottom" className="in" id="tooltip-bottom">
                 add new items to stock
               </Tooltip>
@@ -54,7 +54,7 @@ class Sevices extends Component {
             </div>
             <div className="col-sm-4">
               <a href="/onlinestore" className="glyphicon glyphicon-shopping-cart logo-small"></a>
-              <h4 style={{ color: "#303030" }}>ONLINE STORE</h4>
+              <h4 style={{ color: "#303030" }}>E-SHOP</h4>
               <Tooltip placement="bottom" className="in" id="tooltip-bottom">
                here you can see online shopping available items
               </Tooltip>

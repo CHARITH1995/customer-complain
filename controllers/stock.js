@@ -4,6 +4,7 @@ const stores = express.Router();
 var ObjectID = require('mongoose').Types.ObjectId;
 const Stores = require('../models/stores');
 const Stock = require('../models/stock');
+const Purchase = require('../models/purch');
 const Items = require('../models/itemtypes');
 var jwt = require('jsonwebtoken');
 const multer = require('multer');
@@ -28,7 +29,7 @@ module.exports.addnewDetail = (req, res, next) => {
                             brand: req.body.brand,
                             color: req.body.color,
                             item: req.body.item,
-                            insertdate: Date.now(),
+                            inserteddate:Date.now(),
                             identifier: doc.identifier,
                             warrenty:req.body.warrenty,
                             authorizedby: req.body.authorize_by,
@@ -86,7 +87,6 @@ module.exports.viewitems = (req, res, next) => {
                 if (details.length === 0) {
                     return res.json({ success: false, msg: 'nothing to show' })
                 } else {
-                    //console.log(details)
                     return res.json({success:true,data:details })
                 }
             })
@@ -129,6 +129,62 @@ module.exports.editdetails = (req, res, next) => {
         } else {
             Stock.findById({ _id: req.params.id }).then(function (details) {
                 return res.json(details)
+            })
+        }
+    });
+}
+module.exports.items= (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+           Stock.aggregate([{$match:{status:"unsold"}},{$group:{_id:{item:"$item"},total:{$sum:1}}}]).then(function(details){
+               return res.json(details);
+           });
+        }
+    });
+}
+module.exports.sold= (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+            var condition = {_id:req.params.id}
+            Purchase.findOne({
+                _id:req.body.purchid
+            }).then(docs=>{
+                if(docs == null){
+                    return res.json({success:false ,msg:'purchase id is incorrect'})
+                }
+                if((docs.item == req.body.item)){
+                    if(docs.purchqty == 0){
+                        return res.json({success:false , msg:'invalid Purchase Id'})
+                    }
+                    Stock.updateOne(condition,req.body).then(doc =>{    
+                        if(doc){
+                            var con = {_id:req.body.purchid}
+                            var a = docs.purchqty-1;
+                            var b = docs.updateqty+1
+                            const body={
+                                purchqty:a,
+                                updateqty:b
+                            }
+                            Purchase.updateOne(con,body).then(function (det) {
+                                if (det) {
+                                    return res.json({ success: true, msg: 'updated successfully' })
+                                } else {
+                                    return res.json({ success: false, msg: 'ERROR!' })
+                                }
+                            })
+                        }else{
+                          return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                        }
+                    })
+                }else{
+                    return res.json({success:false , msg:'Please check the purchase Id again'})
+                }
             })
         }
     });

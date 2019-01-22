@@ -19,13 +19,44 @@ module.exports.log = (req, res, next) => {
     } else {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         var token = jwt.sign(user.toJSON(), 'secretkey', { expiresIn: '24h' });
-        //console.log(user)
         res.json({ success:true, token: 'JWT ' + token,fname: user.fname,id:user.Id,admin:user.is_admin });
       } else {
         res.status(401).send({ success: false, msg: '-Authentication failed. wrong password-.', token: true });
       }
     }
   });
+}
+module.exports.updateuser = (req, res, next) => {
+  jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+    if (err) {
+      console.log('ERROR: Could not connect to the protected route');
+      res.send({ success: false, msg: 'please log again' });
+    } else {
+      Details.findOne({
+        email:req.body.email
+      }).then(data=>{
+        //console.log(data)
+          if((data == null)||(data._id == req.body.dbid)){
+            var con = {_id:req.body.dbid}
+            const body={
+              fname:req.body.fname,
+              lname:req.body.lname,
+              email:req.body.email,
+              Tp:req.body.Tp,   
+          }
+            Details.updateOne(con,body).then(function(data){
+              if(data){  
+              return res.json({success:true, msg:'succefully update login again'})
+              }else{
+                return res.json({success:false , msg:'ERROR!'})
+              }
+            })
+          }else{
+            return res.json({success:false , msg:'email is already taken'})
+          }
+      })
+    }
+  })
 }
 
 module.exports.editdetail = (req, res, next) => {
@@ -38,7 +69,7 @@ module.exports.editdetail = (req, res, next) => {
       return res.json({ data: authorizedData });
     }
   })
-}//resetpwd
+}
 module.exports.resetpwd = (req, res, next) => {
   Details.findOne({
     _id:req.params.id

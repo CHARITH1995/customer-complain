@@ -30,6 +30,7 @@ import Stock from './components/Stock/stock';
 import Stockview from './components/Stock/stockview';
 import Edit from './components/Stock/edit'; 
 import View from './components/Stock/view';
+import Purchview from './components/purchases/view';
 import Error from './components/error';
 class App extends Component {
   render() {
@@ -170,6 +171,11 @@ class App extends Component {
             {(localStorage.token) ? <Route path="/editstockitem/:id" component={Edit} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/editstockitem/:id" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ?<Route path="/purchview/:id" component={Purchview} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/purchview/:id" to="/Error" />
           </Switch>
           <Route path="/editpassword/:id/:password" component={Editpassword} />
         </div>

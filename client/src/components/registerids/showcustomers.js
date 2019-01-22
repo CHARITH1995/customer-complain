@@ -113,10 +113,10 @@ class Viewcustomers extends Component {
                             <div className="list-group ">
                                 <a className="list-group-item active">show all users</a>
                                 <a className="list-group-item"><Link to={"/customerids"}>Customer register</Link></a>
-                                <a className="list-group-item"><Link to={"/showemployees"}>Employees</Link></a>
+                                <a className="list-group-item"><Link to={"/showemployees"}>Technicians</Link></a>
                             </div>
                         </div>
-                        <div className="col-sm-8 text-left">
+                        <div className="col-sm-8">
                             {
                                 this.state.show ? (
                                     this.state.ids.map(id =>
@@ -156,7 +156,6 @@ class Viewcustomers extends Component {
                                     )
                             }
                         </div>
-                        <hr />
                     </div>
                 </div>
             );

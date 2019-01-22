@@ -54,6 +54,11 @@ class Stores extends Component {
         });
     }
     handleSubmit(e) {
+        this.setState({
+            showsuc: false,
+            msg: '',
+            showerr: false,  
+        })
         var authToken = localStorage.token;
         const fd = new FormData();
         fd.append('file', this.state.file);

@@ -5,17 +5,14 @@ const schema = mongoose.Schema;
 const Details = new schema({
     fname:{
         type:String,
-        unique:false,
         require:'first name field cant be empty'
     },
     lname:{
         type:String,
-        unique:false,
         require:'last name field cant be empty'
     },
     email:{
         type:String,
-        unique:true,
         require:'email cant be empty'
     },
     Tp:{
@@ -24,7 +21,6 @@ const Details = new schema({
     },
     Id:{
         type:String,
-        unique:false,
         require:[true,'Id field is require']
     },
     is_admin:{
@@ -33,7 +29,6 @@ const Details = new schema({
     },
     password:{
         type:String,
-        unique:false,
         require:'password cant be empty',
         minlength:[6,'password must be atleast 6 characters']   
     },

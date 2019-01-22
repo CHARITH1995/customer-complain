@@ -44,10 +44,8 @@ module.exports.salesreport = (req, res, next) => {
     module.exports.manualreports=(req, res, next) => {
     var reqmonth = parseInt(req.params.month);
     var reqyear = parseInt(req.params.year);
-    //console.log(reqmonth)
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if(err){
-            console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
         Complain.aggregate([{$match:{month:reqmonth,year:reqyear}},{$group:{_id:{subarea:"$subarea",color:"$color"},total:{$sum:1}}}]).then(function(details){
@@ -65,16 +63,8 @@ module.exports.salesreport = (req, res, next) => {
                 res.send({success:false,msg:'please log again'});
             } else {
                 Complain.aggregate([{$match:{subarea:req.params.subarea}},{$group:{_id:{status:"$status"},total:{$sum:1}}}]).then(function(details){
-                    //console.log(details)
                     res.json(details);
                   })
                      }
                 });
         }
-
-/*router.delete('/del/:id',function(req,res,next){
-    Details.findByIdAndRemove({_id:req.params.id}).then(function(details){
-        res.send(details);
-    });   
-});
-*/

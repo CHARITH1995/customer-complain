@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Image, OverlayTrigger, Popover, Panel } from 'react-bootstrap';
+import { Image, OverlayTrigger, Popover, Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../stores/viewitem.css';
 
@@ -8,9 +8,21 @@ class View extends Component {
         super(props)
         this.state = {
             item: [],
+            newstatus: '',
             showsuc: false,
-            showerr: false
+            showerr: false,
+            purchid:'',
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.sold = this.sold.bind(this);
+    }
+    handleChange(e) {
+        let target = e.target;
+        let value = target.type === 'checkbox' ? target.checked : target.value
+        let name = target.name;
+        this.setState({
+            [name]: value,
+        });
     }
     logout = (e) => {
         e.preventDefault();
@@ -43,8 +55,48 @@ class View extends Component {
             </div>
 
         );
-
     }
+    sold(e) {
+        var authToken = localStorage.token;
+        e.preventDefault();
+        const stocks = {
+            status: this.state.newstatus,
+            purchid:this.state.purchid,
+            item:this.state.item.item,
+            solddate: Date.now()
+        }
+        if ((this.state.newstatus === 'sold')&&(this.state.purchid != '')) {
+            fetch("http://localhost:4000/stock/sold/" + this.props.match.params.id, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer' + authToken
+                },
+                body: JSON.stringify(stocks)
+            }).then(res => res.json())
+                .then(json => {
+                    console.log(json)
+                    if (json.success) {
+                        this.setState({
+                            showsuc: true,
+                            msg: json.msg
+                        })
+                        window.location.reload();
+                    } else {
+                        this.setState({
+                            showerr: true,
+                            msg: json.msg
+                        })
+                    }
+                })
+        } else {
+            this.setState({
+                showerr: true,
+                msg: 'invalid update !'
+            })
+        }
+    }
+
     componentDidMount() {
         var authToken = localStorage.token;
         this.setState({
@@ -71,6 +123,11 @@ class View extends Component {
                 <strong>You can update item here!</strong>
             </Popover>
         );
+        const popoverHover = (
+            <Popover id="popover-trigger-hover-focus" title="sold">
+                <strong>Are you sure?</strong>
+            </Popover>
+        );
         if (localStorage.token) {
             return (
                 <div>
@@ -79,7 +136,7 @@ class View extends Component {
                     </div>
                     <div className="container-fluid">
                         <h2 className="title">Item Details</h2>
-                        <div className="contain row content">
+                        <div className="contains row content">
                             <div className="col-sm-8 ">
                                 {
                                     this.state.showerr ? (
@@ -113,24 +170,54 @@ class View extends Component {
                                 }
                                 <div className="row">
                                     <div className="col-sm-2" >
-                                        
+
                                     </div>
                                     <div className="col-sm-8">
                                         <div className="viewcard-body">
                                             <div >
                                                 <ul className="list-group list-group-flush">
-                                                    <li className="list-group-item">Insertdate :   <span className="names"> {this.state.item.insertdate} </span> </li>
-                                                    <li className="list-group-item">Item Type :    <span className="names"> {this.state.item.item}       </span></li>
+                                                    <li className="list-group-item">Insertdate :   <span className="names"> {this.state.item.inserteddate} </span> </li>
+                                                    <li className="list-group-item">Item :   <span className="names"> {this.state.item.item} </span> </li>
+                                                    <li className="list-group-item">Serial Number :    <span className="names"> {this.state.item.serialnumber}       </span></li>
                                                     <li className="list-group-item">Inserted By :  <span className="names"> {this.state.item.authorizedby}</span></li>
                                                     <li className="list-group-item">Device color :<svg height="100" width="100" className="identifies">
-                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={this.state.item.color} />
+                                                        <circle cx="50" cy="50" r="15" stroke-width="3" fill={this.state.item.color} />
                                                     </svg></li>
-                                                    <div className="viewbuttongroup">
+                                                    {
+                                                        this.state.item.status === 'unsold' ? (
+                                                            <li className="list-group-item">
+                                                                <form onSubmit={this.sold} name="inventry">
+                                                                    <div className="form-group col-md-8">
+                                                                        <select className="form-control" id="Select1" name="newstatus" value={this.state.newstatus} onChange={this.handleChange} required>
+                                                                            <option value="1">{this.state.item.status}</option>
+                                                                            <option value="sold">sold</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div className="form-group col-md-8">
+                                                                        <input type="text" className="form-control" id="exampleFormControlInput1" name="purchid" placeholder="enter the purchase id" value={this.state.purchid} onChange={this.handleChange} required />
+                                                                    </div>
+                                                                    <div className="upbtns">
+                                                                        <OverlayTrigger
+                                                                            trigger={['hover', 'focus']}
+                                                                            placement="bottom"
+                                                                            overlay={popoverHover}
+                                                                        >
+                                                                            <input type="submit" name="submit" value="update" className="btn btn-info" />
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </form>
+                                                            </li>
+                                                        ) : (
+                                                                <li className="list-group-item">Status :  <span className="names"> sold </span> </li>
+                                                            )
+                                                    }
+                                                    <div className="viewbuttongroups">
                                                         <div className="viewbutton">
                                                             <a href="/stockview" className="glyphicon glyphicon-circle-arrow-left">Stock</a>
                                                         </div>
                                                         <div className="viewbutton">
-                                                            {((localStorage.admin == 'yes') || ((localStorage.id) === this.state.item.authorizedby)) ? (
+                                                            {
+                                                                (((localStorage.admin == 'yes') || ((localStorage.id) === this.state.item.authorizedby))&&(this.state.item.status == 'unsold')) ? (
                                                                 <OverlayTrigger
                                                                     trigger={['hover', 'focus']}
                                                                     placement="bottom"

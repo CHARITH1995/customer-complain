@@ -171,12 +171,10 @@ class Editpassword extends Component {
         }).then(function (response) {
             return response.json();
         }).then(detail => {
-            console.log(detail.data)
             this.setState({
                 oldpassword:detail.data.password,
             });
         });
-       // console.log(this.state.fname)
     }
     logout = (e) => {
         e.preventDefault();
@@ -216,7 +214,6 @@ class Editpassword extends Component {
         })
         e.preventDefault();
         if (!this.state.passerr && !this.state.cmfpasserr) {
-            console.log(this.state.password)
             const user = {
                 password:this.state.password    
             }
@@ -255,8 +252,8 @@ class Editpassword extends Component {
     }
     formfield() {
         return (
-            <div>
-                <div className="container">
+            <div className="idform">
+                <div>
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">new password :</label>
@@ -283,18 +280,16 @@ class Editpassword extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">Change Profile Password</h3>
+                        <h2 className="title">Change Profile Password</h2>
                         <div className="row content">
                         <div className="middle">
-                            <div className="col-md-8">
-                                <hr />
+                            <div className="col-md-8 contain">
                                     {this.err()}
                                     {this.alert()}
                                     {this.success()}
                                 <div>
                                     {this.formfield()}
                                 </div>
-                                <hr />
                             </div>
                             </div>
                         </div>

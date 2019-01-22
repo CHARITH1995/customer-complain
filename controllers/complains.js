@@ -110,8 +110,7 @@ module.exports.subcomplains=(req, res, next)=> {
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
-            Complain.aggregate([{$match:{month:thismonth ,
-                subarea:req.params.subarea}}]).then(function(details){
+            Complain.aggregate([{$match:{month:thismonth ,subarea:req.params.subarea}}]).then(function(details){
                         res.json(details);
                     
                  })

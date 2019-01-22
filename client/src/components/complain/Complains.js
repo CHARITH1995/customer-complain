@@ -12,16 +12,35 @@ class Complains extends Component {
         this.state = {
             isLoading: true,
             complains: [],
+            searchfield: '',
             activePage: 1,
             total: 0,
             value: 1,
-            length:true,
+            length: true,
         };
+        this.onSearch = this.onSearch.bind(this);
     }
     handlePageChange(pageNumber) {
         this.setState({ activePage: pageNumber });
     }
-
+    searching(searchfield) {
+        return function (x) {
+            var search = []
+            search = x.name.toLowerCase().includes(searchfield.toLowerCase()) || x.email.toLowerCase().includes(searchfield.toLowerCase()) || !searchfield;
+            if (search.length === 0) {
+                this.setState({
+                    isempty: true
+                })
+            } else {
+                return search
+            }
+        }
+    }
+    onSearch(e) {
+        this.setState({
+            searchfield: e.target.value
+        })
+    }
     componentDidMount() {
         var authToken = localStorage.token;
         fetch("http://localhost:4000/complain/comp", {
@@ -35,19 +54,16 @@ class Complains extends Component {
                 return response.json();
             })
             .then(data => {
-                console.log(data.success)
                 if (data.success) {
                     this.setState({
-                        length:true,
+                        length: true,
                         complains: data.details,
                     })
                 } else {
                     this.setState({
-                         length:false
+                        length: false
                     })
                 }
-                console.log(this.state.length)
-                console.log(data.details)
             })
     }
 
@@ -70,38 +86,48 @@ class Complains extends Component {
                             </div>
                         </div>
                         <div class="col-sm-8">
-                             {
+                            <div className="searchbar">
+                                <h2>Filterable List</h2>
+                                <input className="form-control" id="myInput" type="text" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.onSearch} required />
+                            </div>
+
+                            {
                                 this.state.length ? (
-                                    <div class="col-sm-8">
-                                    <div className="col-md-2"></div>
-                                    {this.state.complains.map(complain =>
-                                        <div className=" row">
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    <div >
-                                                        <ul>
-                                                            <li><span className="attribute">NAME : </span>"{complain.name}"</li>
-                                                            <li><span className="attribute">EMAIL: </span>{complain.email}</li>
-                                                            <li><span className="attribute">DESCRIPTION : </span>{complain.description}</li>
-                                                            <div className="buttonlist">
-                                                                <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
-                                                            </div>
+                                    <div>
+                                        {this.state.complains.filter(this.searching(this.state.searchfield)).map(complain =>
+                                            <div className="contain rows">
+                                                <div className="card-show">
+                                                     <ul className="list-group list-group-flush">
+                                                     <li className="list-group-item">Description : <span className="names">{complain.description}</span></li>
+                                                     <li className="list-group-item">Customer Name : <span className="names">{complain.name}</span></li>
+                                                     <li className="list-group-item">Email : <span className="names">{complain.email}</span></li>
+                                                     <li className="list-group-item">Subarea : <span className="names">{complain.subarea}</span></li>
+                                                     <li className="list-group-item">
+                                                        <div className="storesbutton">
+                                                        <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
+                                                        </div>
+                                                    </li>
                                                         </ul>
                                                         <hr />
-                                                    </div>
-    
                                                 </div>
                                             </div>
+                                        )
+                                        }
+                                    </div>
+                                    
+                                ) : (
+                                        <div class="col-sm-8 bg-danger">
+                                            <h2>No complains to show</h2>
                                         </div>
                                     )
-                                    }
-                                </div>
-                                ):(
-                                <div class="col-sm-8 bg-danger">
-                                <h2>No complains to show</h2>
-                            </div>
-                                )
                             }
+                        </div>
+                        <div className="col-sm-2 sidenav ">
+                            <div className="list-group ">
+                                <a className="list-group-item active">Quick LInks</a>
+                                <a className="list-group-item"><Link to={"/reports"}>done</Link></a>
+                                <a className="list-group-item"><Link to={"/addstores"}>not done</Link></a>
+                            </div>
                         </div>
                     </div>
                 </div>

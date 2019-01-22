@@ -22,7 +22,8 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
     "react-svg-piechart": "^2.1.1",
-    "react-validation": "^3.0.7"
+    "react-validation": "^3.0.7",
+    "socket.io": "^2.2.0"
   },
   "proxy": "http://localhost:4000",
   "scripts": {

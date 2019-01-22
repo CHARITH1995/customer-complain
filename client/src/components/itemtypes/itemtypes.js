@@ -201,7 +201,7 @@ class Itemtypes extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h2 className="title">ITEM TYPES </h2>
+                        <h2 className="title">Item Types</h2>
                         <div className="col-sm-3">
                             {this.form()}
                         </div>

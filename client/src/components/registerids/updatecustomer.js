@@ -232,8 +232,8 @@ class Updatecustomer extends Component {
    
     formfield() {
         return (
-            <div>
-                <div className="container">
+            <div className="idform">
+                <div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1"> First Name :</label>
@@ -308,8 +308,6 @@ class Updatecustomer extends Component {
                         <div className="collapse navbar-collapse" id="myNavbar">
                             <ul className="nav navbar-nav navbar-right">
                                 <li><a href="/Home">HOME</a></li>
-                                <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
-                                <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
                             </ul>
                         </div>
                     </div>
@@ -334,9 +332,7 @@ class Updatecustomer extends Component {
                                 <a className="list-group-item"><Link to={"/showemployees"}>Employees</Link></a>
                             </div>
                         </div>
-                <div className="container">
-                    <div className="row content">
-                        <div className="col-md-8">
+                        <div className="col-md-8 contain">
                         <div className="message">
                         <div>
                                     {
@@ -375,10 +371,6 @@ class Updatecustomer extends Component {
                                 {this.formfield()}
                             </div>
                         </div>
-                    </div>
-                    
-                    <hr />
-                </div>
             </div>
         );
     }

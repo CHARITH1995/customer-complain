@@ -113,7 +113,7 @@ class ViewEmployees extends Component {
                             <div className="list-group ">
                                 <a className="list-group-item active">show all users</a>
                                 <a className="list-group-item"><Link to={"/employeeids"}>Technician Register</Link></a>
-                                <a className="list-group-item"><Link to={"/showcustomers"}>Customer Details</Link></a>
+                                <a className="list-group-item"><Link to={"/showcustomer"}>Customer Details</Link></a>
                             </div>
                         </div>
                             <div class="col-sm-8 text-left">

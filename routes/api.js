@@ -5,6 +5,7 @@ const jwtHelper = require('../config/jwtHelper');
 const user = require('../controllers/user');
 const register = require('../controllers/register');
 const complain = require('../controllers/complains');
+const purch = require('../controllers/purchases');
 const store = require('../controllers/stores');
 const reports = require('../controllers/reports');
 const items = require('../controllers/itemtypes');
@@ -17,6 +18,7 @@ router.post('/editprofile',jwtHelper.verifyJwtToken,user.editdetail);
 router.post('/getpwd',user.getpwd);
 router.put('/resetpwd/:id/:password',user.resetpwd);
 router.post('/forgetpwd',user.mailverify);
+router.put('/newid',jwtHelper.verifyJwtToken,user.updateuser);
 
 router.post('/Customerreg',jwtHelper.verifyJwtToken, register.customerreg);
 router.post('/Employeereg' ,jwtHelper.verifyJwtToken, register.employeereg);
@@ -54,6 +56,11 @@ router.delete('/removestock/:id',jwtHelper.verifyJwtToken,stock.deleteitem);
 router.get('/getitem/:id',jwtHelper.verifyJwtToken,stock.getitem);
 router.get('/editstockitem/:id',jwtHelper.verifyJwtToken,stock.editdetails);
 router.put('/updateitem/:id',jwtHelper.verifyJwtToken,stock.updatedetails);
+router.post('/items',jwtHelper.verifyJwtToken,stock.items);
+router.put('/sold/:id',jwtHelper.verifyJwtToken,stock.sold);
+
+router.post('/viewpurch',jwtHelper.verifyJwtToken,purch.viewpurch);
+router.get('/getpurch/:id',jwtHelper.verifyJwtToken,purch.getpurch);
 
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'react-bootstrap';
+import { Image, Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
 import './adminprofile.css';
@@ -10,16 +10,18 @@ class Adminprofile extends Component {
         this.state = {
             fname: '',
             lname: '',
+            email: '',
+            tp: '',
+            id: '',
             imagepath: '',
-            errname: '',
-            succname: '',
-            id:'',
-            default: true,
-            err: true,
-            fnameerr: true,
-            lnameerr: true,
-            showalert: false,
-            successmsg: false,
+            id: '',
+            lnameerr: '',
+            fnameerr: '',
+            emailerr: '',
+            tperr: '',
+            showsuc: false,
+            showerr: false,
+            msg: '',
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,116 +33,68 @@ class Adminprofile extends Component {
         let name = target.name;
         this.setState({
             [name]: value,
-            default: false,
-            showalert: false,
-            successmsg: false,
-        },
-            () => {
-                this.validateField(name, value)
-            });
+            lnameerr: '',
+            fnameerr: '',
+            emailerr: '',
+            tperr: '',
+            showsuc: false,
+            showerr: false,
+            msg: '',
+        });
     }
-
-    validateField(fieldName, value) {
-        let fieldValidationErrors = this.state.formErrors;
-        let fnameValid = this.state.fnameValid;
-        let lnameValid = this.state.lnameValid;
-
-        switch (fieldName) {
-            case 'fname':
-                fnameValid = value.match(/^[a-zA-Z]{3,}$/i);
-                if (!fnameValid) {
-                    this.setState({
-                        errname: "your first name field incorrect",
-                        err: true,
-                        fnameerr: true
-                    })
-                } else {
-                    this.setState({
-                        succname: "your first name field in correct format",
-                        err: false,
-                        fnameerr: false
-                    })
-                }
-                break;
-            case 'lname':
-                lnameValid = value.match(/^[a-zA-Z]{3,}$/i);
-                if (!lnameValid) {
-                    this.setState({
-                        errname: "your last name field incorrect",
-                        err: true,
-                        lnameerr: true
-                    })
-                } else {
-                    this.setState({
-                        succname: "your last name field in correct format",
-                        err: false,
-                        lnameerr: false
-                    })
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    alert() {
-        if (this.state.showalert) {
-            if (this.state.fnameerr) {
-                return (
-                    <div className="alert alert-danger" role="alert">
-                        <h2 className="msg">check your first name field once again</h2>
-                    </div>
-                )
-            } else if (this.state.lnameerr) {
-                return (
-                    <div className="alert alert-danger" role="alert">
-                        <h2 className="msg">check your last name field once again</h2>
-                    </div>
-                )
+    handleValidation() {
+        let formvalid = true
+        if (this.state.fname !== 'undefined') {
+            if (!this.state.fname.match(/^[a-zA-Z]{3,}$/i)) {
+                this.setState({
+                    fnameerr: 'first name invalid!',
+                })
+                formvalid = false
             }
         }
+        if (this.state.lname !== 'undefined') {
+            if (!this.state.lname.match(/^[a-zA-Z]{3,}$/i)) {
+                this.setState({
+                    lnameerr: 'first name invalid!',
+                })
+                formvalid = false
+            }
+        }
+        if (this.state.email !== 'undefined') {
+            if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+                this.setState({
+                    emailerr: 'email invalid!',
+                })
+                formvalid = false
+            }
+        }
+        if (this.state.tp !== 'undefined') {
+            if (!this.state.tp.match(/^[0-9\-\+]{10}$/i)) {
+                this.setState({
+                    tperr: 'telephone number invalid!',
+
+                })
+                formvalid = false
+            }
+        }
+
+        return formvalid
     }
     resetForm = () => {
         this.setState({
             ...this.state,
             fname: '',
-            lname:'',
-            default:true,
-            showalert:false,
-            success:false
-      
-        })
-      }
-    success() {
-        if (this.state.successmsg) {
-            return (
-                <div className="alert alert-info" role="alert">
-                    <h2 className="msg">!!!Update successfully!!!</h2>
-                </div>
-            )
-        }
-    }
-    err = () => {
-        if (this.state.default) {
-            return (
-                <div></div>
-            )
-        }
-        else if (this.state.err) {
-            return (
-                <div className="alert alert-danger" role="alert">
-                    <h2 className="msg">{this.state.errname}</h2>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div className="alert alert-success" role="alert">
-                    <h2 className="msg">{this.state.succname}</h2>
-                </div>
-            )
+            lname: '',
+            email: '',
+            tp: '',
+            id: '',
+            default: true,
+            showalert: false,
+            success: false
 
-        }
+        })
     }
+
     logout = (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -180,10 +134,14 @@ class Adminprofile extends Component {
             default: true
         })
         e.preventDefault();
-        if (!this.state.lnameerr && !this.state.fnameerr) {
+        if (this.handleValidation()) {
             const user = {
                 fname: this.state.fname,
                 lname: this.state.lname,
+                email: this.state.email,
+                Tp: this.state.tp,
+                Id: this.state.id,
+                dbid: this.state.dbid
             }
             fetch("http://localhost:4000/register/newid", {
                 method: "PUT",
@@ -197,29 +155,24 @@ class Adminprofile extends Component {
                 .then(json => {
                     if (json.success) {
                         this.setState({
-                            successmsg: true
+                            showsuc:true,
+                            msg: json.msg
                         })
-                        this.success();
-                        this.resetForm();
+                        this.resetForm()
                     } else {
-                        if (json.msg) {
-                            this.alert();
-                        }
+                        this.setState({
+                            showerr: true,
+                            msg: json.msg
+                        })
                     }
                 })
-        } else {
-            this.setState({
-                showalert: true
-            })
-            this.alert();
         }
-
     }
 
     componentDidMount() {
         var authToken = localStorage.token;
-        const token={
-            token:authToken
+        const token = {
+            token: authToken
         }
         fetch("/reg/editprofile", {
             method: "POST",
@@ -231,30 +184,45 @@ class Adminprofile extends Component {
         }).then(function (response) {
             return response.json();
         }).then(detail => {
-            console.log(detail.data)
             this.setState({
                 fname: detail.data.fname,
                 lname: detail.data.lname,
                 email: detail.data.email,
-                id: detail.data._id,
-                password:detail.data.password,
-                imagepath: detail.data.imagepath
+                id: detail.data.Id,
+                dbid: detail.data._id,
+                tp: detail.data.Tp,
             });
         });
-       // console.log(this.state.fname)
+        // console.log(this.state.fname)
     }
     formfield() {
         return (
-            <div>
-                <div className="container">
+            <div className="idform">
+                <div>
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">First Name :</label>
                             <input type="text" className="form-control" id="exampleFormControlInput1" name="fname" placeholder="change first name" value={this.state.fname} onChange={this.handleChange} required />
+                            <span style={{ color: "#FD6571" }}>{this.state.fnameerr}</span>
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput2">Last Name :</label>
                             <input type="text" className="form-control" id="exampleFormControlInput2" name="lname" placeholder="change last name" value={this.state.lname} onChange={this.handleChange} required />
+                            <span style={{ color: "#FD6571" }}>{this.state.lnameerr}</span>
+                        </div>
+                        <div className="form-group col-md-8">
+                            <label htmlFor="exampleFormControlInput2">Email :</label>
+                            <input type="text" className="form-control" id="exampleFormControlInput2" name="email" placeholder="change the email" value={this.state.email} onChange={this.handleChange} required />
+                            <span style={{ color: "#FD6571" }}>{this.state.emailerr}</span>
+                        </div>
+                        <div className="form-group col-md-8">
+                            <label htmlFor="exampleFormControlInput2">Employee Id :</label>
+                            <input type="text" className="form-control" id="exampleFormControlInput2" name="id" value={this.state.id} onChange={this.handleChange} disabled />
+                        </div>
+                        <div className="form-group col-md-8">
+                            <label htmlFor="exampleFormControlInput2">Telephone :</label>
+                            <input type="text" className="form-control" id="exampleFormControlInput2" name="tp" placeholder="change the telephone" value={this.state.tp} onChange={this.handleChange} required />
+                            <span style={{ color: "#FD6571" }}>{this.state.tperr}</span>
                         </div>
                         <br /><br />
                         <div className="form-group col-md-8">
@@ -273,24 +241,49 @@ class Adminprofile extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h3 className="title">Change Profile</h3>
-                        <div className="row content">
-                            <div className="col-md-8">
-                                <hr />
-                                <div>
-                                    {this.err()}
-                                    {this.alert()}
-                                    {this.success()}
+                        <h2 className="title">Change Profile</h2>
+                        <div className="col-sm-2 sidebar">
+                            <div className="list-group ">
+                                <a className="list-group-item active">Quick Links</a>
+                                <a className="list-group-item"><Link to={"/editpassword/" + this.state.dbid + "/" + this.state.password}>EditPassword</Link></a>
+                            </div>
+                        </div>
+                        <div className="col-md-8 contain">
+                            <div>
+                                <div className="adminmsg">
+                                    {
+                                        this.state.showerr ? (
+                                            <div >
+                                                <Panel bsStyle="danger" className="text-center">
+                                                    <Panel.Heading>
+                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                    </Panel.Heading>
+                                                </Panel>
+                                            </div>
+                                        ) : (
+                                                <div>
+
+                                                </div>
+                                            )
+                                    }
+                                    {
+                                        this.state.showsuc ? (
+                                            <div className="adminmsg">
+                                                <Panel bsStyle="success" className="text-center">
+                                                    <Panel.Heading>
+                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                    </Panel.Heading>
+                                                </Panel>
+                                            </div>
+                                        ) : (
+                                                <div>
+
+                                                </div>
+                                            )
+                                    }
+
                                 </div>
-                                <div>
-                                    {this.formfield()}
-                                </div>
-                                <div className="editbuttongroup">
-                                    <div className="viewbutton">
-                                        <Link to={"/editpassword/"+this.state.id+"/"+this.state.password} className="glyphicon glyphicon-circle-arrow-right">EditPassword</Link>
-                                    </div>
-                                </div>
-                                <hr />
+                                {this.formfield()}
                             </div>
                         </div>
                     </div>

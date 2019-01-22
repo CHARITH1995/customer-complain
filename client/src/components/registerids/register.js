@@ -59,7 +59,7 @@ class Register extends Component {
                                         <hr />
                                     <h4 className="links"><Link to={"/customerids" } className="glyphicon glyphicon-user"> Customer</Link></h4>  
                                         <hr />
-                                    <h4 className="links"><Link to={"/employeeids" } className="glyphicon glyphicon-thumbs-up"> Employee</Link></h4>  
+                                    <h4 className="links"><Link to={"/employeeids" } className="glyphicon glyphicon-thumbs-up"> Technician</Link></h4>  
                                         <hr />
                                 </ul>
                             </div>

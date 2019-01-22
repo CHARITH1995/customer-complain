@@ -91,7 +91,6 @@ class Stock extends Component {
         }).then(function (response) {
             return response.json();
         }).then(details => {
-            //console.log(details)
             if (details.success) {
                 this.setState({
                     items: details.data
@@ -178,7 +177,7 @@ class Stock extends Component {
                         <div className="col-sm-2 sidebar">
                         <div className="list-group ">
                             <a className="list-group-item active">Quick Links</a>
-                            <a className="list-group-item"><Link to={"/onlinestore"}>E-shop</Link></a>
+                            <a className="list-group-item"><Link to={"/stockview"}>E-stock</Link></a>
                         </div>
                     </div>
                             <div className="col-md-8 contain">

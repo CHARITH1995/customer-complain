@@ -94,13 +94,8 @@ class Onlinestore extends Component {
             }
         });
     }
-    onChange = e => {
-        this.setState({
-            searchfield: e.target.value
-        })
-    }
+
     removeitem(id) {
-        console.log(id)
         var authToken = localStorage.token;
         fetch("http://localhost:4000/stores/removeitem/"+id, {
             method: "DELETE",
@@ -244,6 +239,36 @@ class Onlinestore extends Component {
                                 <a className="list-group-item active">Quick LInks</a>
                                 <a className="list-group-item"><Link to={"/reports"}>Monthly Reports</Link></a>
                                 <a className="list-group-item"><Link to={"/addstores"}>Add Items</Link></a>
+                            </div>
+                            <div className="list-group ">
+                                <a className="list-group-item active">Low Store Alerts</a>
+                                {/* {
+                                    !this.state.shownopurch ? (
+                                        this.state.purch.map(data => */}
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Name : <span class="badge badge-primary badge-pill"></span>
+                                                <br />
+                                                P id : <span class="badge badge-primary badge-pill"></span>
+                                                <br />
+                                                Item : <span class="badge badge-primary badge-pill"></span>
+                                                <br />
+                                                Purchase quantity : <span class="badge badge-primary badge-pill"></span>
+                                                <br />
+                                                <div className="storesbutton">
+                                                    <Link to={"/purchview"} className="btn btn-info">View</Link>
+                                                </div>
+                                            </li>
+                                {/* //         )
+                                //     ) : (
+                                //             <div className="message">
+                                //                 <Panel bsStyle="danger" className="text-center">
+                                //                     <Panel.Heading>
+                                //                         <Panel.Title componentClass="h3">{this.state.purchmsg}</Panel.Title>
+                                //                     </Panel.Heading>
+                                //                 </Panel>
+                                //             </div>
+                                //         )
+                                // } */}
                             </div>
                         </div>
                     </div>

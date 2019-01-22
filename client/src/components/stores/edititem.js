@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
 import { Image, Panel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './stores.css';
 
 class Edititem extends Component {
@@ -105,6 +106,11 @@ class Edititem extends Component {
     handleSubmit(e) {
         var authToken = localStorage.token;
         e.preventDefault();
+        this.setState({
+            msg: '',
+            showsuc: false,
+            showerr: false, 
+        })
         const stores = {
             id: this.props.match.params.id,
             brand: this.state.Brand,
@@ -155,7 +161,7 @@ class Edititem extends Component {
     formfield() {
         return (
             <div>
-                <div className="container">
+                <div className="idform">
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Item :</label>
@@ -212,9 +218,13 @@ class Edititem extends Component {
                     </div>
                     <div className="container-fluid">
                         <h2 className="title">Update Item Details</h2>
-                        <div className="row content">
-                            <div className="col-md-1"></div>
-                            <div className="col-md-8">
+                        <div className="col-sm-2 sidebar">
+                        <div className="list-group ">
+                            <a className="list-group-item active">Quick Links</a>
+                            <a className="list-group-item"><Link to={"/onlinestore"}>E-shop</Link></a>
+                        </div>
+                    </div>
+                            <div className="col-md-8 contain">
                                 <hr />
                                 {
                                     this.state.showerr ? (
@@ -233,7 +243,7 @@ class Edititem extends Component {
                                 }
                                 {
                                     this.state.showsuc ? (
-                                        <div className="adminmsg">
+                                        <div className="message">
                                             <Panel bsStyle="success" className="text-center">
                                                 <Panel.Heading>
                                                     <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
@@ -246,15 +256,10 @@ class Edititem extends Component {
                                             </div>
                                         )
                                 }
-                                <div className="container">
+                                <div>
                                     {this.formfield()}
                                 </div>
-                                <div className="storesbutton ">
-                                    <a href="/onlinestore" className="glyphicon glyphicon-circle-arrow-left">Store</a>
-                                </div>
-                                <hr />
                             </div>
-                        </div>
                     </div>
                 </div>
             );
