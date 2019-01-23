@@ -61,6 +61,10 @@ const Stores = new schema({
         unique:false,
         require:[true,'price field is require']
     },
+    rate:{
+        type:Number,
+        require:[true,'this field is require']
+    },
     authorizedby:{
         type:String,
         text: true,

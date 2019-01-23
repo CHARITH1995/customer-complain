@@ -60,7 +60,6 @@ class Reports extends Component {
                 this.state.details.push(this.state.data)
             }
         })
-        //console.log(this.state.details)
         var authToken = localStorage.token;
         fetch("http://localhost:4000/reports/salesreports", {
             method: "POST",
@@ -71,7 +70,6 @@ class Reports extends Component {
         }).then(function (response) {
             return response.json();
         }).then(details => {
-            //console.log(reports)
             this.setState({
                 sales: details
             })

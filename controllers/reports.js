@@ -12,8 +12,7 @@ const Stores = require('../models/stores');
 module.exports.complainreport = (req, res, next) => {
     var today = new Date();
     var num;
-    var thismonth = today.getMonth()+1; //January is 0!
-    console.log(thismonth)
+    var thismonth = today.getMonth()+1; 
     var thisyear = today.getFullYear();
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if(err){
