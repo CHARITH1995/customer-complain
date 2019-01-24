@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, OverlayTrigger, Popover, Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import FileBase64 from 'react-file-base64';
 import './viewitem.css';
 
 class Viewitem extends Component {
@@ -11,9 +12,9 @@ class Viewitem extends Component {
             imagename: '',
             file: null,
             showsuc: false,
-            showerr: false
+            showerr: false,
+            new:null
         };
-        this.fileChange = this.fileChange.bind(this);
         this.imageupload = this.imageupload.bind(this);
     }
     logout = (e) => {
@@ -49,43 +50,25 @@ class Viewitem extends Component {
         );
 
     }
-    fileChange = (e) => {
-        const name = e.target.files[0];
-        this.setState({
-            file: e.target.files[0],
-            imagename: name.name,
-            showerr: false,
-            showsuc: false
-        })
+    getFiles(files) {
+        this.setState({new:files[0].base64})
     }
+
     imageupload(e) {
-        console.log(this.state.file)
         var authToken = localStorage.token;
-        if (this.state.file !== null) {
+        if (this.state.new !== null) {
             const fd = new FormData();
-            fd.append('file', this.state.file);
+            fd.append('imagepath',this.state.new);
             this.state.image = this.state.imagename
-            const stores = {
-                imagepath: this.state.imagename,
-            }
             e.preventDefault();
-            fetch("http://localhost:4000/stores/newitem", {
-                method: "POST",
-                headers: {
-                    'Authorization': 'Bearer' + authToken
-                },
-                body: fd
-            });
             fetch("http://localhost:4000/stores/imageupload/" + this.props.match.params.id, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
                     'Authorization': 'Bearer' + authToken
                 },
-                body: JSON.stringify(stores)
+                body:fd
             }).then(res => res.json())
                 .then(json => {
-                    console.log(json)
                     if (json.success) {
                         this.setState({
                             showsuc: true,
@@ -175,10 +158,14 @@ class Viewitem extends Component {
                                 <div className="row">
                                     <div className="col-sm-2" >
                                         <div >
-                                            <Image src={"../../stores/" + this.state.item.imagepath} className="storeimages" rounded />
+                                            <Image src={this.state.item.imagepath} className="storeimages" rounded />
                                             {((localStorage.admin == 'yes') || ((localStorage.id) === this.state.item.authorizedby)) ? (
-                                                    <form onSubmit={this.imageupload} name="inventry">
-                                                    <input type="file" name="Image" onChange={this.fileChange} />
+                                                <form onSubmit={this.imageupload} name="inventry">
+                                                    <div className="form-group col-md-8">
+                                                        <FileBase64
+                                                            multiple={true}
+                                                            onDone={this.getFiles.bind(this)} />
+                                                    </div>
                                                     <div className="upbtn">
                                                         <input type="submit" name="submit" value="upload" className="btn btn-info" />
                                                     </div>
@@ -199,7 +186,7 @@ class Viewitem extends Component {
                                                     <li className="list-group-item">Inserted By :  <span className="names"> {this.state.item.authorizedby}</span></li>
                                                     <li className="list-group-item">Available Stock :<span className="names"> {this.state.item.authorizedby}</span></li>
                                                     <li className="list-group-item">Device color :<svg height="100" width="100" className="identifies">
-                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={this.state.item.color} />
+                                                        <circle cx="50" cy="50" r="15" stroke-width="3" fill={this.state.item.color} />
                                                     </svg></li>
                                                     <div className="viewbuttongroup">
                                                         <div className="viewbutton">

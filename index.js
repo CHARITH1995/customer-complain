@@ -15,6 +15,9 @@ const mongoose=require('mongoose');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 require("dotenv").config();
+var multer = require( 'multer');
+var upload = multer();
+
 
 mongoose.connect('mongodb://admin:admin123@ds159273.mlab.com:59273/slt',{ useNewUrlParser: true },(err)=>{
     if(!err){
@@ -25,6 +28,7 @@ mongoose.connect('mongodb://admin:admin123@ds159273.mlab.com:59273/slt',{ useNew
 });
 
 mongoose.Promise = global.Promise;
+app.use(upload.array());
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cors({credentials: true, origin:'http://localhost:3000'}));

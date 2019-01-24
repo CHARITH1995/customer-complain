@@ -72,7 +72,6 @@ class Storedata extends Component {
     }
     removeitem(id) {
         var authToken = localStorage.token;
-        //console.log(authToken)
         fetch("http://localhost:4000/items/removeitems/" + id, {
             method: "DELETE",
             headers: {
@@ -109,8 +108,8 @@ class Storedata extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h2 className="title">STORE DETAILS IN BRIEF </h2>
-                        <div className="col-sm-2">
+                        <h2 className="title">Store Details in Brief</h2>
+                        <div className="col-sm-2 sidenav">
                         <div className="list-group ">
                             <div className="list-group ">
                                 <a className="list-group-item active">QUICK LINKS</a>
@@ -142,7 +141,7 @@ class Storedata extends Component {
                                                     <td>{item.qty}<ProgressBar striped bsStyle="infor" now={item.qty} label={`${item.qty}`} /></td>
                                                     <td>{item.soldqty}<ProgressBar striped bsStyle="success" now={item.soldqty} label={`${item.soldqty}`} /></td>
                                                     <td>{item.insertdate}</td>
-                                                    <td><ProgressBar striped bsStyle="danger" now={20} label={`${20}`} /></td>
+                                                    <td><ProgressBar striped bsStyle="danger" now={5} label={`${5}`} /></td>
                                                     <td><OverlayTrigger
                                                         trigger={['hover', 'focus']}
                                                         placement="bottom"

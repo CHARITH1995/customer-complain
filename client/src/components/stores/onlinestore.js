@@ -180,7 +180,7 @@ class Onlinestore extends Component {
                                     this.state.storeitems.filter(this.searching(this.state.searchfield)).map(item =>
                                         <div className="contain rows">
                                             <div className="card-show">
-                                                <Image src={"../../stores/" + item.imagepath} className="storeimage" rounded />
+                                                <Image src={item.imagepath} className="storeimage" rounded />
                                                 <ul className="list-group list-group-flush">
                                                     <li className="list-group-item">Description : <span className="names">{item.description}</span></li>
                                                     <li className="list-group-item">Brand : <span className="names">{item.brand}</span></li>

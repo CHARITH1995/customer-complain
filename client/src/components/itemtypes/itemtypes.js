@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './itemtypes.css';
+import Links from '../front/links'
 
 
 class Itemtypes extends Component {
@@ -19,6 +20,7 @@ class Itemtypes extends Component {
             showmsg:false,
             name: '',
             nameerr: '',
+            showerrmsg:false,
             msg: '',
         }
         this.handleChange = this.handleChange.bind(this);
@@ -104,8 +106,8 @@ class Itemtypes extends Component {
                 window.location.reload();
             } else {
                 this.setState({
-                    showmsg:true,
-                    msg:'cannot delete!'
+                    showerrmsg:true,
+                    msg:data.msg
                 })
             }
         })
@@ -136,6 +138,7 @@ class Itemtypes extends Component {
             [name]: value,
             showmsg:false,
             nameerr: '',
+            showerrmsg:false
         });
     }
     handleChangeComplete = (color, event) => {
@@ -218,6 +221,17 @@ class Itemtypes extends Component {
                                 <div></div>
                             )
                         }
+                        {
+                            this.state.showerrmsg ? (
+                                <Panel bsStyle="danger" className="table">
+                                            <Panel.Heading>
+                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                            </Panel.Heading>
+                                        </Panel>
+                            ):(
+                                <div></div>
+                            )
+                        }
                             {
                                 this.state.show ? (
                                     <Table responsive className="table">
@@ -260,6 +274,7 @@ class Itemtypes extends Component {
                         <div className="col-sm-3">
                         </div>
                     </div>
+                    <Links />
                 </div>
             );
         }

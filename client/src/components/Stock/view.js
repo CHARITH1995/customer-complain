@@ -11,7 +11,7 @@ class View extends Component {
             newstatus: '',
             showsuc: false,
             showerr: false,
-            purchid:'',
+            purchid: '',
         };
         this.handleChange = this.handleChange.bind(this);
         this.sold = this.sold.bind(this);
@@ -61,11 +61,11 @@ class View extends Component {
         e.preventDefault();
         const stocks = {
             status: this.state.newstatus,
-            purchid:this.state.purchid,
-            item:this.state.item.item,
+            purchid: this.state.purchid,
+            item: this.state.item.item,
             solddate: Date.now()
         }
-        if ((this.state.newstatus === 'sold')&&(this.state.purchid != '')) {
+        if ((this.state.newstatus === 'sold') && (this.state.purchid != '')) {
             fetch("http://localhost:4000/stock/sold/" + this.props.match.params.id, {
                 method: "PUT",
                 headers: {
@@ -208,7 +208,10 @@ class View extends Component {
                                                                 </form>
                                                             </li>
                                                         ) : (
-                                                                <li className="list-group-item">Status :  <span className="names"> sold </span> </li>
+                                                                <div>
+                                                                    <li className="list-group-item">Status :  <span className="names"> sold </span> </li>
+                                                                <li className="list-group-item">Purchase Id : <span className="names"> {this.state.item.purchid} </span></li>
+                                                                </div>
                                                             )
                                                     }
                                                     <div className="viewbuttongroups">
@@ -217,17 +220,17 @@ class View extends Component {
                                                         </div>
                                                         <div className="viewbutton">
                                                             {
-                                                                (((localStorage.admin == 'yes') || ((localStorage.id) === this.state.item.authorizedby))&&(this.state.item.status == 'unsold')) ? (
-                                                                <OverlayTrigger
-                                                                    trigger={['hover', 'focus']}
-                                                                    placement="bottom"
-                                                                    overlay={popoverHoverFocus}
-                                                                >
-                                                                    <Link to={"/editstockitem/" + this.state.item._id} className="btn btn-success">Update</Link>
-                                                                </OverlayTrigger>
-                                                            ) : (
-                                                                    <div></div>
-                                                                )}
+                                                                (((localStorage.admin == 'yes') || ((localStorage.id) === this.state.item.authorizedby)) && (this.state.item.status == 'unsold')) ? (
+                                                                    <OverlayTrigger
+                                                                        trigger={['hover', 'focus']}
+                                                                        placement="bottom"
+                                                                        overlay={popoverHoverFocus}
+                                                                    >
+                                                                        <Link to={"/editstockitem/" + this.state.item._id} className="btn btn-success">Update</Link>
+                                                                    </OverlayTrigger>
+                                                                ) : (
+                                                                        <div></div>
+                                                                    )}
                                                         </div>
                                                     </div>
                                                 </ul>

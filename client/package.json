@@ -13,6 +13,7 @@
     "react-color": "^2.14.1",
     "react-dom": "^16.4.2",
     "react-easy-chart": "^1.0.0",
+    "react-file-base64": "^1.0.3",
     "react-forms-validator": "^1.0.8",
     "react-js-pagination": "^3.0.2",
     "react-navigate": "^0.6.0",

@@ -11,16 +11,19 @@ const path = require('path');
 
 let imagename = '';
 let number;
-const storage = multer.diskStorage({
-    destination: './client/public/stores',
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-        // cb(null, file.originalname);
-    }
-});
-const upload = multer({
-    storage: storage
-}).single('file');
+// const storage = multer.diskStorage({
+//     destination: './client/public/stores',
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now() + '-' + file.originalname);
+//         // cb(null, file.originalname);
+//     }
+// });
+// const upload = multer({
+//     storage: storage
+// }).single('file');
+multer({
+    limits: { fieldSize: 1024 * 1024 * 1024 }
+})
 
 module.exports.addnewItem = (req, res, next) => {
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
@@ -62,6 +65,7 @@ module.exports.addnewDetail = (req, res, next) => {
                             Items.findOne({
                                 name: req.body.Item
                             }).then(function (doc) {
+                                console.log(req.body.imagepath)
                                 if (doc) {
                                     var today = new Date();
                                     var month = today.getMonth() + 1;
@@ -73,13 +77,15 @@ module.exports.addnewDetail = (req, res, next) => {
                                         item: req.body.Item,
                                         identifier: doc.identifier,
                                         warrenty: req.body.warrenty,
-                                        imagepath: imagename,
+                                        //imagepath: imagename,
+                                        imagepath:req.body.imagepath,
                                         qty: req.body.qty,
                                         insertdate: Date.now(),
                                         authorizedby: req.body.authorize_by,
                                         description: req.body.description,
                                     });
                                     store.save((err, doc) => {
+                                        console.log(err)
                                         if (!err) {
                                            return res.json({ success: true, msg: 'successfully inserted!!' });
                                         }
@@ -104,8 +110,8 @@ module.exports.imageupload = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            Stores.update({ _id: req.params.id }, {
-                imagepath: imagename,
+            Stores.updateOne({ _id: req.params.id }, {
+                imagepath:req.body.imagepath,
             }).then(function (det) {
                 if (det) {
                     return res.json({ success: true, msg: 'updated successfully' })

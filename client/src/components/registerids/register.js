@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-bootstrap';
 import Nav from '../front/nav';
 import {Link} from 'react-router-dom';
+import Links from '../front/links'
 import './register.css';
 
 class Register extends Component {
@@ -49,7 +50,7 @@ class Register extends Component {
                     <Nav />
                 </div>
                 <div className="container-fluid">
-                <h2 className="title">REGISTER PAGE</h2>
+                <h2 className="title">Register Here!</h2>
                     <div className="row content">
                         <div className="col-sm-2 sidenav">
                         </div>
@@ -69,6 +70,7 @@ class Register extends Component {
                         </div>
                     </div>
                 </div>
+                <Links />
             </div>
         );
     }

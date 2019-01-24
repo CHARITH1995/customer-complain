@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
-mongoose.set('useCreateIndex', true);
 
 const Purchase = new schema({
     purchqty:{

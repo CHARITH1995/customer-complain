@@ -2,6 +2,7 @@ const express = require('express');
 var passport = require('passport');
 const routerComplain = express.Router();
 var ObjectID = require('mongoose').Types.ObjectId;
+const Stores = require('../models/stores');
 const Items = require('../models/itemtypes');
 var jwt = require('jsonwebtoken');
 
@@ -69,14 +70,25 @@ module.exports.removeitemtypes = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            Items.findOneAndDelete({ _id: req.params.id }).then(function (err) {
-                if (!err) {
-                    res.send({ success: false, msg: 'not success' });
-                } else {
-                    res.send({ success: true, msg: 'delete successfully' });
-                }
+            Items.findOne({
+                _id:req.params.id
+            }).then(data=>{
+                Stores.findOne({
+                    item:data.name
+                }).then(docs=>{
+                    if(docs == null){
+                        Items.findOneAndDelete({ _id: req.params.id }).then(function (err) {
+                            if (!err) {
+                                res.send({ success: false, msg: 'not success' });
+                            } else {
+                                res.send({ success: true, msg: 'delete successfully' });
+                            }
+                        })
+                    }else{
+                        return res.json({success:false , msg:'This item already in store'})
+                    }
+                })
             })
-
         }
     });
 

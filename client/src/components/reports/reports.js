@@ -120,19 +120,12 @@ componentWillUnmount(){
                                 <div className="area">
                                     {   
                                         this.state.complains.map(complain =>
-                                            <div className="row">
-                                            <div className="card">
-                                                <div className="cards-body" style={{ background: complain._id.color }}>
-                                                    <div >
-                                                        <ul>
-                                                            <li key={complain._id}><Link to={"/Subarea/" + complain._id.subarea}><span className="attribute">Subarea : </span>{complain._id.subarea}</Link></li>
-                                                            <li><span className="attribute">Total Complains : </span>{complain.total}</li>
-                                                        </ul>
-                                                        <hr />
-                                                    </div>
-                                                </div>
+                                            <div className="cards-body" style={{ background: complain._id.color }}>
+                                            <ul className="list-group list-group-flush">
+                                                    <li key={complain._id}><Link to={"/Subarea/" + complain._id.subarea}><span className="names">Subarea : {complain._id.subarea}</span></Link></li>
+                                                    <li><span className="names">Total Complains : </span>{complain.total}</li>
+                                            </ul>
                                             </div>
-                                        </div>
                                         )
                                     }
                                 </div>
@@ -160,18 +153,11 @@ componentWillUnmount(){
                         <div className="col-md-5">
                             <div className="area">
                                 {this.state.sales.map(sale =>
-                                    <div className="row">
-                                        <div className="card">
-                                            <div className="cards-body" style={{ background: sale._id.color }}>
-                                                <div >
-                                                    <ul>
-                                                        <li><span className="attribute">Item Type : </span>{sale._id.item}</li>
-                                                        <li><span className="attribute">Sold Items : </span>{sale._id.soldqty}</li>
-                                                    </ul>
-                                                    <hr />
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div className="cards-body" style={{ background: sale._id.color }}>
+                                    <ul className="list-group list-group-flush">
+                                            <li key={sale._id}><span className="names">Item Type : {sale._id.item}</span></li>
+                                            <li><span className="names">Sold Items : </span>{sale._id.soldqty}</li>
+                                    </ul>
                                     </div>
                                 )
                                 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { CirclePicker } from 'react-color';
 import { Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import FileBase64 from 'react-file-base64';
 import Nav from '../front/nav';
 import './stores.css';
 
@@ -14,7 +15,7 @@ class Stores extends Component {
             Brand: '',
             Color: '',
             type: '',
-            warrenty:'',
+            warrenty: '',
             authorize_by: '',
             Price: '',
             show: true,
@@ -25,23 +26,20 @@ class Stores extends Component {
             qty: 1,
             showerr: false,
             file: null,
-            background: '#fff'
+            background: '#fff',
+            new:null
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.fileChange = this.fileChange.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
+    }
+    getFiles(files) {
+        this.setState({new:files[0].base64})
     }
     handleChangeComplete = (color, event) => {
         this.setState({ background: color.hex });
     }
-    fileChange = (e) => {
-        const name = e.target.files[0];
-        this.setState({
-            file: e.target.files[0],
-            imagename: name.name,
-        })
-    }
+
     handleChange(e) {
         let target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value
@@ -54,43 +52,31 @@ class Stores extends Component {
         });
     }
     handleSubmit(e) {
+        e.preventDefault();
         this.setState({
             showsuc: false,
             msg: '',
-            showerr: false,  
+            showerr: false,
         })
         var authToken = localStorage.token;
-        const fd = new FormData();
-        fd.append('file', this.state.file);
-        this.state.image = this.state.imagename
-        const stores = {
-            brand: this.state.Brand,
-            color: this.state.background,
-            description: this.state.Description,
-            Item: this.state.type,
-            qty: this.state.qty,
-            warrenty:this.state.warrenty,
-            price: this.state.Price,
-            imagepath: this.state.imagename,
-            enterby: this.state.adminname,
-            authorize_by: localStorage.id,
-        }
-        //console.log(stores)
-        e.preventDefault();
-        fetch("http://localhost:4000/stores/newitem", {
-            method: "POST",
-            headers: {
-                'Authorization': 'Bearer' + authToken
-            },
-            body:fd
-        });
+        const data = new FormData();
+        data.append('imagepath',this.state.new);
+        data.append('enterby',this.state.adminname);
+        data.append('authorize_by',localStorage.id);
+        data.append('qty',this.state.qty);
+        data.append('price',this.state.Price);
+        data.append('description',this.state.Description);
+        data.append('color',this.state.background);
+        data.append('Item',this.state.type);
+        data.append('warrenty',this.state.warrenty);
+        data.append('brand',this.state.Brand);
+      
         fetch("http://localhost:4000/stores/newdetails", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 'Authorization': 'Bearer' + authToken
             },
-            body: JSON.stringify(stores)
+            body:data
         })
             .then(res => res.json())
             .then(json => {
@@ -136,7 +122,7 @@ class Stores extends Component {
             Brand: '',
             Color: '',
             type: '',
-            warrenty:'',
+            warrenty: '',
             Price: '',
             imagepath: '',
             Description: '',
@@ -185,9 +171,11 @@ class Stores extends Component {
                                 <label htmlFor="exampleFormControlInput1">warrenty period :</label>
                                 <input type="number" className="form-control" id="exampleFormControlInput1" name="warrenty" placeholder="available stock" value={this.state.warrenty} onChange={this.handleChange} required />
                             </div>
-                            <div className="form-group col-md-8">
-                                <label htmlFor="exampleFormControlInput1">Image :</label>
-                                <input type="file" className="form-control" id="exampleFormControlInput1" name="Image" onChange={this.fileChange} required />
+                             <div className="form-group col-md-8">
+                                <label htmlFor="exampleFormControlInput1">Image :</label>  
+                            <FileBase64
+                                multiple={true}
+                                onDone={this.getFiles.bind(this)} />
                             </div>
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Price :</label>
@@ -218,53 +206,55 @@ class Stores extends Component {
                     </div>
                     <div className="container-fluid">
                         <h2 className="title">Add New Items to E-Shop</h2>
-                        <div className="col-sm-2 sidebar">
-                        <div className="list-group ">
-                            <a className="list-group-item active">Quick Links</a>
-                            <a className="list-group-item"><Link to={"/onlinestore"}>E-shop</Link></a>
-                        </div>
-                    </div>
-                            <div className="col-md-8 contain">
-                                <hr />
-                                <div className="adminmsg">
-                                    {
-                                        this.state.showerr ? (
-                                            <div className="message">
-                                                <Panel bsStyle="danger" className="text-center">
-                                                    <Panel.Heading>
-                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                    </Panel.Heading>
-                                                </Panel>
-                                            </div>
-                                        ) : (
-                                                <div>
-
-                                                </div>
-                                            )
-                                    }
-                                    {
-                                        this.state.showsuc ? (
-                                            <div className="message">
-                                                <Panel bsStyle="success" className="text-center">
-                                                    <Panel.Heading>
-                                                        <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                    </Panel.Heading>
-                                                </Panel>
-                                            </div>
-                                        ) : (
-                                                <div>
-
-                                                </div>
-                                            )
-                                    }
-
-                                </div>
-                                <div>
-                                    {this.formfield()}
-                                </div>
-                                <div >
-                                </div>
+                        <div className="col-sm-2 sidenav">
+                            <div className="list-group ">
+                                <a className="list-group-item active">Quick LInks</a>
+                                <a className="list-group-item"><Link to={"/stock"}>Add E-Stock</Link></a>
+                                <a className="list-group-item"><Link to={"/onlinestore"}>E-shop</Link></a>
+                                <a className="list-group-item"><Link to={"/stockview"}>E-shop</Link></a>
                             </div>
+                        </div>
+                        <div className="col-md-8 contain">
+                            <hr />
+                            <div className="adminmsg">
+                                {
+                                    this.state.showerr ? (
+                                        <div className="message">
+                                            <Panel bsStyle="danger" className="text-center">
+                                                <Panel.Heading>
+                                                    <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                </Panel.Heading>
+                                            </Panel>
+                                        </div>
+                                    ) : (
+                                            <div>
+
+                                            </div>
+                                        )
+                                }
+                                {
+                                    this.state.showsuc ? (
+                                        <div className="message">
+                                            <Panel bsStyle="success" className="text-center">
+                                                <Panel.Heading>
+                                                    <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                                </Panel.Heading>
+                                            </Panel>
+                                        </div>
+                                    ) : (
+                                            <div>
+
+                                            </div>
+                                        )
+                                }
+
+                            </div>
+                            <div>
+                                {this.formfield()}
+                            </div>
+                            <div >
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
