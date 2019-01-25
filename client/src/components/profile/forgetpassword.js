@@ -95,7 +95,7 @@ class Forgetpwd extends Component {
     formfield() {
         return (
             <div>
-                <div className="container">
+                <div className="idform">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1"> Email :</label>
@@ -117,15 +117,15 @@ class Forgetpwd extends Component {
                     {this.navbar()}
                     </div>
                     <div className="container">
-                    <h3 className="title">Enter your E-mail</h3>
-                        <div className="row content">
-                            <div className="col-sm-8 sidenav">
+                    <h2 className="cusstitle">Enter your E-mail</h2>
+                    <div className="col-sm-2">
+                    </div>
+                            <div className="col-sm-8 contain">
                             <div className="message">
                                 {this.alert()}
                             </div>
                                 {this.formfield()}
                             </div>
-                        </div>
                     </div>
                 </div>
         );

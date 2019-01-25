@@ -11,6 +11,7 @@ class Adminprofile extends Component {
             fname: '',
             lname: '',
             email: '',
+            password:'',
             tp: '',
             id: '',
             imagepath: '',
@@ -191,9 +192,9 @@ class Adminprofile extends Component {
                 id: detail.data.Id,
                 dbid: detail.data._id,
                 tp: detail.data.Tp,
+                password:detail.data.password
             });
         });
-        // console.log(this.state.fname)
     }
     formfield() {
         return (
