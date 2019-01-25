@@ -325,10 +325,10 @@ class Updatecustomer extends Component {
                 </div>
                     <h2 className="custitle">Update - Customer Details</h2>
                 <hr />
-                    <div className="col-sm-2 sidebar">
+                    <div className="col-sm-2 sidenav">
                             <div className="list-group ">
                                 <a className="list-group-item active">show all users</a>
-                                <a className="list-group-item"><Link to={"/showcustomer"}>Cutomers</Link></a>
+                                <a className="list-group-item"><Link to={"/showcustomer"}>Customers</Link></a>
                                 <a className="list-group-item"><Link to={"/showemployees"}>Employees</Link></a>
                             </div>
                         </div>

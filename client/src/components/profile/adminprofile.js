@@ -246,7 +246,7 @@ class Adminprofile extends Component {
                         <div className="col-sm-2 sidebar">
                             <div className="list-group ">
                                 <a className="list-group-item active">Quick Links</a>
-                                <a className="list-group-item"><Link to={"/editpassword/" + this.state.dbid + "/" + this.state.password}>EditPassword</Link></a>
+                                <a className="list-group-item"><Link to={"/editpassword/" + this.state.dbid + "/" + this.state.password}>Edit Password</Link></a>
                             </div>
                         </div>
                         <div className="col-md-8 contain">

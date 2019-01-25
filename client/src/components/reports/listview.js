@@ -5,6 +5,7 @@ import {
     , Table , ProgressBar
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Links from '../front/links'
 
 
 
@@ -85,7 +86,6 @@ class Storedata extends Component {
                 this.setState({
                     delmsg: data.msg,
                 })
-                //alert(this.state.msg)
                 window.location.reload();
             } else {
                 this.setState({
@@ -165,6 +165,7 @@ class Storedata extends Component {
                         <div className="col-sm-3">
                         </div>
                     </div>
+                    <Links/>
                 </div>
             );
         }

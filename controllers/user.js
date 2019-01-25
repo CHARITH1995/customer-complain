@@ -35,7 +35,6 @@ module.exports.updateuser = (req, res, next) => {
       Details.findOne({
         email:req.body.email
       }).then(data=>{
-        //console.log(data)
           if((data == null)||(data._id == req.body.dbid)){
             var con = {_id:req.body.dbid}
             const body={
@@ -92,16 +91,13 @@ module.exports.resetpwd = (req, res, next) => {
   }
   })
  
-}//mailverify
+}
 module.exports.mailverify = (req, res, next) => {
-  // console.log(req.body.email)
   Details.findOne({
     email: req.body.email
   }, function (err, infor) {
-    if (infor) {   ///resetpwd/:id/:password
-      //console.log(infor)
+    if (infor) {
       link ='http://localhost:3000/editpassword/'+ infor._id +'/'+infor.password;
-      //console.log(link)
       var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -117,10 +113,8 @@ module.exports.mailverify = (req, res, next) => {
       }; 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          //console.log(error);
           return res.json({ success: false, msg: 'message sending fail!!' })
         } else {
-          //console.log('Email sent: ' + info.response);
           return res.json({ success: true, msg: 'check your inbox and reset the pwd' })
         }
       });

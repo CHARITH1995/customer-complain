@@ -213,6 +213,17 @@ class Customerid extends Component {
                             <span style={{ color: "#FD6571" }}>{this.state.emailerr}</span>
                         </div>
                         <div className="form-group col-md-8">
+                            <label htmlFor="exampleFormControlInput1">Sub Area :</label>
+                            <select className="form-control" id="exampleFormControlSelect1" name="subarea" value={this.state.subarea} onChange={this.handleChange} required>
+                                <span style={{ color: "#FD6571" }}>{this.state.subareaerr}</span>
+                                <option value="1" >--Select Sub-Area--</option>
+                                <option value="kandy">Kandy</option>
+                                <option value="galle">Galle</option>
+                                <option value="gampaha">Gampaha</option>
+                                <option value="colombo">Colombo</option>
+                            </select>
+                        </div>
+                        <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Account number :</label>
                             <input type="text" className="form-control" id="exampleFormControlInput1" name="accountNumber" placeholder="CR0000000000" value={this.state.accountNumber} onChange={this.handleChange} required />
                             <span style={{ color: "#FD6571" }}>{this.state.accountNumbererr}</span>
@@ -235,17 +246,6 @@ class Customerid extends Component {
                             <span style={{ color: "#FD6571" }}>{this.state.addresserr}</span>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="postalcode" placeholder="postal code" value={this.state.postalcode} onChange={this.handleChange} required />
                             <span style={{ color: "#FD6571" }}>{this.state.postalcodeerr}</span>
-                        </div>
-                        <div className="form-group col-md-8">
-                            <label htmlFor="exampleFormControlInput1">Sub Area :</label>
-                            <select className="form-control" id="exampleFormControlSelect1" name="subarea" value={this.state.subarea} onChange={this.handleChange} required>
-                                <span style={{ color: "#FD6571" }}>{this.state.subareaerr}</span>
-                                <option value="1" >--Select Sub-Area--</option>
-                                <option value="kandy">Kandy</option>
-                                <option value="galle">Galle</option>
-                                <option value="gampaha">Gampaha</option>
-                                <option value="colombo">Colombo</option>
-                            </select>
                         </div>
                         <br /><br />
                         <div className="form-group col-md-8">

@@ -208,7 +208,7 @@ class Container extends Component {
                 <input type="submit" name="submit" value="Submit" className="btn btn-info" />
               </form>
             </div>
-              <div className=" col-sm-3">
+              <div className=" col-sm-3 slideanim">
                 <h3 className="headin5_amrc col_white_amrc pt2">Quick links</h3>
                 <ul className="footer_ul_amrc">
                   <li><a href="http://kalarikendramdelhi.com">Remove Background</a></li>
@@ -219,7 +219,7 @@ class Container extends Component {
                   <li><a href="http://kalarikendramdelhi.com">Image Cropping</a></li>
                 </ul>
               </div>
-              <div className=" col-sm-3">
+              <div className=" col-sm-3 slideanim">
                 <h3 className="headin5_amrc col_white_amrc pt2">Quick links</h3>
                 <ul className="footer_ul_amrc">
                   <li><a href="http://kalarikendramdelhi.com">Remove Background</a></li>
@@ -233,22 +233,7 @@ class Container extends Component {
             </div>
           </div>
           <div className="container">
-            <ul className="foote_bottom_ul_amrc">
-              <li><a href="http://kalarikendramdelhi.com">Home</a></li>
-              <li><a href="http://kalarikendramdelhi.com">About</a></li>
-              <li><a href="http://kalarikendramdelhi.com">Services</a></li>
-              <li><a href="http://kalarikendramdelhi.com">Pricing</a></li>
-              <li><a href="http://kalarikendramdelhi.com">Blog</a></li>
-              <li><a href="http://kalarikendramdelhi.com">Contact</a></li>
-            </ul>
             <p className="text-center">Copyright @2018 | Designed With by FIT 16</p>
-
-            <ul className="social_footer_ul">
-              <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-facebook-f"></i></a></li>
-              <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-twitter"></i></a></li>
-              <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-linkedin"></i></a></li>
-              <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-instagram"></i></a></li>
-            </ul>
           </div>
 
         </footer>

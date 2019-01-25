@@ -72,7 +72,6 @@ class Viewcustomers extends Component {
     }
     removeitem(id) {
         var authToken = localStorage.token;
-        //console.log(authToken)
         fetch("http://localhost:4000/register/removecustomer/" + id, {
             method: "DELETE",
             headers: {
@@ -123,14 +122,14 @@ class Viewcustomers extends Component {
                                         <div className="contain rows">
                                             <div className="card-show">
                                                 <ul className="list-group list-group-flush">
-                                                    <li key={id._id} className="list-group-item">Full Name : {id.firstname} {id.lastname}</li>
-                                                    <li className="list-group-item">Subarea : {id.subarea}</li>
-                                                    <li className="list-group-item">Email : {id.email}</li>
-                                                    <li className="list-group-item">Address : {id.address.laneone},{id.address.lanetwo},{id.address.city}</li>
-                                                    <li className="list-group-item">Postal Code : {id.address.postalcode}</li>
-                                                    <li className="list-group-item">Account Number : {id.accountNumber}</li>
-                                                    <li className="list-group-item">NIC : {id.Id}</li>
-                                                    <li className="list-group-item">Contact Number : {id.Tp}</li>
+                                                    <li key={id._id} className="list-group-item">Full Name : <span className="names">{id.firstname} {id.lastname}</span></li>
+                                                    <li className="list-group-item">Subarea : <span className="names">{id.subarea}</span></li>
+                                                    <li className="list-group-item">Email : <span className="names">{id.email}</span></li>
+                                                    <li className="list-group-item">Address : <span className="names">{id.address.laneone},{id.address.lanetwo},{id.address.city}</span></li>
+                                                    <li className="list-group-item">Postal Code : <span className="names">{id.address.postalcode}</span></li>
+                                                    <li className="list-group-item">Account Number : <span className="names">{id.accountNumber}</span></li>
+                                                    <li className="list-group-item">NIC : <span className="names">{id.Id}</span></li>
+                                                    <li className="list-group-item">Contact Number : <span className="names">{id.Tp}</span></li>
                                                     <li className="list-group-item">
                                                         <div className="storesbutton">
                                                             <Link to={"/updatecustomer/" + id._id} className="btn btn-info">Update</Link>

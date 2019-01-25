@@ -254,6 +254,7 @@ class Stockview extends Component {
                                 <a className="list-group-item active">Quick LInks</a>
                                 <a className="list-group-item"><Link to={"/stock"}>Add E-Stock</Link></a>
                                 <a className="list-group-item"><Link to={"/addstores"}>Add E-shop</Link></a>
+                                <a className="list-group-item"><Link to={"/purchaseview"}>View Purchases</Link></a>
                             </div>
                             <div className="list-group ">
                                 <a className="list-group-item active">Pending Purchases</a>

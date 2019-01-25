@@ -17,7 +17,6 @@ module.exports.viewpurch = (req, res, next) => {
             res.send({ success: false, msg: 'please log again' });
         } else {
             Purchase.aggregate([{$match:{purchqty:{$gt:0}}}]).then(details=>{
-               // console.log(details)
                 if (details.length === 0) {
                     return res.json({ success: false, msg: 'No purchases' })
                 } else {
@@ -41,4 +40,37 @@ module.exports.getpurch = (req, res, next) => {
             })
         }
     });
-}//getpurch
+}
+module.exports.purchases = (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+            Purchase.find().then(function (details) {
+                if (details.length == 0) {
+                    res.send({ success: false, msg: 'no purchases to show' });
+                } else {
+                    res.send({ success: true, data:details });
+                }
+            })
+        }
+    });
+}
+module.exports.update = (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+            var condition = {_id:req.params.id}
+            Purchase.updateOne(condition,req.body).then(doc =>{    
+                if(doc){
+                  return res.json({ success: true, msg:'Delivery updated!' });
+                }else{
+                  return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                }
+            })
+        }
+    });
+}

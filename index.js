@@ -17,6 +17,8 @@ var io = require('socket.io')(server);
 require("dotenv").config();
 var multer = require( 'multer');
 var upload = multer();
+const Stores = require('./models/stores');
+var nodemailer = require('nodemailer');
 
 
 mongoose.connect('mongodb://admin:admin123@ds159273.mlab.com:59273/slt',{ useNewUrlParser: true },(err)=>{
@@ -47,12 +49,44 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
-io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-      console.log(data);
-    });
-  })
+io.on("connection", socket => {
+    console.log("New client connected"), setInterval(
+      () => getApiAndEmit(socket),
+      10000
+    );
+    socket.on("disconnect", () => console.log("Client disconnected"));
+  });
+
+  const getApiAndEmit = async socket => {
+    try {
+      Stores.aggregate([{$match:{qty:{$lt:2}}}]).then(data=>{
+          if(data.length != 0){
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: "charithprasanna009@gmail.com",
+                  pass: '0771034162'
+                }
+              });
+             var mailOptions = {
+                to:"prasanna.charith32@gmail.com",
+                from: "charithprasanna009@gmail.com",
+                subject: 'Sending Email using Node.js',
+                text:`please update the stock ${data._id}`
+              }; 
+              transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                  return res.json({ success: false, msg: 'message sending fail!!' })
+                } else {
+                  return res.json({ success: true, msg: 'check your inbox and reset the pwd' })
+                }
+              });
+          }
+      })
+    } catch (error) {
+      console.error(`Error: ${error.code}`);
+    }
+  };
 
 const port = process.env.port||4000;
 

@@ -13,15 +13,10 @@ class Complains extends Component {
             isLoading: true,
             complains: [],
             searchfield: '',
-            activePage: 1,
-            total: 0,
-            value: 1,
             length: true,
+            activePage:1
         };
         this.onSearch = this.onSearch.bind(this);
-    }
-    handlePageChange(pageNumber) {
-        this.setState({ activePage: pageNumber });
     }
     searching(searchfield) {
         return function (x) {
@@ -66,8 +61,12 @@ class Complains extends Component {
                 }
             })
     }
-
+    handlePageChange(pageNumber) {
+        this.setState({activePage: pageNumber});
+       }
     render() {
+        const totalCourses=this.state.complains.length;
+
         if (localStorage.token) {
             return (
                 <div>
@@ -97,24 +96,24 @@ class Complains extends Component {
                                         {this.state.complains.filter(this.searching(this.state.searchfield)).map(complain =>
                                             <div className="contain rows">
                                                 <div className="card-show">
-                                                     <ul className="list-group list-group-flush">
-                                                     <li className="list-group-item">Description : <span className="names">{complain.description}</span></li>
-                                                     <li className="list-group-item">Customer Name : <span className="names">{complain.name}</span></li>
-                                                     <li className="list-group-item">Email : <span className="names">{complain.email}</span></li>
-                                                     <li className="list-group-item">Subarea : <span className="names">{complain.subarea}</span></li>
-                                                     <li className="list-group-item">
-                                                        <div className="storesbutton">
-                                                        <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
-                                                        </div>
-                                                    </li>
-                                                        </ul>
-                                                        <hr />
+                                                    <ul className="list-group list-group-flush">
+                                                        <li className="list-group-item">Description : <span className="names">{complain.description}</span></li>
+                                                        <li className="list-group-item">Customer Name : <span className="names">{complain.name}</span></li>
+                                                        <li className="list-group-item">Email : <span className="names">{complain.email}</span></li>
+                                                        <li className="list-group-item">Subarea : <span className="names">{complain.subarea}</span></li>
+                                                        <li className="list-group-item">
+                                                            <div className="storesbutton">
+                                                                <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                    <hr />
                                                 </div>
                                             </div>
                                         )
                                         }
                                     </div>
-                                    
+
                                 ) : (
                                         <div class="col-sm-8 bg-danger">
                                             <h2>No complains to show</h2>
@@ -122,13 +121,16 @@ class Complains extends Component {
                                     )
                             }
                         </div>
-                        <div className="col-sm-2 sidenav ">
-                            <div className="list-group ">
-                                <a className="list-group-item active">Quick LInks</a>
-                                <a className="list-group-item"><Link to={"/reports"}>done</Link></a>
-                                <a className="list-group-item"><Link to={"/addstores"}>not done</Link></a>
-                            </div>
-                        </div>
+                        {/* <div className="pagination">
+                            Total Classes: {totalCourses}
+                            <Pagination
+                                activePage={this.state.activePage}
+                                itemsCountPerPage={5}
+                                totalItemsCount={totalCourses}
+                                pageRangeDisplayed={2}
+                                onChange={this.handlePageChange.bind(this)}
+                            />
+                        </div> */}
                     </div>
                 </div>
             );

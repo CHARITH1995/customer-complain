@@ -57,7 +57,6 @@ module.exports.updatedetails = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            console.log(req.params.id)
             var condition = {_id:req.params.id}
             Stock.findOne({
                 serialnumber:req.body.serialnumber

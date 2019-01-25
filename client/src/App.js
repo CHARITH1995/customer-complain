@@ -31,6 +31,7 @@ import Stockview from './components/Stock/stockview';
 import Edit from './components/Stock/edit'; 
 import View from './components/Stock/view';
 import Purchview from './components/purchases/view';
+import Purchases from './components/purchases/show';
 import Error from './components/error';
 class App extends Component {
   render() {
@@ -91,6 +92,11 @@ class App extends Component {
             {(localStorage.token) ? <Route path="/showemployees" component={ViewEmployees} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/showemployees" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/purchaseview" component={Purchases} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/purchaseview" to="/Error" />
           </Switch>
           <Switch>
             {(localStorage.token) ? <Route path="/updatecustomer/:id" component={Updatecustomer} /> : null}

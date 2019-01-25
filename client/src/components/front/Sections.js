@@ -7,7 +7,7 @@ class Section extends Component {
   render() {
     return (
       <div>
-        <div id="myCarousel" className="carousel slide text-center" data-ride="carousel">
+        <div id="myCarousel" className="carousel slide text-center slideanim" data-ride="carousel">
           <h2>What our customers say</h2>
           <ol className="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" className="active"></li>

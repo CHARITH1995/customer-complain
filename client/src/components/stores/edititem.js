@@ -165,7 +165,7 @@ class Edititem extends Component {
                     <form onSubmit={this.handleSubmit} name="inventry">
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Item :</label>
-                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange}>
+                            <select className="form-control" id="Select1" name="type" value={this.state.type} onChange={this.handleChange} disabled >
                                 <option value="1">select type</option>
                                 {
                                     this.state.items.map(item =>

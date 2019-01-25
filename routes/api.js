@@ -60,6 +60,8 @@ router.post('/items',jwtHelper.verifyJwtToken,stock.items);
 router.put('/sold/:id',jwtHelper.verifyJwtToken,stock.sold);
 
 router.post('/viewpurch',jwtHelper.verifyJwtToken,purch.viewpurch);
+router.put('/deliver/:id',jwtHelper.verifyJwtToken,purch.update);
+router.post('/show',jwtHelper.verifyJwtToken,purch.purchases);
 router.get('/getpurch/:id',jwtHelper.verifyJwtToken,purch.getpurch);
 
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
