@@ -21,7 +21,7 @@ const Stores = require('./models/stores');
 var nodemailer = require('nodemailer');
 
 
-mongoose.connect('mongodb://admin:admin123@ds159273.mlab.com:59273/slt',{ useNewUrlParser: true },(err)=>{
+mongoose.connect(process.env.MONGOLAB_URI,{ useNewUrlParser: true },(err)=>{
     if(!err){
         console.log('db connected')
     }else{

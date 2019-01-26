@@ -16,7 +16,7 @@
     "body-parser": "^1.18.3",
     "config": "^2.0.1",
     "cors": "^2.8.4",
-    "dotenv": "^6.1.0",
+    "dotenv": "^6.2.0",
     "express": "^4.16.3",
     "fileupload": "^1.0.0",
     "jsonwebtoken": "^8.3.0",
