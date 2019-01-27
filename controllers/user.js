@@ -108,8 +108,8 @@ module.exports.mailverify = (req, res, next) => {
      var mailOptions = {
         to: infor.email,
         from: "charithprasanna009@gmail.com",
-        subject: 'Sending Email using Node.js',
-        text:link
+        subject: 'Reguarding to the password reset',
+        text:`Hello! ${infor.fname} Please use this ${link} to reset your password.`
       }; 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {

@@ -21,7 +21,7 @@ const Stores = require('./models/stores');
 var nodemailer = require('nodemailer');
 
 
-mongoose.connect(process.env.MONGOLAB_URI,{ useNewUrlParser: true },(err)=>{
+mongoose.connect('mongodb://admin:admin123@ds159273.mlab.com:59273/slt',{ useNewUrlParser: true },(err)=>{
     if(!err){
         console.log('db connected')
     }else{
@@ -52,7 +52,7 @@ app.get("*", (req, res) => {
 io.on("connection", socket => {
     console.log("New client connected"), setInterval(
       () => getApiAndEmit(socket),
-      10000
+      10000*6*60
     );
     socket.on("disconnect", () => console.log("Client disconnected"));
   });
@@ -60,6 +60,7 @@ io.on("connection", socket => {
   const getApiAndEmit = async socket => {
     try {
       Stores.aggregate([{$match:{qty:{$lt:2}}}]).then(data=>{
+        console.log(data.item)
           if(data.length != 0){
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -71,16 +72,10 @@ io.on("connection", socket => {
              var mailOptions = {
                 to:"prasanna.charith32@gmail.com",
                 from: "charithprasanna009@gmail.com",
-                subject: 'Sending Email using Node.js',
-                text:`please update the stock ${data._id}`
+                subject: 'Stock update alerts',
+                text:`please update the stock ${data.item}`
               }; 
-              transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                  return res.json({ success: false, msg: 'message sending fail!!' })
-                } else {
-                  return res.json({ success: true, msg: 'check your inbox and reset the pwd' })
-                }
-              });
+              transporter.sendMail(mailOptions);
           }
       })
     } catch (error) {

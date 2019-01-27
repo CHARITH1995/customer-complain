@@ -33,7 +33,20 @@ import View from './components/Stock/view';
 import Purchview from './components/purchases/view';
 import Purchases from './components/purchases/show';
 import Error from './components/error';
+import socketIOClient from "socket.io-client";
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      response: false,
+      endpoint: "http://localhost:4000"
+    };
+  }
+  componentDidMount() {
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+    socket.on("FromAPI");
+  }
   render() {
     return (
       <Router>

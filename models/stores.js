@@ -71,5 +71,5 @@ const Stores = new schema({
     }
 });
 
-const Storesdetails = mongoose.model('Stores',Stores);//'details' is mongodb name Details is the schema name;
+const Storesdetails = mongoose.model('Stores',Stores);
 module.exports=Storesdetails;
