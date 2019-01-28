@@ -205,13 +205,8 @@ handleChange(e) {
                                                                 </div>
                                                             )
                                                     }
-<<<<<<< HEAD
-                                                     {
-                                                        ((this.state.item.purchqty != 0)) ? (
-=======
                                                     {
                                                         ((this.state.item.purchqty != 0 )) ? (
->>>>>>> 33c69aeeef3010d03860ee4ea952d3507c393869
                                                             <li className="list-group-item">Pending items qty : <span className="names"> {this.state.item.purchqty}  </span></li>
                                                         ) : (
                                                                 <div>
