@@ -57,6 +57,7 @@ io.on("connection", socket => {
     socket.on("disconnect", () => console.log("Client disconnected"));
   });
 
+
   const getApiAndEmit = async socket => {
     try {
       Stores.aggregate([{$match:{qty:{$lt:2}}}]).then(data=>{
@@ -82,7 +83,6 @@ io.on("connection", socket => {
       console.error(`Error: ${error.code}`);
     }
   };
-
 const port = process.env.port||4000;
 
 
