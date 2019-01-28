@@ -8,24 +8,15 @@ class Infor extends Component {
                 <Carousel>
                     <Carousel.Item>
                         <img width={1520} height={500} alt="900x500" src="/assets/7.jpg" />
-                        <Carousel.Caption>
-                            <h3>First slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                        </Carousel.Caption>
+                       
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img width={1520} height={500} alt="900x500" src="/assets/11.jpg" />
+                       
                     </Carousel.Item>
                     <Carousel.Item>
                         <img width={1520} height={500} alt="900x500" src="/assets/6.jpg" />
-                        <Carousel.Caption>
-                            <h3>Second slide label</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img width={1520} height={500} alt="900x500" src="/assets/7.jpg" />
-                        <Carousel.Caption>
-                            <h3>Third slide label</h3>
-                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                        </Carousel.Caption>
+                      
                     </Carousel.Item>
                 </Carousel>
             </div>

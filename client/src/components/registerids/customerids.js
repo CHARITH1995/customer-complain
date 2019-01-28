@@ -235,7 +235,7 @@ class Customerid extends Component {
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Telephone number :</label>
-                            <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="name@example.com" value={this.state.tp} onChange={this.handleChange} />
+                            <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="0912258051" value={this.state.tp} onChange={this.handleChange} />
                             <span style={{ color: "#FD6571" }}>{this.state.tperr}</span>
                         </div>
                         <div className="form-group col-md-8">
@@ -267,8 +267,8 @@ class Customerid extends Component {
                     <div className="col-sm-2 sidebar">
                         <div className="list-group ">
                             <a className="list-group-item active">show all users</a>
-                            <a className="list-group-item"><Link to={"/showcustomer"}>Customers</Link></a>
-                            <a className="list-group-item"><Link to={"/showemployees"}>Technician</Link></a>
+                            <a className="list-group-item"><Link to={"/showcustomer"}>Customers Details</Link></a>
+                            <a className="list-group-item"><Link to={"/showemployees"}>Technician Details</Link></a>
                         </div>
                     </div>
                             <div className="col-md-8 contain">

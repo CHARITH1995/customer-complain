@@ -205,6 +205,14 @@ handleChange(e) {
                                                                 </div>
                                                             )
                                                     }
+                                                     {
+                                                        ((this.state.item.purchqty != 0)) ? (
+                                                            <li className="list-group-item">Pending items qty : <span className="names"> {this.state.item.purchqty}  </span></li>
+                                                        ) : (
+                                                                <div>
+                                                                </div>
+                                                            )
+                                                    }
                                                     <div className="viewbuttongroup">
                                                         <a href="/purchaseview" className="glyphicon glyphicon-circle-arrow-left">Purchases</a>
                                                         <br />

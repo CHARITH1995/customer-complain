@@ -211,23 +211,25 @@ class Container extends Component {
               <div className=" col-sm-3 slideanim">
                 <h3 className="headin5_amrc col_white_amrc pt2">Quick links</h3>
                 <ul className="footer_ul_amrc">
-                  <li><a href="http://kalarikendramdelhi.com">Remove Background</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Shadows  Mirror Reflection</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Logo Design</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Vectorization</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Hair Masking/Clipping</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Image Cropping</a></li>
+                <li><a href="/onlinestore">E-shop</a></li>
+                  <li><a href="/addstores">Add New Items</a></li>
+                  <li><a href="/stockview">E-stock</a></li>
+                  <li><a href="/stock">E-stock maintain</a></li>
+                  <li><a href="/purchaseview">Purchases views</a></li>
+                  <li><a href="/storedata">Store Data</a></li>
+                
+               
                 </ul>
               </div>
               <div className=" col-sm-3 slideanim">
                 <h3 className="headin5_amrc col_white_amrc pt2">Quick links</h3>
                 <ul className="footer_ul_amrc">
-                  <li><a href="http://kalarikendramdelhi.com">Remove Background</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Shadows  Mirror Reflection</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Logo Design</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Vectorization</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Hair Masking/Clipping</a></li>
-                  <li><a href="http://kalarikendramdelhi.com">Image Cropping</a></li>
+                  <li><a href="/reports"> Monthly Reports and Calulation</a></li>
+                  <li><a href="/Complain">Customer Complains</a></li>
+                  <li><a href="/showcustomer">Customer Details</a></li>
+                  <li><a href="/customerids">Customer Registration</a></li>
+                  <li><a href="/showemployees">Technician Details</a></li>
+                  <li><a href="/employeeids">Technician Registration</a></li>
                 </ul>
               </div>
             </div>

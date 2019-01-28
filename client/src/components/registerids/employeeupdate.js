@@ -263,8 +263,8 @@ class updateemployee extends Component {
                     <div className="col-sm-2 sidebar">
                         <div className="list-group ">
                             <a className="list-group-item active">show all users</a>
-                            <a className="list-group-item"><Link to={"/showcustomer"}>Cutomers</Link></a>
-                            <a className="list-group-item"><Link to={"/showemployees"}>Employees</Link></a>
+                            <a className="list-group-item"><Link to={"/showcustomer"}>Customers Details</Link></a>
+                            <a className="list-group-item"><Link to={"/showemployees"}>Technicians Details</Link></a>
                         </div>
                     </div>
                     <div className="col-sm-8 contain">
