@@ -227,7 +227,7 @@ class View extends Component {
                                                 <br />
                                                 Item : <span className="badge badge-primary badge-pill">{this.state.purchdata.item}</span>
                                                 <br />
-                                                Purchase quantity : <span className="badge badge-primary badge-pill">{this.state.purchdata.purchqty + this.state.purchdata.updateqty}</span>
+                                                Purchase quantity : <span className="badge badge-primary badge-pill">{this.state.purchdata.purchqty}</span>
                                                 <br /> 
                                             </li>
                                             </div>

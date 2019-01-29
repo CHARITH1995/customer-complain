@@ -270,6 +270,7 @@ class Stockview extends Component {
                                                 <br />
                                                 Purchase quantity : <span class="badge badge-primary badge-pill">{data.purchqty}</span>
                                                 <br />
+                                                Pending item qty : <span class="badge badge-primary badge-pill">{data.purchqty-data.updateqty}</span>
                                                 <div className="storesbutton">
                                                     <Link to={"/purchview/"+ data._id} className="btn btn-info">View</Link>
                                                 </div>

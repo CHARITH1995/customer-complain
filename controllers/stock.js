@@ -164,10 +164,8 @@ module.exports.sold= (req, res, next) => {
                     Stock.updateOne(condition,req.body).then(doc =>{    
                         if(doc){
                             var con = {_id:req.body.purchid}
-                            var a = docs.purchqty-1;
                             var b = docs.updateqty+1
                             const body={
-                                purchqty:a,
                                 updateqty:b
                             }
                             Purchase.updateOne(con,body).then(function (det) {

@@ -27,7 +27,7 @@ const Purchase = new schema({
         type:Number,
         default:0,
     },
-    method:{
+    paymentmethod:{
         type:String,
         require:[true,'this field is required'] 
     },

@@ -57,7 +57,7 @@ handleChange(e) {
             showsuc: false,
             showerr: false
         })
-        fetch("http://localhost:4000/purch/getpurch/" + this.props.match.params.id, {
+        fetch("http://localhost:4000/purch/getpurch/"+this.props.match.params.id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -165,11 +165,11 @@ handleChange(e) {
                                                     <li className="list-group-item">Purchase date :   <span className="names"> {this.state.item.date} </span> </li>
                                                     <li className="list-group-item">Purchase Id :   <span className="names"> {this.state.item._id} </span> </li>
                                                     <li className="list-group-item">Item :   <span className="names"> {this.state.item.item} </span> </li>
-                                                    <li className="list-group-item">Purchased Quantity :    <span className="names">{this.state.item.updateqty + this.state.item.purchqty}</span></li>
+                                                    <li className="list-group-item">Purchased Quantity :    <span className="names">{this.state.item.purchqty}</span></li>
                                                     <li className="list-group-item">Email :    <span className="names"> {this.state.item.email} </span></li>
                                                     <li className="list-group-item">Name :    <span className="names"> {this.state.item.name}  </span></li>
                                                     {
-                                                        ((this.state.item.purchqty===0)&&(this.state.item.is_delivered === 'no')) ? (
+                                                        ((this.state.item.purchqty==this.state.item.updateqty)&&(this.state.item.is_delivered=='no')) ? (
                                                             <li className="list-group-item">
                                                                 <form onSubmit={this.deliver} name="inventry">
                                                                     <div className="form-group col-md-8">
@@ -179,7 +179,7 @@ handleChange(e) {
                                                                         </select>
                                                                     </div>
                                                                     <div className="form-group col-md-8">
-                                                                        <textarea class="form-control" aria-label="With textarea" className="form-control" id="exampleFormControlInput1" name="text" placeholder="special note here" value={this.state.text} onChange={this.handleChange} required></textarea>
+                                                                        <textarea class="form-control" aria-label="With textarea" className="form-control" id="exampleFormControlInput1" name="text" placeholder="delivery note here" value={this.state.text} onChange={this.handleChange} required></textarea>
                                                                     </div>
                                                                     <div className="upbtns">
                                                                         <OverlayTrigger
@@ -194,6 +194,7 @@ handleChange(e) {
                                                             </li>
                                                         ) : (
                                                                 <div>
+                                                                     <li className="list-group-item">Pending items qty : <span className="names"> {this.state.item.purchqty-this.state.item.updateqty}  </span></li>
                                                                 </div>
                                                             )
                                                     }
@@ -205,16 +206,11 @@ handleChange(e) {
                                                                 </div>
                                                             )
                                                     }
-                                                    {
-                                                        ((this.state.item.purchqty != 0 )) ? (
-                                                            <li className="list-group-item">Pending items qty : <span className="names"> {this.state.item.purchqty}  </span></li>
-                                                        ) : (
-                                                                <div>
-                                                                </div>
-                                                            )
-                                                    }
                                                     <div className="viewbuttongroup">
                                                         <a href="/purchaseview" className="glyphicon glyphicon-circle-arrow-left">Purchases</a>
+                                                        {
+                                                           this.state.item.is_delivered === "no" ?(<a href={"/purchupdate/"+this.state.item._id} className="btn btn-success">Update</a>):(<div></div>)
+                                                        }
                                                         <br />
                                                         <a href="/stockview" className="glyphicon glyphicon-circle-arrow-left">Stock</a>
                                                     </div>

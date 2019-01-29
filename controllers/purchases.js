@@ -16,7 +16,7 @@ module.exports.viewpurch = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            Purchase.aggregate([{$match:{purchqty:{$gt:0}}}]).then(details=>{
+            Purchase.aggregate([{ "$match": { "$expr": { "$ne": ["$purchqty", "$updateqty"] }}}]).then(details=>{
                 if (details.length === 0) {
                     return res.json({ success: false, msg: 'No purchases' })
                 } else {
@@ -87,6 +87,67 @@ module.exports.update = (req, res, next) => {
                   return res.json({ success: false, msg:'cannot finish your request!!' }); 
                 }
             })
+        }
+    });
+}
+module.exports.purchaseupdate = (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+            var condition = {_id:req.params.id}
+            var con = {purchid:req.params.id}
+            const body ={
+                purchid:null,
+                status:"unsold",
+                solddate:null
+            }
+            //console.log(req.body)
+            Stock.updateMany(con,body).then(data =>{
+                if((data)||(data == null)){
+                    Purchase.updateOne(condition,req.body).then(doc =>{    
+                        if(doc){
+                          return res.json({ success: true, msg:'Purchase updated!' });
+                        }else{
+                          return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                        }
+                    })
+                }else{
+                    return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                }
+            })
+        }
+    });
+}
+module.exports.deletepurch = (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+            var condition = {purchid:req.params.id}
+            const body ={
+                purchid:null,
+                status:"unsold",
+                solddate:null
+            }
+            Stock.updateMany(condition,body).then(doc=>{
+                if((doc)||(doc == null)){
+                    Purchase.findByIdAndRemove({
+                        _id:req.params.id
+                    }).then(data =>{
+                        if(data){    
+                        return res.json({ success:true, msg:'successfully deleted' }); 
+                        }else{
+                            return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                        }
+                    })
+                  }else{
+                    return res.json({ success: false, msg:'cannot finish your request!!' }); 
+                  }
+            });
+            
         }
     });
 }

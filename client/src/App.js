@@ -32,6 +32,7 @@ import Edit from './components/Stock/edit';
 import View from './components/Stock/view';
 import Purchview from './components/purchases/view';
 import Purchases from './components/purchases/show';
+import Purchupdate from './components/purchases/update';
 import Error from './components/error';
 import socketIOClient from "socket.io-client";
 class App extends Component {
@@ -195,6 +196,11 @@ class App extends Component {
             {(localStorage.token) ?<Route path="/purchview/:id" component={Purchview} /> : null}
             <Route path="/Error" component={Error} />
             <Redirect from="/purchview/:id" to="/Error" />
+          </Switch>
+          <Switch>
+            {(localStorage.token) ? <Route path="/purchupdate/:id" component={Purchupdate} /> : null}
+            <Route path="/Error" component={Error} />
+            <Redirect from="/purchupdate" to="/Error" />
           </Switch>
           <Route path="/editpassword/:id/:password" component={Editpassword} />
         </div>

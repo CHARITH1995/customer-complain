@@ -61,9 +61,11 @@ router.put('/sold/:id',jwtHelper.verifyJwtToken,stock.sold);
 
 router.post('/viewpurch',jwtHelper.verifyJwtToken,purch.viewpurch);
 router.put('/deliver/:id',jwtHelper.verifyJwtToken,purch.update);
+router.put('/up/:id',jwtHelper.verifyJwtToken,purch.purchaseupdate);
 router.post('/show',jwtHelper.verifyJwtToken,purch.purchases);
 router.get('/getpurch/:id',jwtHelper.verifyJwtToken,purch.getpurch);
 router.get('/getpurchase/:item',jwtHelper.verifyJwtToken,purch.item);
+router.delete('/removepurch/:id',jwtHelper.verifyJwtToken,purch.deletepurch);
 
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);

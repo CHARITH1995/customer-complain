@@ -11,16 +11,6 @@ const path = require('path');
 
 let imagename = '';
 let number;
-// const storage = multer.diskStorage({
-//     destination: './client/public/stores',
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + '-' + file.originalname);
-//         // cb(null, file.originalname);
-//     }
-// });
-// const upload = multer({
-//     storage: storage
-// }).single('file');
 multer({
     limits: { fieldSize: 1024 * 1024 * 1024 }
 })
