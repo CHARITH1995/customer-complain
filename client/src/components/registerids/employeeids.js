@@ -171,7 +171,7 @@ class Employeeid extends Component {
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Telephone number :</label>
-                            <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="name@example.com" value={this.state.tp} onChange={this.handleChange} />
+                            <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="0912258051" value={this.state.tp} onChange={this.handleChange} />
                             <span style={{ color: "#FD6571" }}>{this.state.tperr}</span>
                         </div>
                         <div className="form-group col-md-8">

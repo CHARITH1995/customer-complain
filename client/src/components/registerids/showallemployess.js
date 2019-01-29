@@ -62,7 +62,6 @@ class ViewEmployees extends Component {
                 this.setState({
                     delmsg:data.msg,
                 })
-                alert(this.state.msg)
                 window.location.reload();
             } else {
                 this.setState({
