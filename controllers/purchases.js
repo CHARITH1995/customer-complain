@@ -41,6 +41,22 @@ module.exports.getpurch = (req, res, next) => {
         }
     });
 }
+module.exports.item = (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if (err) {
+            console.log('ERROR: Could not connect to the protected route');
+            res.send({ success: false, msg: 'please log again' });
+        } else {
+            Purchase.aggregate([{$match:{item:req.params.item,purchqty:{$gt:0}}}]).then(details=>{
+                if(details.length !=0){
+                    return res.json({success:true , data:details[0]})
+                }else{
+                    return res.json({success:false , msg:'No purchases suggested to this item'})
+                }
+            })
+        }
+    });
+}
 module.exports.purchases = (req, res, next) => {
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if (err) {

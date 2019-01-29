@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { SwatchesPicker } from 'react-color';
 import {
     Image, OverlayTrigger, Popover, Panel, FormGroup, FormControl, HelpBlock, ControlLabel, Button
-    , Table
+    , Table, Modal
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './itemtypes.css';
@@ -16,16 +16,44 @@ class Itemtypes extends Component {
             items: [],
             identifier: '',
             show: true,
-            showinsert:false,
-            showmsg:false,
+            showmodel: false,
+            showinsert: false,
+            showdelete: false,
+            showmsg: false,
             name: '',
             nameerr: '',
-            showerrmsg:false,
+            showerrmsg: false,
             msg: '',
+            model:true,
+            delete:false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
+    }
+    modelfunction() {
+        if (this.state.model) {
+            return (
+                <div>
+                    <div className="static-modal">
+                        <Modal.Dialog>
+                            <Modal.Header>
+                                <Modal.Title>Modal title</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>One fine body...</Modal.Body>
+                            <Modal.Footer>
+                                <Button
+                                 onClick={() => this.setState({ model:false })}
+                                >Close</Button>
+                                <Button bsStyle="primary"
+                                onClick={() => this.setState({ delete: true })}
+                                >Save changes</Button>
+                            </Modal.Footer>
+                        </Modal.Dialog>
+                    </div>;
+                </div>
+            )
+        }
     }
     navbar() {
         return (
@@ -73,13 +101,13 @@ class Itemtypes extends Component {
                     if (details.success) {
                         this.setState({
                             items: details.data,
-                            msg:'successfully inserted!',
-                            showmsg:true
+                            msg: 'successfully inserted!',
+                            showmsg: true
                         })
                     } else {
                         this.setState({
-                            showmsg:true,
-                            msg:'cannot insert!',
+                            showmsg: true,
+                            msg: 'cannot insert!',
                         })
                     }
                 })
@@ -87,30 +115,29 @@ class Itemtypes extends Component {
         }
     }
     removeitem(id) {
-        var authToken = localStorage.token;
-        //console.log(authToken)
-        fetch("http://localhost:4000/items/removeitems/" + id, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Bearer' + authToken
-            },
-        }).then(function (response) {
-            return response.json();
-        }).then(data => {
-            if (data.success) {
-                this.setState({
-                    showmsg:true,
-                    msg:'delete successfully!'
-                })
-                window.location.reload();
-            } else {
-                this.setState({
-                    showerrmsg:true,
-                    msg:data.msg
-                })
-            }
-        })
+            var authToken = localStorage.token;
+            fetch("http://localhost:4000/items/removeitems/" + id, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer' + authToken
+                },
+            }).then(function (response) {
+                return response.json();
+            }).then(data => {
+                if (data.success) {
+                    this.setState({
+                        showmsg: true,
+                        msg: 'delete successfully!'
+                    })
+                    window.location.reload();
+                } else {
+                    this.setState({
+                        showerrmsg: true,
+                        msg: data.msg
+                    })
+                }
+            })
     }
     handleValidation() {
         let formvalid = true
@@ -136,9 +163,9 @@ class Itemtypes extends Component {
         let name = target.name;
         this.setState({
             [name]: value,
-            showmsg:false,
+            showmsg: false,
             nameerr: '',
-            showerrmsg:false
+            showerrmsg: false
         });
     }
     handleChangeComplete = (color, event) => {
@@ -209,29 +236,29 @@ class Itemtypes extends Component {
                             {this.form()}
                         </div>
                         <div className="col-sm-8 contain">
-                        
-                        {
-                            this.state.showmsg ? (
-                                <Panel bsStyle="success" className="table">
-                                            <Panel.Heading>
-                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                            </Panel.Heading>
-                                        </Panel>
-                            ):(
-                                <div></div>
-                            )
-                        }
-                        {
-                            this.state.showerrmsg ? (
-                                <Panel bsStyle="danger" className="table">
-                                            <Panel.Heading>
-                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                            </Panel.Heading>
-                                        </Panel>
-                            ):(
-                                <div></div>
-                            )
-                        }
+
+                            {
+                                this.state.showmsg ? (
+                                    <Panel bsStyle="success" className="table">
+                                        <Panel.Heading>
+                                            <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                        </Panel.Heading>
+                                    </Panel>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
+                            {
+                                this.state.showerrmsg ? (
+                                    <Panel bsStyle="danger" className="table">
+                                        <Panel.Heading>
+                                            <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                        </Panel.Heading>
+                                    </Panel>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
                             {
                                 this.state.show ? (
                                     <Table responsive className="table">
@@ -247,8 +274,8 @@ class Itemtypes extends Component {
                                             this.state.items.map(item =>
                                                 <tr>
                                                     <td>{item.name}</td>
-                                                    <td><svg height="100" width="100"className="identifer">
-                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={item.identifier} />
+                                                    <td><svg height="100" width="100" className="identifer">
+                                                        <circle cx="50" cy="50" r="15" stroke-width="3" fill={item.identifier} />
                                                     </svg></td>
                                                     <td>{item.date}</td>
                                                     <td><OverlayTrigger

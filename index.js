@@ -52,7 +52,7 @@ app.get("*", (req, res) => {
 io.on("connection", socket => {
     console.log("New client connected"), setInterval(
       () => getApiAndEmit(socket),
-      10000*6*60
+      10000*6*60*24
     );
     socket.on("disconnect", () => console.log("Client disconnected"));
   });

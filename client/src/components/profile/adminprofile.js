@@ -242,7 +242,7 @@ class Adminprofile extends Component {
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
-                        <h2 className="title">Change Profile</h2>
+                        <h2 className="titles">Change Profile</h2>
                         <div className="col-sm-2 sidebar">
                             <div className="list-group ">
                                 <a className="list-group-item active">Quick Links</a>

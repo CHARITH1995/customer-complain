@@ -10,6 +10,9 @@ class View extends Component {
             item: [],
             newstatus: '',
             showsuc: false,
+            purchshow:false,
+            purchmsg:'',
+            purchdata:[],
             showerr: false,
             purchid: '',
         };
@@ -75,7 +78,6 @@ class View extends Component {
                 body: JSON.stringify(stocks)
             }).then(res => res.json())
                 .then(json => {
-                    console.log(json)
                     if (json.success) {
                         this.setState({
                             showsuc: true,
@@ -96,14 +98,13 @@ class View extends Component {
             })
         }
     }
-
     componentDidMount() {
         var authToken = localStorage.token;
         this.setState({
             showsuc: false,
             showerr: false
         })
-        fetch("http://localhost:4000/stores/getitem/" + this.props.match.params.id, {
+        fetch("http://localhost:4000/stores/getitem/"+this.props.match.params.id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +116,45 @@ class View extends Component {
             this.setState({
                 item: data
             });
+            if(data.purchid === null){
+                fetch("http://localhost:4000/purch/getpurchase/"+data.item, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer' + authToken
+                    },
+                }).then(function (response) {
+                    return response.json();
+                }).then(doc => {
+                    if(doc.success){             
+                    this.setState({
+                        purchdata:doc.data,
+                        purchid:doc.data._id
+                    });
+                    }else{
+                        this.setState({
+                            purchshow:true,
+                            purchmsg:doc.msg
+                        })
+                    }
+                });
+            }else{
+                fetch("http://localhost:4000/purch/getpurch/" + data.purchid, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer' + authToken
+                    },
+                }).then(function (response) {
+                    return response.json();
+                }).then(data => {
+                    this.setState({
+                        purchdata:data
+                    });
+                }); 
+            }
         });
+        
     }
     render() {
         const popoverHoverFocus = (
@@ -169,9 +208,31 @@ class View extends Component {
                                         )
                                 }
                                 <div className="row">
-                                    <div className="col-sm-2" >
-
-                                    </div>
+                                        {
+                                    this.state.purchshow ? (
+                                        <div className= "col-sm-4" > 
+                                            <Panel bsStyle="success" className="text-center">
+                                                <Panel.Heading>
+                                                    <Panel.Title componentClass="h3">{this.state.purchmsg}</Panel.Title>
+                                                </Panel.Heading>
+                                            </Panel>
+                                        </div>
+                                    ) : (
+                                            <div className= "col-sm-4" >          
+                                                 <a className="list-group-item active">Suggest Purchase</a>
+                                                 <li className="list-group-item d-flex justify-content-between align-items-center">
+                                                Name : <span className="badge badge-primary badge-pill">{this.state.purchdata.name}</span>
+                                                <br />
+                                                P id :<span className="badge badge-primary badge-pill">{this.state.purchdata._id}</span>
+                                                <br />
+                                                Item : <span className="badge badge-primary badge-pill">{this.state.purchdata.item}</span>
+                                                <br />
+                                                Purchase quantity : <span className="badge badge-primary badge-pill">{this.state.purchdata.purchqty + this.state.purchdata.updateqty}</span>
+                                                <br /> 
+                                            </li>
+                                            </div>
+                                        )
+                                }
                                     <div className="col-sm-8">
                                         <div className="viewcard-body">
                                             <div >
@@ -210,7 +271,7 @@ class View extends Component {
                                                         ) : (
                                                                 <div>
                                                                     <li className="list-group-item">Status :  <span className="names"> sold </span> </li>
-                                                                <li className="list-group-item">Purchase Id : <span className="names"> {this.state.item.purchid} </span></li>
+                                                                    <li className="list-group-item">Purchase Id : <span className="names"> {this.state.item.purchid} </span></li>
                                                                 </div>
                                                             )
                                                     }

@@ -63,6 +63,7 @@ router.post('/viewpurch',jwtHelper.verifyJwtToken,purch.viewpurch);
 router.put('/deliver/:id',jwtHelper.verifyJwtToken,purch.update);
 router.post('/show',jwtHelper.verifyJwtToken,purch.purchases);
 router.get('/getpurch/:id',jwtHelper.verifyJwtToken,purch.getpurch);
+router.get('/getpurchase/:item',jwtHelper.verifyJwtToken,purch.item);
 
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);

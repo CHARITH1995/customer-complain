@@ -78,6 +78,7 @@ module.exports.employeereg=(req,res,next)=>{
             console.log('ERROR: Could not connect to the protected route');
             res.send({success:false,msg:'please log again'});
         } else {
+            var salt = bcrypt.genSaltSync(10);
             Employee.findOne({
                 email:req.body.email
             }).then(function(data){
@@ -98,7 +99,8 @@ module.exports.employeereg=(req,res,next)=>{
                                 Id:req.body.Id,
                                 Tp:req.body.Tp,
                                 subarea:req.body.subarea,
-                                authorize_by:req.body.authorize_by   
+                                authorize_by:req.body.authorize_by,
+                                password:bcrypt.hashSync('test', salt) 
                             });
                             employee.save((err,doc)=>{
                                 if(!err){
