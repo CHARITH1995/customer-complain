@@ -199,7 +199,7 @@ handleChange(e) {
                                                             )
                                                     }
                                                      {
-                                                        ((this.state.item.text != null)) ? (
+                                                        !(this.state.item.text != null) ? (
                                                             <li className="list-group-item">Note : <span className="names"> {this.state.item.text}  </span></li>
                                                         ) : (
                                                                 <div>

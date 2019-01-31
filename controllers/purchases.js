@@ -101,9 +101,9 @@ module.exports.purchaseupdate = (req, res, next) => {
             const body ={
                 purchid:null,
                 status:"unsold",
-                solddate:null
+                solddate:null,
+                paymentmethod:null
             }
-            //console.log(req.body)
             Stock.updateMany(con,body).then(data =>{
                 if((data)||(data == null)){
                     Purchase.updateOne(condition,req.body).then(doc =>{    

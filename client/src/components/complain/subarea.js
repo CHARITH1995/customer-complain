@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Image } from 'react-bootstrap';
+import { Image ,Panel } from 'react-bootstrap';
 
 
 
@@ -8,7 +8,8 @@ class Subarea extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            complains: []
+            complains: [],
+            showerr:false,
         };
     }
     logout = (e) => {
@@ -58,8 +59,14 @@ class Subarea extends Component {
                 console.log(data)
                 this.setState({
                     complains: data
-                })
+                });
+                if(data.length == 0){
+                    this.setState({
+                        showerr:true
+                    })
+                }
             })
+            
 
     }
 
@@ -83,27 +90,39 @@ class Subarea extends Component {
                                 </div>
                             </div>
                             <div class="col-sm-8 text-left">
-                                {this.state.complains.map(complain =>
-                                    <div className="contain rows">
-                                        <div className="card-show">
-                                            <div >
-                                            <ul className="list-group list-group-flush">
-                                                     <li className="list-group-item">Description : <span className="names">{complain.description}</span></li>
-                                                     <li className="list-group-item">Customer Name : <span className="names">{complain.name}</span></li>
-                                                     <li className="list-group-item">Email : <span className="names">{complain.email}</span></li>
-                                                     <li className="list-group-item">Subarea : <span className="names">{complain.subarea}</span></li>
-                                                     <li className="list-group-item">
-                                                        <div className="storesbutton">
-                                                        <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
-                                                        </div>
-                                                    </li>
-                                                        </ul>
-                                                <hr />
+                            {
+                                this.state.showerr ?(
+                                    <div className="msg">
+                                    <Panel bsStyle="danger" className="text-center">
+                                        <Panel.Heading>
+                                            <Panel.Title componentClass="h3">No Complains to Show</Panel.Title>
+                                        </Panel.Heading>
+                                    </Panel>
+                                </div>
+                                ):(
+                                    this.state.complains.map(complain =>
+                                        <div className="contain rows">
+                                            <div className="card-show">
+                                                <div >
+                                                <ul className="list-group list-group-flush">
+                                                         <li className="list-group-item">Description : <span className="names">{complain.description}</span></li>
+                                                         <li className="list-group-item">Customer Name : <span className="names">{complain.name}</span></li>
+                                                         <li className="list-group-item">Email : <span className="names">{complain.email}</span></li>
+                                                         <li className="list-group-item">Subarea : <span className="names">{complain.subarea}</span></li>
+                                                         <li className="list-group-item">
+                                                            <div className="storesbutton">
+                                                            <Link to={"/Complainview/" + complain._id} className="btn btn-info">View</Link>
+                                                            </div>
+                                                        </li>
+                                                            </ul>
+                                                    <hr />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )
+                                    
                                 )
-                                }
+                            }
                             </div>
                             <div className="col-sm-2 sidenav">
                                 <div class="list-group">

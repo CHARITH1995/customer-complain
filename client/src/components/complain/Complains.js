@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter, Redirect } from 'react-router-dom';
 import Nav from '../front/nav';
 import './Complains.css';
-import { Image } from 'react-bootstrap';
+import { Image ,Panel} from 'react-bootstrap';
 import Pagination from "react-js-pagination";
 
 
@@ -14,7 +14,7 @@ class Complains extends Component {
             complains: [],
             searchfield: '',
             length: true,
-            activePage:1
+            activePage: 1
         };
         this.onSearch = this.onSearch.bind(this);
     }
@@ -62,10 +62,10 @@ class Complains extends Component {
             })
     }
     handlePageChange(pageNumber) {
-        this.setState({activePage: pageNumber});
-       }
+        this.setState({ activePage: pageNumber });
+    }
     render() {
-        const totalCourses=this.state.complains.length;
+        const totalCourses = this.state.complains.length;
 
         if (localStorage.token) {
             return (
@@ -113,11 +113,14 @@ class Complains extends Component {
                                         )
                                         }
                                     </div>
+                                ) : (<div className="msg">
+                                    <Panel bsStyle="danger" className="text-center">
+                                        <Panel.Heading>
+                                            <Panel.Title componentClass="h3">No Complains to Show</Panel.Title>
+                                        </Panel.Heading>
+                                    </Panel>
+                                </div>
 
-                                ) : (
-                                        <div class="col-sm-8 bg-danger">
-                                            <h2>No complains to show</h2>
-                                        </div>
                                     )
                             }
                         </div>

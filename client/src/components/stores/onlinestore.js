@@ -242,9 +242,6 @@ class Onlinestore extends Component {
                             </div>
                             <div className="list-group ">
                                 <a className="list-group-item active">Low Store Alerts</a>
-                                {/* {
-                                    !this.state.shownopurch ? (
-                                        this.state.purch.map(data => */}
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Name : <span class="badge badge-primary badge-pill"></span>
                                                 <br />
@@ -258,17 +255,6 @@ class Onlinestore extends Component {
                                                     <Link to={"/purchview"} className="btn btn-info">View</Link>
                                                 </div>
                                             </li>
-                                {/* //         )
-                                //     ) : (
-                                //             <div className="message">
-                                //                 <Panel bsStyle="danger" className="text-center">
-                                //                     <Panel.Heading>
-                                //                         <Panel.Title componentClass="h3">{this.state.purchmsg}</Panel.Title>
-                                //                     </Panel.Heading>
-                                //                 </Panel>
-                                //             </div>
-                                //         )
-                                // } */}
                             </div>
                         </div>
                     </div>

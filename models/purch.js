@@ -29,6 +29,7 @@ const Purchase = new schema({
     },
     paymentmethod:{
         type:String,
+        default:null,
         require:[true,'this field is required'] 
     },
     is_delivered:{

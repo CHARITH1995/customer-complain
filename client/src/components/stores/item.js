@@ -148,7 +148,7 @@ class Viewbyitems extends Component {
                             {   this.state.show ?( this.state.storeitems.filter(this.searching(this.state.searchfield)).map(item =>
                                 <div className=" contain rows">
                                     <div className="card-show">
-                                        <Image src={"../../stores/" + item.imagepath} className="storeimage" rounded />
+                                        <Image src={item.imagepath} className="storeimage" rounded />
                                         <ul className="list-group list-group-flush">
                                         <li className="list-group-item">Description :{item.description}</li>
                                             <li key={item.id} className="list-group-item">Status :{item.status}</li>
