@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CirclePicker } from 'react-color';
+import { SketchPicker} from 'react-color';
 import { Panel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import FileBase64 from 'react-file-base64';
@@ -157,7 +157,10 @@ class Stores extends Component {
                             </div>
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Pick device color :</label>
-                                <CirclePicker onChangeComplete={this.handleChangeComplete} />
+                                <SketchPicker
+                                 color={ this.state.background }
+                                 onChangeComplete={ this.handleChangeComplete }
+                         />
                             </div>
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Brand :</label>

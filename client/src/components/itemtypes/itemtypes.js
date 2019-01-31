@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SwatchesPicker } from 'react-color';
+import { SketchPicker  } from 'react-color';
 import {
     Image, OverlayTrigger, Popover, Panel, FormGroup, FormControl, HelpBlock, ControlLabel, Button
     , Table, Modal
@@ -30,6 +30,8 @@ class Itemtypes extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
+        
+       
     }
     modelfunction() {
         if (this.state.model) {
@@ -168,9 +170,10 @@ class Itemtypes extends Component {
             showerrmsg: false
         });
     }
-    handleChangeComplete = (color, event) => {
-        this.setState({ identifier: color.hex });
-    }
+    handleChangeComplete = (color) => {
+        this.setState({ background: color.hex });
+      };
+    
     form() {
         return (
             <div>
@@ -182,7 +185,10 @@ class Itemtypes extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleFormControlInput1">Enter Identify color</label>
-                        <SwatchesPicker onChangeComplete={this.handleChangeComplete} />
+                        <SketchPicker
+                                 color={ this.state.background }
+                                 onChangeComplete={ this.handleChangeComplete }
+                         />
                     </div>
                     <div className="form-group col-md-2">
                         <div className="additembutton">
