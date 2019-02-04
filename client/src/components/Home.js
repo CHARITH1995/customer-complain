@@ -32,10 +32,10 @@ class Home extends Component {
                                             <div className="row">
                                                 <div className=" col-sm-4 col-md col-sm-4  col-12 col">
                                                     <h5 class="headin5_amrc col_white_amrc pt2">Find us</h5>
-                                                    <p className="mb10">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                    <p><i className="fa fa-location-arrow"></i> 9878/25 sec 9 rohini 35 </p>
-                                                    <p><i className="fa fa-phone"></i>  +91-9999878398  </p>
-                                                    <p><i className="fa fa fa-envelope"></i> info@example.com  </p>
+                                                    <p className="mb10"> we seek to continuously enhance our products and services while focusing on affordability and accessibility so that every home is “connected” and are able to enjoy the benefits of access to knowledge and information. We consid</p>
+                                                
+                                                    <p><i className="fa fa-phone"></i>  +94-1199878398  </p>
+                                                    <p><i className="fa fa fa-envelope"></i> pr@slt.lk  </p>
 
 
                                                 </div>
@@ -45,13 +45,14 @@ class Home extends Component {
                                                     <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
 
                                                     <ul className="footer_ul_amrc">
-                                                        <li><a href="http://kalarikendramdelhi.com">Image Rectoucing</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Clipping Path</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Hollow Man Montage</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Ebay  Amazon</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Hair Masking/Clipping</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Image Cropping</a></li>
-                                                    </ul>
+                                                    <li><a href="/onlinestore">E-shop</a></li>
+                  <li><a href="/addstores">Add New Items</a></li>
+                  <li><a href="/stockview">E-stock</a></li>
+                  <li><a href="/stock">E-stock maintain</a></li>
+                  <li><a href="/purchaseview">Purchases views</a></li>
+                  <li><a href="/storedata">Store Data</a></li>
+                
+               /ul></ul>
 
                                                 </div>
 
@@ -60,12 +61,12 @@ class Home extends Component {
                                                     <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
 
                                                     <ul className="footer_ul_amrc">
-                                                        <li><a href="http://kalarikendramdelhi.com">Remove Background</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Shadows  Mirror Reflection</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Logo Design</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Vectorization</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Hair Masking/Clipping</a></li>
-                                                        <li><a href="http://kalarikendramdelhi.com">Image Cropping</a></li>
+                                                    <li><a href="/reports"> Monthly Reports and Calulation</a></li>
+                  <li><a href="/Complain">Customer Complains</a></li>
+                  <li><a href="/showcustomer">Customer Details</a></li>
+                  <li><a href="/customerids">Customer Registration</a></li>
+                  <li><a href="/showemployees">Technician Details</a></li>
+                  <li><a href="/employeeids">Technician Registration</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -73,22 +74,10 @@ class Home extends Component {
 
 
                                         <div className="container">
-                                            <ul className="foote_bottom_ul_amrc">
-                                                <li><a href="http://kalarikendramdelhi.com">Home</a></li>
-                                                <li><a href="http://kalarikendramdelhi.com">About</a></li>
-                                                <li><a href="http://kalarikendramdelhi.com">Services</a></li>
-                                                <li><a href="http://kalarikendramdelhi.com">Pricing</a></li>
-                                                <li><a href="http://kalarikendramdelhi.com">Blog</a></li>
-                                                <li><a href="http://kalarikendramdelhi.com">Contact</a></li>
-                                            </ul>
+                                            
                                             <p className="text-center">Copyright @2017 | Designed With by <a href="#">Your Company Name</a></p>
 
-                                            <ul className="social_footer_ul">
-                                                <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-twitter"></i></a></li>
-                                                <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-linkedin"></i></a></li>
-                                                <li><a href="http://kalarikendramdelhi.com"><i class="fab fa-instagram"></i></a></li>
-                                            </ul>
+                                            
                                         </div>
 
                                     </footer>

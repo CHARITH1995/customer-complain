@@ -61,7 +61,7 @@ class Adminprofile extends Component {
                 formvalid = false
             }
         }
-        if (this.state.email !== 'undefined') {
+        if (this.state.email !== 'undefined') { //regular expression 
             if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
                 this.setState({
                     emailerr: 'email invalid!',
