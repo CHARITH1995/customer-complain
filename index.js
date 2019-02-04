@@ -52,7 +52,7 @@ app.get("*", (req, res) => {
 io.on("connection", socket => {
     console.log("New client connected"), setInterval(
       () => getApiAndEmit(socket),
-      10000
+      10000*60*60*24
     );
     socket.on("disconnect", () => console.log("Client disconnected"));
   });
@@ -62,7 +62,6 @@ io.on("connection", socket => {
       Stores.aggregate([{$match:{qty:{$lt:5}}}]).then(function(data){
         if(data.length != 0){
           data.map(d=>{
-            console.log(d.item)
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
