@@ -56,7 +56,7 @@ class Adminprofile extends Component {
         if (this.state.lname !== 'undefined') {
             if (!this.state.lname.match(/^[a-zA-Z]{3,}$/i)) {
                 this.setState({
-                    lnameerr: 'first name invalid!',
+                    lnameerr: 'last name invalid!',
                 })
                 formvalid = false
             }
