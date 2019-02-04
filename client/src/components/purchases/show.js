@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
 import '../stores/onlinestore.css';
-import { OverlayTrigger, Popover, Panel } from 'react-bootstrap';
+import { OverlayTrigger, Popover, Panel ,Modal,Button } from 'react-bootstrap';
 
 function searching(searchfield) {
     return function (x) {
@@ -26,10 +26,13 @@ class Purchases extends Component {
             searchfield: '',
             results: [],
             shownopurch: false,
-            showdel:false,
+            showdel: false,
             purch: [],
-            purchmsg: ''
+            purchmsg: '',
+            id: '',
+            view: false
         };
+        this.handleClose = this.handleClose.bind(this);
         this.onSearch = this.onSearch.bind(this);
     }
 
@@ -38,8 +41,16 @@ class Purchases extends Component {
             searchfield: e.target.value
         })
     }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
+    }
     removepurch(id) {
         var authToken = localStorage.token;
+        this.setState({
+            view: false,
+        });
         fetch("http://localhost:4000/purch/removepurch/" + id, {
             method: "DELETE",
             headers: {
@@ -115,6 +126,28 @@ class Purchases extends Component {
                                 <input className="form-control" id="myInput" type="text" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.onSearch} />
                             </div>
                             {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removepurch.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                             </div>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
+                            {
                                 this.state.showdel ? (
                                     <div className="message">
                                         <Panel bsStyle="success" className="text-center">
@@ -150,12 +183,13 @@ class Purchases extends Component {
                                                             )
                                                     }
                                                     {
-                                                        data.deliverd_by != null ? (
+                                                        data.deliverd_by === null ? (
                                                             <div>
-                                                                <li className="list-group-item">Delivered by : <span className="names"> {data.deliverd_by} </span></li>
+
                                                             </div>
                                                         ) : (
                                                                 <div>
+                                                                    <li className="list-group-item">Delivered by : <span className="names"> {data.deliverd_by} </span></li>
                                                                 </div>
                                                             )
                                                     }
@@ -164,13 +198,19 @@ class Purchases extends Component {
                                                             <Link to={"/purchview/" + data._id} className="btn btn-info">View</Link>
                                                             {
                                                                 data.is_delivered === "no" ? (
-                                                                        <OverlayTrigger
-                                                                            trigger={['hover', 'focus']}
-                                                                            placement="bottom"
-                                                                            overlay={popoverHoverFocus}
-                                                                        >
-                                                                            <button className="btn btn-danger" onClick={this.removepurch.bind(this, data._id)}>Remove</button>
-                                                                        </OverlayTrigger>
+                                                                    <OverlayTrigger
+                                                                        trigger={['hover', 'focus']}
+                                                                        placement="bottom"
+                                                                        overlay={popoverHoverFocus}
+                                                                    >
+
+                                                                        <button className="btn btn-danger" onClick={() => {
+                                                                            this.setState({
+                                                                                view: true,
+                                                                                id: data._id
+                                                                            })
+                                                                        }}>Remove</button>
+                                                                    </OverlayTrigger>
                                                                 ) : (
                                                                         <div>
                                                                         </div>

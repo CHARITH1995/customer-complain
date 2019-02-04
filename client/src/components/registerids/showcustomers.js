@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, OverlayTrigger, Popover, Panel } from 'react-bootstrap';
+import { Image, OverlayTrigger, Popover, Panel, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
@@ -9,9 +9,11 @@ class Viewcustomers extends Component {
         this.state = {
             ids: [],
             show: true,
-            msg: ''
+            msg: '',
+            id: '',
+            view: false
         }
-
+        this.handleClose = this.handleClose.bind(this);
     }
     logout = (e) => {
         e.preventDefault();
@@ -70,8 +72,16 @@ class Viewcustomers extends Component {
             }
         });
     }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
+    }
     removeitem(id) {
         var authToken = localStorage.token;
+        this.setState({
+            view: false,
+        });
         fetch("http://localhost:4000/register/removecustomer/" + id, {
             method: "DELETE",
             headers: {
@@ -85,7 +95,6 @@ class Viewcustomers extends Component {
                 this.setState({
                     delmsg: data.msg,
                 })
-                alert(this.state.msg)
                 window.location.reload();
             } else {
                 this.setState({
@@ -117,6 +126,28 @@ class Viewcustomers extends Component {
                         </div>
                         <div className="col-sm-8">
                             {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                             </div>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
+                            {
                                 this.state.show ? (
                                     this.state.ids.map(id =>
                                         <div className="contain rows">
@@ -138,7 +169,12 @@ class Viewcustomers extends Component {
                                                                 placement="bottom"
                                                                 overlay={popoverHoverFocus}
                                                             >
-                                                                <button className="btn btn-danger" onClick={this.removeitem.bind(this, id._id)}>Remove</button>
+                                                                <button className="btn btn-danger" onClick={() => {
+                                                                    this.setState({
+                                                                        view: true,
+                                                                        id: id._id
+                                                                    })
+                                                                }}>Remove</button>
                                                             </OverlayTrigger>
                                                         </div>
                                                     </li>

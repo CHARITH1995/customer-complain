@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
 import './onlinestore.css';
-import { Image, OverlayTrigger, Popover, Panel, ProgressBar } from 'react-bootstrap';
+import { css } from '@emotion/core';
+import { ClimbingBoxLoader } from 'react-spinners';
+import { Image, OverlayTrigger, Popover, Panel, ProgressBar, Modal, Button } from 'react-bootstrap';
 
 
-
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 class Onlinestore extends Component {
     constructor(props) {
         super(props)
@@ -22,13 +28,17 @@ class Onlinestore extends Component {
             value: 1,
             path: '',
             show: true,
-            showdel:false,
+            showdel: false,
             showPopup: false,
             searchfield: '',
             results: [],
-            isempty: false
+            isempty: false,
+            id: '',
+            view: false,
+            loading:true,
         };
         this.onSearch = this.onSearch.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
     searching(searchfield) {
         return function (x) {
@@ -48,13 +58,10 @@ class Onlinestore extends Component {
             searchfield: e.target.value
         })
     }
-    handlePageChange(pageNumber) {
-        this.setState({ activePage: pageNumber });
-    }
     componentDidMount() {
         var authToken = localStorage.token;
         this.setState({
-            showdel:false
+            showdel: false
         })
         fetch("http://localhost:4000/stores/onlinestore", {
             method: "POST",
@@ -68,12 +75,14 @@ class Onlinestore extends Component {
             if (data.success) {
                 this.setState({
                     storeitems: data.data,
+                    loading:false
                 })
             } else {
                 this.setState({
                     showitems: false,
                     showerr: true,
-                    msg: data.msg
+                    msg: data.msg,
+                    loading:false
                 })
             }
 
@@ -97,7 +106,10 @@ class Onlinestore extends Component {
 
     removeitem(id) {
         var authToken = localStorage.token;
-        fetch("http://localhost:4000/stores/removeitem/"+id, {
+        this.setState({
+            view: false,
+        });
+        fetch("http://localhost:4000/stores/removeitem/" + id, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -105,21 +117,27 @@ class Onlinestore extends Component {
             },
         }).then(function (response) {
             return response.json();
-        }).then(data =>{
+        }).then(data => {
             if (data.success) {
                 this.setState({
-                    showdel:true,
+                    showdel: true,
                     msg: data.msg,
                 })
                 window.location.reload();
             } else {
                 this.setState({
-                    showdel:true,
+                    showdel: true,
                     msg: data.msg
                 })
             }
         })
     }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
+    }
+
     render() {
         const popoverHoverFocus = (
             <Popover id="popover-trigger-hover-focus" title="Romove Button">
@@ -129,6 +147,18 @@ class Onlinestore extends Component {
         if (localStorage.token) {
             return (
                 <div>
+                    {
+                        this.state.loading ? (
+                            <div className='sweet-loading'>
+                                <ClimbingBoxLoader
+                            css={override}
+                            sizeUnit={"px"}
+                            size={15}
+                            color={'#123abc'}
+                            loading={this.state.loading} />
+                            </div>
+                        ):(
+                            <div>
                     <div className="head">
                         <Nav />
                     </div>
@@ -137,6 +167,28 @@ class Onlinestore extends Component {
                         <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
                                 <a className="list-group-item active">Item Types</a>
+                                {
+                                    this.state.view ? (
+                                        <div>
+                                            <Modal.Dialog>
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Delete Item Type</Modal.Title>
+                                                </Modal.Header>
+
+                                                <Modal.Body>
+                                                    <p>Do you want to delete this?</p>
+                                                </Modal.Body>
+
+                                                <Modal.Footer>
+                                                    <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                    <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                                </Modal.Footer>
+                                            </Modal.Dialog>;
+                                             </div>
+                                    ) : (
+                                            <div></div>
+                                        )
+                                }
                                 {
                                     this.state.show ? (
                                         this.state.items.map(item =>
@@ -154,27 +206,27 @@ class Onlinestore extends Component {
                                 }
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div className="col-sm-8">
                             <div className="searchbar">
                                 <h2>Filterable List</h2>
                                 <input className="form-control" id="myInput" type="text" placeholder="Search.." name="searchfield" value={this.state.searchfield} onChange={this.onSearch} required />
                             </div>
                             {
-                                    this.state.showdel ? (
-                                        <div className="message">
+                                this.state.showdel ? (
+                                    <div className="message">
                                         <Panel bsStyle="success" className="text-center">
                                             <Panel.Heading>
                                                 <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
                                             </Panel.Heading>
                                         </Panel>
                                     </div>
-                                        
-                                    ) : (
-                                            <div className="message">
-                                               
-                                            </div>
-                                        )
-                                }
+
+                                ) : (
+                                        <div className="message">
+
+                                        </div>
+                                    )
+                            }
                             {
                                 this.state.showitems ? (
                                     this.state.storeitems.filter(this.searching(this.state.searchfield)).map(item =>
@@ -183,12 +235,12 @@ class Onlinestore extends Component {
                                                 <Image src={item.imagepath} className="storeimage" rounded />
                                                 <ul className="list-group list-group-flush">
                                                     <li className="list-group-item">Description : <span className="names">{item.description}</span></li>
-                                                    <li className="list-group-item">Brand : <span className="names">{item.brand}</span></li>
+                                                    <li className="list-group-item">Item Type : <span className="names">{item.item}</span></li>
                                                     <li key={item.id} className="list-group-item">Warrenty Period : <span className="names">{item.warrenty} years </span></li>
                                                     <li className="list-group-item">Price:  <span className="names">Rs {item.price} /=</span></li>
                                                     <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="success" now={item.qty} label={`${item.qty}`} /></li>
-                                                    <li className="list-group-item">Device color :<svg height="100" width="100"className="identify">
-                                                        <circle cx="50" cy="50" r="15"  stroke-width="3" fill={item.color} />
+                                                    <li className="list-group-item">Device color :<svg height="100" width="100" className="identify">
+                                                        <circle cx="50" cy="50" r="15" stroke-width="3" fill={item.color} />
                                                     </svg></li>
                                                     <li className="list-group-item">
                                                         <div className="storesbutton">
@@ -199,7 +251,12 @@ class Onlinestore extends Component {
                                                                     placement="bottom"
                                                                     overlay={popoverHoverFocus}
                                                                 >
-                                                                    <button className="btn btn-danger" onClick={this.removeitem.bind(this, item._id)}>Remove</button>
+                                                                    <button className="btn btn-danger" onClick={() => {
+                                                                        this.setState({
+                                                                            view: true,
+                                                                            id: item._id
+                                                                        })
+                                                                    }}>Remove</button>
                                                                 </OverlayTrigger>
                                                             ) : (
                                                                     <div></div>
@@ -240,24 +297,11 @@ class Onlinestore extends Component {
                                 <a className="list-group-item"><Link to={"/reports"}>Monthly Reports</Link></a>
                                 <a className="list-group-item"><Link to={"/addstores"}>Add Items</Link></a>
                             </div>
-                            <div className="list-group ">
-                                <a className="list-group-item active">Low Store Alerts</a>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                Name : <span class="badge badge-primary badge-pill"></span>
-                                                <br />
-                                                P id : <span class="badge badge-primary badge-pill"></span>
-                                                <br />
-                                                Item : <span class="badge badge-primary badge-pill"></span>
-                                                <br />
-                                                Purchase quantity : <span class="badge badge-primary badge-pill"></span>
-                                                <br />
-                                                <div className="storesbutton">
-                                                    <Link to={"/purchview"} className="btn btn-info">View</Link>
-                                                </div>
-                                            </li>
-                            </div>
                         </div>
                     </div>
+                            </div>
+                        )
+                    }
                 </div>
             );
         }

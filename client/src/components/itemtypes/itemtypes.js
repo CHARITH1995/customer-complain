@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SketchPicker  } from 'react-color';
+import { SketchPicker } from 'react-color';
 import {
     Image, OverlayTrigger, Popover, Panel, FormGroup, FormControl, HelpBlock, ControlLabel, Button
     , Table, Modal
@@ -24,39 +24,18 @@ class Itemtypes extends Component {
             nameerr: '',
             showerrmsg: false,
             msg: '',
-            model:true,
-            delete:false
+            model: true,
+            delete: false,
+            id: '',
+            view: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
-        
-       
+
+
     }
-    modelfunction() {
-        if (this.state.model) {
-            return (
-                <div>
-                    <div className="static-modal">
-                        <Modal.Dialog>
-                            <Modal.Header>
-                                <Modal.Title>Modal title</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>One fine body...</Modal.Body>
-                            <Modal.Footer>
-                                <Button
-                                 onClick={() => this.setState({ model:false })}
-                                >Close</Button>
-                                <Button bsStyle="primary"
-                                onClick={() => this.setState({ delete: true })}
-                                >Save changes</Button>
-                            </Modal.Footer>
-                        </Modal.Dialog>
-                    </div>;
-                </div>
-            )
-        }
-    }
+
     navbar() {
         return (
             <div >
@@ -86,7 +65,7 @@ class Itemtypes extends Component {
         var authToken = localStorage.token;
         const item = {
             name: this.state.name,
-            identifier: this.state.identifier
+            identifier: this.state.background
         }
         e.preventDefault();
         if (this.handleValidation()) {
@@ -116,30 +95,38 @@ class Itemtypes extends Component {
             window.location.reload();
         }
     }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
+    }
     removeitem(id) {
-            var authToken = localStorage.token;
-            fetch("http://localhost:4000/items/removeitems/" + id, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': 'Bearer' + authToken
-                },
-            }).then(function (response) {
-                return response.json();
-            }).then(data => {
-                if (data.success) {
-                    this.setState({
-                        showmsg: true,
-                        msg: 'delete successfully!'
-                    })
-                    window.location.reload();
-                } else {
-                    this.setState({
-                        showerrmsg: true,
-                        msg: data.msg
-                    })
-                }
-            })
+        var authToken = localStorage.token;
+        this.setState({
+            view: false,
+        });
+        fetch("http://localhost:4000/items/removeitems/" + id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer' + authToken
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            if (data.success) {
+                this.setState({
+                    showmsg: true,
+                    msg: 'delete successfully!'
+                })
+                window.location.reload();
+            } else {
+                this.setState({
+                    showerrmsg: true,
+                    msg: data.msg
+                })
+            }
+        })
     }
     handleValidation() {
         let formvalid = true
@@ -172,8 +159,8 @@ class Itemtypes extends Component {
     }
     handleChangeComplete = (color) => {
         this.setState({ background: color.hex });
-      };
-    
+    };
+
     form() {
         return (
             <div>
@@ -186,9 +173,9 @@ class Itemtypes extends Component {
                     <div className="form-group">
                         <label htmlFor="exampleFormControlInput1">Enter Identify color</label>
                         <SketchPicker
-                                 color={ this.state.background }
-                                 onChangeComplete={ this.handleChangeComplete }
-                         />
+                            color={this.state.background}
+                            onChangeComplete={this.handleChangeComplete}
+                        />
                     </div>
                     <div className="form-group col-md-2">
                         <div className="additembutton">
@@ -210,7 +197,6 @@ class Itemtypes extends Component {
         }).then(function (response) {
             return response.json();
         }).then(details => {
-            console.log(details)
             if (details.success) {
                 this.setState({
                     items: details.data
@@ -242,7 +228,28 @@ class Itemtypes extends Component {
                             {this.form()}
                         </div>
                         <div className="col-sm-8 contain">
+                            {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
 
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                             </div>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
                             {
                                 this.state.showmsg ? (
                                     <Panel bsStyle="success" className="table">
@@ -289,7 +296,12 @@ class Itemtypes extends Component {
                                                         placement="bottom"
                                                         overlay={popoverHoverFocus}
                                                     >
-                                                        <button className="btn btn-danger" onClick={this.removeitem.bind(this, item._id)}>Remove</button>
+                                                        <button className="btn btn-danger" onClick={() => {
+                                                            this.setState({
+                                                                view: true,
+                                                                id: item._id
+                                                            })
+                                                        }}>Remove</button>
                                                     </OverlayTrigger></td>
                                                 </tr>
                                             )}

@@ -98,12 +98,32 @@ module.exports.deleteitem = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            Stock.findOneAndRemove({ _id:req.params.id }).then(function (doc) {
-                if (!doc) {
-                    res.send({ success:false,msg: 'not success'});
-                } else {
-                    res.send({ success:true, msg: 'delete successfully'});
-                }
+            var count = 0;
+            Stock.findOne({
+                _id:req.params.id
+            }).then(function(data){
+                Stores.findOne({
+                    item:data.item
+                }).then(function(doc){
+                    Stock.find({item:data.item}).then(function(details){
+                        details.map(d =>{
+                            if(d.status == "unsold"){
+                                count++;
+                            }
+                        })
+                            if((doc === null)||(doc.qty<count)){
+                                Stock.findOneAndRemove({ _id:req.params.id }).then(function (docs) {
+                                    if (!docs) {
+                                        res.send({ success:false,msg: 'not success'});
+                                    } else {
+                                        res.send({ success:true, msg: 'delete successfully'});
+                                    }
+                                })
+                               }else{
+                                   return res.json({success:false, msg:'this device is already in store please update the E-store and delete this device'})
+                               }
+                    });
+                })
             })
         }
     });

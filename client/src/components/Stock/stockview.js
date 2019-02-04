@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
 import '../stores/onlinestore.css';
-import { OverlayTrigger, Popover, Panel } from 'react-bootstrap';
+import { css } from '@emotion/core';
+import { ClimbingBoxLoader } from 'react-spinners';
+import { OverlayTrigger, Popover, Panel ,Modal , Button } from 'react-bootstrap';
 
 function searching(searchfield) {
     return function (x) {
@@ -17,7 +19,11 @@ function searching(searchfield) {
         }
     }
 }
-
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 class Stockview extends Component {
     constructor(props) {
         super(props)
@@ -36,11 +42,16 @@ class Stockview extends Component {
             searchfield: '',
             results: [],
             isempty: false,
-            shownopurch:false,
-            purch:[],
-            purchmsg:''
+            shownopurch: false,
+            purch: [],
+            purchmsg: '',
+            id: '',
+            view: false,
+            showd : false,
+            loading:true,
         };
         this.onSearch = this.onSearch.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     onSearch(e) {
@@ -65,12 +76,14 @@ class Stockview extends Component {
             if (details.success) {
                 this.setState({
                     storeitems: details.data,
+                    loading:false
                 })
             } else {
                 this.setState({
                     showitems: false,
                     showerr: true,
-                    msg: details.msg
+                    msg: details.msg,
+                    loading:false
                 })
             }
         });
@@ -98,7 +111,7 @@ class Stockview extends Component {
         }).then(data => {
             if (data.success) {
                 this.setState({
-                    purch:data.data
+                    purch: data.data
                 })
             } else {
                 this.setState({
@@ -110,6 +123,11 @@ class Stockview extends Component {
     }
     removeitem(id) {
         var authToken = localStorage.token;
+        this.setState({
+            view: false,
+            showd:false,
+            showdel:false
+        });
         fetch("http://localhost:4000/stock/removestock/" + id, {
             method: "DELETE",
             headers: {
@@ -121,18 +139,23 @@ class Stockview extends Component {
         }).then(data => {
             if (data.success) {
                 this.setState({
-                    showdel: true,
+                    showdel:true,
                     msg: data.msg,
                 })
                 window.location.reload();
             } else {
                 this.setState({
-                    showdel: true,
+                    showd :true,
                     msg: data.msg
                 })
             }
         })
-        
+
+    }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
     }
     render() {
         const popoverHoverFocus = (
@@ -143,7 +166,19 @@ class Stockview extends Component {
         if (localStorage.token) {
             return (
                 <div>
-                    <div className="head">
+                    {
+                    this.state.loading ? (
+                        <div className='sweet-loading'>
+                            <ClimbingBoxLoader
+                        css={override}
+                        sizeUnit={"px"}
+                        size={15}
+                        color={'#123abc'}
+                        loading={this.state.loading} />
+                        </div>
+                    ):(
+                      <div>
+                          <div className="head">
                         <Nav />
                     </div>
                     <div className="container-fluid">
@@ -151,6 +186,28 @@ class Stockview extends Component {
                         <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
                                 <a className="list-group-item active">Item Types</a>
+                                {
+                                    this.state.view ? (
+                                        <div>
+                                            <Modal.Dialog>
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Delete Item Type</Modal.Title>
+                                                </Modal.Header>
+
+                                                <Modal.Body>
+                                                    <p>Do you want to delete this?</p>
+                                                </Modal.Body>
+
+                                                <Modal.Footer>
+                                                    <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                    <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                                </Modal.Footer>
+                                            </Modal.Dialog>;
+                                             </div>
+                                    ) : (
+                                            <div></div>
+                                        )
+                                }
                                 {
                                     this.state.show ? (
                                         this.state.stockitems.map(data =>
@@ -192,6 +249,21 @@ class Stockview extends Component {
                                     )
                             }
                             {
+                                this.state.showd ? (
+                                    <div className="message">
+                                        <Panel bsStyle="danger" className="text-center">
+                                            <Panel.Heading>
+                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                            </Panel.Heading>
+                                        </Panel>
+                                    </div>
+                                ) : (
+                                        <div className="message">
+
+                                        </div>
+                                    )
+                            }
+                            {
                                 this.state.showitems ? (
                                     this.state.storeitems.filter(searching(this.state.searchfield)).map(item =>
                                         <div className="contain rows">
@@ -208,13 +280,18 @@ class Stockview extends Component {
                                                     <li className="list-group-item">
                                                         <div className="storesbutton">
                                                             <Link to={"/view/" + item._id} className="btn btn-info">View</Link>
-                                                            {(((localStorage.admin == 'yes')||((localStorage.id) === item.authorizedby))&&(item.status == 'unsold')) ? (
+                                                            {(((localStorage.admin == 'yes') || ((localStorage.id) === item.authorizedby)) && (item.status == 'unsold')) ? (
                                                                 <OverlayTrigger
                                                                     trigger={['hover', 'focus']}
                                                                     placement="bottom"
                                                                     overlay={popoverHoverFocus}
                                                                 >
-                                                                    <button className="btn btn-danger" onClick={this.removeitem.bind(this, item._id)}>Remove</button>
+                                                                    <button className="btn btn-danger" onClick={() => {
+                                                                        this.setState({
+                                                                            view: true,
+                                                                            id: item._id
+                                                                        })
+                                                                    }}>Remove</button>
                                                                 </OverlayTrigger>
                                                             ) : (
                                                                     <div></div>
@@ -270,9 +347,9 @@ class Stockview extends Component {
                                                 <br />
                                                 Purchase quantity : <span class="badge badge-primary badge-pill">{data.purchqty}</span>
                                                 <br />
-                                                Pending item qty : <span class="badge badge-primary badge-pill">{data.purchqty-data.updateqty}</span>
+                                                Pending item qty : <span class="badge badge-primary badge-pill">{data.purchqty - data.updateqty}</span>
                                                 <div className="storesbutton">
-                                                    <Link to={"/purchview/"+ data._id} className="btn btn-info">View</Link>
+                                                    <Link to={"/purchview/" + data._id} className="btn btn-info">View</Link>
                                                 </div>
                                             </li>
                                         )
@@ -289,6 +366,9 @@ class Stockview extends Component {
                             </div>
                         </div>
                     </div>
+                      </div>  
+                    )
+                    }
                 </div>
             );
         }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, OverlayTrigger, Popover, Panel } from 'react-bootstrap';
+import { Image, OverlayTrigger, Popover, Panel, Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
@@ -9,9 +9,12 @@ class ViewEmployees extends Component {
         this.state = {
             ids: [],
             show: true,
-            msg:'',
-            delmsg:''
+            msg: '',
+            delmsg: '',
+            id: '',
+            view: false
         }
+        this.handleClose = this.handleClose.bind(this);
 
     }
     logout = (e) => {
@@ -46,9 +49,16 @@ class ViewEmployees extends Component {
 
         );
     }
-    removeitem(id){
+    handleClose() {
+        this.setState({
+            view: false,
+        });
+    }
+    removeitem(id) {
         var authToken = localStorage.token;
-        //console.log(authToken)
+        this.setState({
+            view: false,
+        });
         fetch("http://localhost:4000/register/removeemployee/" + id, {
             method: "DELETE",
             headers: {
@@ -60,12 +70,12 @@ class ViewEmployees extends Component {
         }).then(data => {
             if (data.success) {
                 this.setState({
-                    delmsg:data.msg,
+                    delmsg: data.msg,
                 })
                 window.location.reload();
             } else {
                 this.setState({
-                   delmsg: data.msg
+                    delmsg: data.msg
                 })
             }
         })
@@ -89,7 +99,7 @@ class ViewEmployees extends Component {
             } else {
                 this.setState({
                     show: false,
-                    msg:details.msg
+                    msg: details.msg
                 })
             }
         });
@@ -115,43 +125,70 @@ class ViewEmployees extends Component {
                                 <a className="list-group-item"><Link to={"/showcustomer"}>Customer Details</Link></a>
                             </div>
                         </div>
-                            <div class="col-sm-8 text-left">
-                                            {
-                                                this.state.show ? (
-                                                        this.state.ids.map(id =>
-                                                            <div className="contain rows">
-                                                            <div className="card-show">
-                                                                <ul className="list-group list-group-flush">
-                                                                    <li key={id._id} className="list-group-item">name : <span className="names">{id.firstname} {id.lastname}</span></li>
-                                                                    <li className="list-group-item">Subarea : <span className="names">{id.subarea}</span></li>
-                                                                    <li className="list-group-item">Email : <span className="names">{id.email}</span></li>
-                                                                    <li className="list-group-item">NIC : <span className="names">{id.Id}</span></li>
-                                                                    <li className="list-group-item">Contact Number : <span className="names">{id.Tp}</span></li>
-                                                                    <li className="list-group-item">
-                                                                        <div className="storesbutton">
-                                                                            <Link to={"/updateemployee/" +id._id} className="btn btn-info">Update</Link>
-                                                                            <OverlayTrigger
-                                                                                trigger={['hover', 'focus']}
-                                                                                placement="bottom"
-                                                                                overlay={popoverHoverFocus}
-                                                                            >
-                                                                                <button className="btn btn-danger" onClick={this.removeitem.bind(this, id._id)}>Remove</button>
-                                                                            </OverlayTrigger>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                        <div class="col-sm-8 text-left">
+                            {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                             </div>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
+                            {
+                                this.state.show ? (
+                                    this.state.ids.map(id =>
+                                        <div className="contain rows">
+                                            <div className="card-show">
+                                                <ul className="list-group list-group-flush">
+                                                    <li key={id._id} className="list-group-item">name : <span className="names">{id.firstname} {id.lastname}</span></li>
+                                                    <li className="list-group-item">Subarea : <span className="names">{id.subarea}</span></li>
+                                                    <li className="list-group-item">Email : <span className="names">{id.email}</span></li>
+                                                    <li className="list-group-item">NIC : <span className="names">{id.Id}</span></li>
+                                                    <li className="list-group-item">Contact Number : <span className="names">{id.Tp}</span></li>
+                                                    <li className="list-group-item">
+                                                        <div className="storesbutton">
+                                                            <Link to={"/updateemployee/" + id._id} className="btn btn-info">Update</Link>
+                                                            <OverlayTrigger
+                                                                trigger={['hover', 'focus']}
+                                                                placement="bottom"
+                                                                overlay={popoverHoverFocus}
+                                                            >
+                                                                <button className="btn btn-danger" onClick={() => {
+                                                                    this.setState({
+                                                                        view: true,
+                                                                        id: id._id
+                                                                    })
+                                                                }}>Remove</button>
+                                                            </OverlayTrigger>
                                                         </div>
-                                                        )
-                                                ) : (
-                                                        <Panel bsStyle="danger">
-                                                            <Panel.Heading>
-                                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-                                                            </Panel.Heading>
-                                                        </Panel>
-                                                    )
-                                            }
-                            </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    )
+                                ) : (
+                                        <Panel bsStyle="danger">
+                                            <Panel.Heading>
+                                                <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
+                                            </Panel.Heading>
+                                        </Panel>
+                                    )
+                            }
+                        </div>
                         <hr />
                     </div>
                 </div>

@@ -61,7 +61,6 @@ io.on("connection", socket => {
   const getApiAndEmit = async socket => {
     try {
       Stores.aggregate([{$match:{qty:{$lt:2}}}]).then(data=>{
-        console.log(data.item)
           if(data.length != 0){
             var transporter = nodemailer.createTransport({
                 service: 'gmail',

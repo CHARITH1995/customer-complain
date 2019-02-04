@@ -217,8 +217,6 @@ class Container extends Component {
                   <li><a href="/stock">E-stock maintain</a></li>
                   <li><a href="/purchaseview">Purchases views</a></li>
                   <li><a href="/storedata">Store Data</a></li>
-                
-               
                 </ul>
               </div>
               <div className=" col-sm-3 slideanim">
@@ -242,94 +240,6 @@ class Container extends Component {
       </div>
     )
   }
-//   render() {
-//     return (
-//       <div id="contact" className="container-fluid">
-//         <div className="containers col-sm-12">
-//           <h2 className="text-centers"><div >!!Register new Admin Here!!</div></h2>
-//           <div className="row">
-//             <div>
-//               <div className="col-sm-5">
-//                 <p>Contact us and we'll get back to you within 24 hours.</p>
-//                 <p><span className="glyphicon glyphicon-map-marker"></span> Moratuwa</p>
-//                 <p><span className="glyphicon glyphicon-phone"></span> +00 1515151515</p>
-//                 <p><span className="glyphicon glyphicon-envelope"></span> myemail@something.com</p>
-//               </div>
-//             </div>
-//             <div className="col-sm-7 slideanim " >
-//               <div className="adminmsg">
-//                 {
-//                   this.state.showerr ? (
-//                     <div >
-//                       <Panel bsStyle="danger" className="text-center">
-//                         <Panel.Heading>
-//                           <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-//                         </Panel.Heading>
-//                       </Panel>
-//                     </div>
-//                   ) : (
-//                       <div>
-
-//                       </div>
-//                     )
-//                 }
-//                 {
-//                   this.state.showsuc ? (
-//                     <div className="adminmsg">
-//                       <Panel bsStyle="success" className="text-center">
-//                         <Panel.Heading>
-//                           <Panel.Title componentClass="h3">{this.state.msg}</Panel.Title>
-//                         </Panel.Heading>
-//                       </Panel>
-//                     </div>
-//                   ) : (
-//                       <div>
-
-//                       </div>
-//                     )
-//                 }
-
-//               </div>
-//               <form onSubmit={this.handleSubmit} ref="form">
-//                 <div className="form-group col-sm-6">
-//                   <label htmlFor="name">First name:</label>
-//                   <p className="formtext">input first name</p>
-//                   <input type="text" className="form-control" name="fname" id="fname" value={this.state.fname} onChange={this.handleChange} required />
-//                   <span style={{ color: "#FD6571" }}>{this.state.fnameerr}</span>
-//                 </div>
-//                 <div className="form-group col-sm-6">
-//                   <label htmlFor="name">Last name:</label>
-//                   <p className="formtext">input last name</p>
-//                   <input type="text" className="form-control" name="lname" id="lname" value={this.state.lname} onChange={this.handleChange} required />
-//                   <span style={{ color: "#FD6571" }}>{this.state.lnameerr}</span>
-//                 </div>
-//                 <div className="form-group col-sm-12">
-//                   <label htmlFor="email">Email address:</label>
-//                   <p className="formtext">input correct email</p>
-//                   <input type="email" className="form-control" name="email" id="email" value={this.state.email} onChange={this.handleChange} required />
-//                   <span style={{ color: "#FD6571" }}>{this.state.emailerr}</span>
-//                 </div>
-//                 <div className="form-group col-md-12">
-//                   <label htmlFor="exampleFormControlInput1">Telephone number :</label>
-//                   <input type="number" className="form-control" id="exampleFormControlInput1" name="tp" placeholder="" value={this.state.tp} onChange={this.handleChange} />
-//                   <span style={{ color: "#FD6571" }}>{this.state.tperr}</span>
-//                 </div>
-//                 <div className="form-group col-md-12">
-//                   <label className="checkbox-inline"><input type="checkbox" defaultChecked={this.state.is_admin} onChange={this.handleCheck} />Admin</label>
-//                 </div>
-//                 <div className="form-group col-md-12">
-//                   <label htmlFor="exampleFormControlInput1">Company ID :</label>
-//                   <input type="text" className="form-control" id="exampleFormControlInput1" name="id" placeholder="********" value={this.state.id} onChange={this.handleChange} />
-//                   <span style={{ color: "#FD6571" }}>{this.state.Iderr}</span>
-//                 </div>
-//                 <input type="submit" name="submit" value="Submit" className="btn btn-info" />
-//               </form>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
 }
 
 
