@@ -23,7 +23,8 @@ class Reports extends Component {
                 value: 0,
                 color: ''
             }],
-            details: []
+            details: [],
+            total:''
         }
     }
     logout=(e)=>{
@@ -45,7 +46,6 @@ class Reports extends Component {
         }).then(function (response) {
             return response.json();
         }).then(reports => {
-            //console.log(reports)
             this.setState({
                 complains: reports
             })
@@ -83,8 +83,22 @@ class Reports extends Component {
                 })
                 this.state.salesdetails.push(this.state.salesdata);
             }
+            
         })
     }
+    fetch("http://localhost:4000/reports/totalqty", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer' + authToken
+        },
+    }).then(function (response) {
+        return response.json();
+    }).then(data => {
+       this.setState({
+           total:data
+       })
+    })
 }
 componentWillUnmount(){
     this.setState({
@@ -157,6 +171,13 @@ componentWillUnmount(){
                                     <ul className="list-group list-group-flush">
                                             <li key={sale._id}><span className="names">Item Type : {sale._id.item}</span></li>
                                             <li><span className="names">Sold Items : </span>{sale._id.soldqty}</li>
+                                            {
+                                                this.state.total>0 ?(      
+                                            <li key={sale._id}><span className="names">Precentage : {(sale._id.soldqty/this.state.total)*100} %</span></li>
+                                                ):(
+                                                    <div></div>
+                                                )
+                                            }
                                     </ul>
                                     </div>
                                 )
