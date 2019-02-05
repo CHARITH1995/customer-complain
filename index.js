@@ -52,16 +52,16 @@ app.get("*", (req, res) => {
 io.on("connection", socket => {
     console.log("New client connected"), setInterval(
       () => getApiAndEmit(socket),
-      10000*6*60*24
+      10000*60*60*24
     );
     socket.on("disconnect", () => console.log("Client disconnected"));
   });
 
-
   const getApiAndEmit = async socket => {
     try {
-      Stores.aggregate([{$match:{qty:{$lt:2}}}]).then(data=>{
-          if(data.length != 0){
+      Stores.aggregate([{$match:{qty:{$lt:5}}}]).then(function(data){
+        if(data.length != 0){
+          data.map(d=>{
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -70,13 +70,14 @@ io.on("connection", socket => {
                 }
               });
              var mailOptions = {
-                to:"prasanna.charith32@gmail.com",
+                to:"nuwani.tt@gmail.com",
                 from: "charithprasanna009@gmail.com",
                 subject: 'Stock update alerts',
-                text:`please update the stock ${data.item}`
+                text:`please update the stock ${d.item} stock id ${d._id} current qty:${d.qty}`
               }; 
               transporter.sendMail(mailOptions);
-          }
+        })
+        }
       })
     } catch (error) {
       console.error(`Error: ${error.code}`);

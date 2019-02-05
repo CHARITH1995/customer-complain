@@ -56,12 +56,12 @@ class Adminprofile extends Component {
         if (this.state.lname !== 'undefined') {
             if (!this.state.lname.match(/^[a-zA-Z]{3,}$/i)) {
                 this.setState({
-                    lnameerr: 'first name invalid!',
+                    lnameerr: 'last name invalid!',
                 })
                 formvalid = false
             }
         }
-        if (this.state.email !== 'undefined') {
+        if (this.state.email !== 'undefined') { //regular expression 
             if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
                 this.setState({
                     emailerr: 'email invalid!',

@@ -193,11 +193,11 @@ class Editpassword extends Component {
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
-                            <a className="navbar-brand" href="/home"><Image src="../assets/1.jpg" className="Imagedetails" /></a>
+                           
                         </div>
                         <div className="collapse navbar-collapse" id="myNavbar">
                             <ul className="nav navbar-nav navbar-right">
-                                <li><a href="/">SIGN IN</a></li>
+                                <li><a href="/">LOGOUT</a></li>
                             </ul>
                         </div>
                     </div>
