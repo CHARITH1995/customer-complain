@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Nav from '../front/nav';
 import './onlinestore.css';
 import { css } from '@emotion/core';
-import { ClimbingBoxLoader } from 'react-spinners';
+import { HashLoader } from 'react-spinners';
 import { Image, OverlayTrigger, Popover, Panel, ProgressBar, Modal, Button } from 'react-bootstrap';
 
 
@@ -150,11 +150,11 @@ class Onlinestore extends Component {
                     {
                         this.state.loading ? (
                             <div className='sweet-loading'>
-                                <ClimbingBoxLoader
+                                <HashLoader
                             css={override}
                             sizeUnit={"px"}
-                            size={15}
-                            color={'#123abc'}
+                            size={50}
+                            color={'#0073F5'}
                             loading={this.state.loading} />
                             </div>
                         ):(

@@ -6,8 +6,16 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './itemtypes.css';
-import Links from '../front/links'
+import Links from '../front/links';
+import { css } from '@emotion/core';
+import { HashLoader } from 'react-spinners';
 
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 class Itemtypes extends Component {
     constructor(props) {
@@ -27,7 +35,8 @@ class Itemtypes extends Component {
             model: true,
             delete: false,
             id: '',
-            view: false
+            view: false,
+            loading:true
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -199,12 +208,14 @@ class Itemtypes extends Component {
         }).then(details => {
             if (details.success) {
                 this.setState({
-                    items: details.data
+                    items: details.data,
+                    loading:false
                 })
             } else {
                 this.setState({
                     show: false,
-                    msg: details.msg
+                    msg: details.msg,
+                    loading:false
                 })
             }
         });
@@ -219,7 +230,19 @@ class Itemtypes extends Component {
         if (localStorage.token) {
             return (
                 <div>
-                    <div className="head">
+                    {
+                        this.state.loading ? (
+                            <div className='sweet-loading'>
+                                <HashLoader
+                                    css={override}
+                                    sizeUnit={"px"}
+                                    size={50}
+                                    color={'#0073F5'}
+                                    loading={this.state.loading} />
+                            </div>
+                        ):(
+                            <div>
+                                 <div className="head">
                         {this.navbar()}
                     </div>
                     <div className="container-fluid">
@@ -320,6 +343,9 @@ class Itemtypes extends Component {
                         </div>
                     </div>
                     <Links />
+                            </div>
+                        )
+                    }
                 </div>
             );
         }
