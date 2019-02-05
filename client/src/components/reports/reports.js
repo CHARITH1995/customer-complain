@@ -32,11 +32,7 @@ class Reports extends Component {
                 color: ''
             }],
             details: [],
-<<<<<<< HEAD
-            loading:true
-=======
             total:''
->>>>>>> 8c86f69c10cb523757b2c31024765e6e089eda48
         }
     }
     logout = (e) => {
@@ -49,7 +45,6 @@ class Reports extends Component {
         var authToken = localStorage.token;
         if (this.state.is_mount) {
             this.componentWillUnmount();
-<<<<<<< HEAD
             fetch("http://localhost:4000/reports/complainreports", {
                 method: "POST",
                 headers: {
@@ -60,21 +55,6 @@ class Reports extends Component {
                 return response.json();
             }).then(reports => {
                 //console.log(reports)
-=======
-        fetch("http://localhost:4000/reports/complainreports", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': 'Bearer' + authToken
-            },
-        }).then(function (response) {
-            return response.json();
-        }).then(reports => {
-            this.setState({
-                complains: reports
-            })
-            for (var i = 1; i <= this.state.complains.length; i++) {      // push backend data to (report genarat)array
->>>>>>> 8c86f69c10cb523757b2c31024765e6e089eda48
                 this.setState({
                     complains: reports
                 })
@@ -102,7 +82,6 @@ class Reports extends Component {
                 this.setState({
                     sales: details
                 })
-<<<<<<< HEAD
                 for (var i = 1; i <= this.state.sales.length; i++) {
                     this.setState({
                         salesdata: {
@@ -122,32 +101,6 @@ class Reports extends Component {
             is_mount: false
         })
     }
-=======
-                this.state.salesdetails.push(this.state.salesdata);
-            }
-            
-        })
-    }
-    fetch("http://localhost:4000/reports/totalqty", {
-        method: "post",
-        headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer' + authToken
-        },
-    }).then(function (response) {
-        return response.json();
-    }).then(data => {
-       this.setState({
-           total:data
-       })
-    })
-}
-componentWillUnmount(){
-    this.setState({
-        is_mount:false
-    })
-}
->>>>>>> 8c86f69c10cb523757b2c31024765e6e089eda48
     render() {
         if (localStorage.token) {
             return (
@@ -200,7 +153,6 @@ componentWillUnmount(){
                                                     </div>
                                                 </div>
                                             </div>
-<<<<<<< HEAD
                                         </div>
                                         <br /><br />
                                         <div className="contain col-md-12 slideanim ">
@@ -235,47 +187,6 @@ componentWillUnmount(){
                                                 </div>
                                             </div>
                                         </div>
-=======
-                                        )
-                                    }
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <br /><br />
-                    <div className="contain col-md-12 slideanim ">
-                            <div className="shadow p-3 mb-5 bg-white rounded">
-                        <div className="col-md-5">
-                            <h2 className="text-center">Sold Items</h2>
-                            <PieChart
-                                data={this.state.salesdetails}
-                                expandOnHover
-                                onSectorHover={(d, i, e) => {
-                                    if (d) {
-                                        //console.log("Mouse enter - Index:", i, "Data:", d, "Event:", e)
-                                    } else {
-                                       // console.log("Mouse leave - Index:", i, "Event:", e)
-                                    }
-                                }
-                                }
-                            />
-                        </div>
-                        <div className="col-md-5">
-                            <div className="area">
-                                {this.state.sales.map(sale =>       // sales eke object call
-                                    <div className="cards-body" style={{ background: sale._id.color }}>
-                                    <ul className="list-group list-group-flush">
-                                            <li key={sale._id}><span className="names">Item Type : {sale._id.item}</span></li>
-                                            <li><span className="names">Sold Items : </span>{sale._id.soldqty}</li>
-                                            {
-                                                this.state.total>0 ?(      
-                                            <li key={sale._id}><span className="names">Precentage : {(sale._id.soldqty/this.state.total)*100} %</span></li>
-                                                ):(
-                                                    <div></div>
-                                                )
-                                            }
-                                    </ul>
->>>>>>> 8c86f69c10cb523757b2c31024765e6e089eda48
                                     </div>
                                     <div>
                                         <Searchreport />
