@@ -162,7 +162,7 @@ module.exports.viewitems = (req, res, next) => {
             console.log('ERROR: Could not connect to the protected route');
             res.send({ success: false, msg: 'please log again' });
         } else {
-            Stores.aggregate([{$match:{qty:{$gt:0}}}]).then(function (details) {
+            Stores.find().then(function (details) {
                 if (details.length === 0) {
                     return res.json({ success: false, msg: 'nothing to show' })
                 } else {

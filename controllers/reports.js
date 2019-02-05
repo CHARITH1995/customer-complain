@@ -9,7 +9,7 @@ const Complain = require('../models/Complains');
 var lowerCase = require('lower-case');
 const Stores = require('../models/stores');
 
-module.exports.complainreport = (req, res, next) => {
+module.exports.complainreport = (req, res, next) => {   //json object group into month and year 
     var today = new Date();
     var num;
     var thismonth = today.getMonth()+1; 
@@ -54,6 +54,22 @@ module.exports.salesreport = (req, res, next) => {
              }
         });
 }
+module.exports.soldqty = (req, res, next) => {
+    jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
+        if(err){
+            console.log('ERROR: Could not connect to the protected route');      //rout gurad
+            res.send({success:false,msg:'please log again'});
+        } else {
+            var count=0;
+            Stores.aggregate([{$group:{_id:{item:"$item",soldqty:"$soldqty"}}}]).then(function(data){
+                data.map(d=>{
+                    count = count + d._id.soldqty
+                })
+                return res.json(count)
+            })
+                 }
+            });
+    }
 
     module.exports.manualsubareareports = (req, res, next) => {
         jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {

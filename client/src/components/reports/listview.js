@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { SwatchesPicker } from 'react-color';
 import {
-    Image, OverlayTrigger, Popover, Panel, FormGroup, FormControl, HelpBlock, ControlLabel, Button
+    Image, OverlayTrigger, Popover, Panel, Modal , Button 
     , Table , ProgressBar
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -17,8 +16,13 @@ class Storedata extends Component {
             identifier: '',
             show: true,
             msg: '',
-            delmsg: ''
+            delmsg: '',
+            id: '',
+            view: false,
+            showd:false,
+            showdel:false
         }
+        this.handleClose = this.handleClose.bind(this);
     }
     navbar() {
         return (
@@ -60,9 +64,9 @@ class Storedata extends Component {
                 this.setState({
                     items: data.data,
                 })
-                console.log(this.state.items)
+          //      console.log(this.state.items)  
             } else {
-                this.setState({
+                this.setState({                    // error msg (store qut have not item)
                     showitems: false,
                     showerr: true,
                     msg: data.msg
@@ -73,7 +77,12 @@ class Storedata extends Component {
     }
     removeitem(id) {
         var authToken = localStorage.token;
-        fetch("http://localhost:4000/items/removeitems/" + id, {
+        this.setState({
+            view: false,
+            showd:false,
+            showdel:false
+        });
+        fetch("http://localhost:4000/stores/removeitem/" + id, {   // send data id which need to delete to the backend  
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -93,6 +102,11 @@ class Storedata extends Component {
                 })
             }
         })
+    }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
     }
     render() {
         const popoverHoverFocus = (
@@ -118,12 +132,34 @@ class Storedata extends Component {
                             </div>  
                         </div>
                         <div className="col-sm-8">
+                        {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                         </div>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
                             {
                                 this.state.show ? (
                                     <Table responsive className="table">
                                         <thead>
                                             <tr>
-                                                <th>Stocket Id:</th>
+                                                <th>Store Id:</th>
                                                 <th>Equipment Name:</th>
                                                 <th>Available Amount:</th>
                                                 <th>Sold Amount:</th>
@@ -141,13 +177,18 @@ class Storedata extends Component {
                                                     <td>{item.qty}<ProgressBar striped bsStyle="infor" now={item.qty} label={`${item.qty}`} /></td>
                                                     <td>{item.soldqty}<ProgressBar striped bsStyle="success" now={item.soldqty} label={`${item.soldqty}`} /></td>
                                                     <td>{item.insertdate}</td>
-                                                    <td><ProgressBar striped bsStyle="danger" now={5} label={`${5}`} /></td>
+                                                    <td><ProgressBar striped bsStyle="danger" now={2} label={`${2}`} /></td>
                                                     <td><OverlayTrigger
                                                         trigger={['hover', 'focus']}
                                                         placement="bottom"
                                                         overlay={popoverHoverFocus}
                                                     >
-                                                        <button className="btn btn-danger" onClick={this.removeitem.bind(this, item._id)}>Remove</button>
+                                                        <button className="btn btn-danger" onClick={() => {
+                                                                        this.setState({
+                                                                            view: true,
+                                                                            id: item._id
+                                                                        })
+                                                                    }}>Remove</button>
                                                     </OverlayTrigger></td>
                                                 </tr>
                                             )}

@@ -35,11 +35,11 @@ class Itemtypes extends Component {
             model: true,
             delete: false,
             id: '',
-            view: false,
-            loading:true
+            view:false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
 
 
@@ -90,7 +90,6 @@ class Itemtypes extends Component {
                 .then(details => {
                     if (details.success) {
                         this.setState({
-                            items: details.data,
                             msg: 'successfully inserted!',
                             showmsg: true
                         })
@@ -100,13 +99,13 @@ class Itemtypes extends Component {
                             msg: 'cannot insert!',
                         })
                     }
+                    window.location.reload();
                 })
-            window.location.reload();
         }
     }
-    handleClose() {
+    handleClose() {          //modals close 
         this.setState({
-            view: false,
+            view:false,
         });
     }
     removeitem(id) {
@@ -208,8 +207,8 @@ class Itemtypes extends Component {
         }).then(details => {
             if (details.success) {
                 this.setState({
-                    items: details.data,
-                    loading:false
+                    items:details.data,
+                    loading:false                    
                 })
             } else {
                 this.setState({
@@ -226,7 +225,6 @@ class Itemtypes extends Component {
                 <strong>Are you sure ???</strong>
             </Popover>
         );
-        var count = 1;
         if (localStorage.token) {
             return (
                 <div>

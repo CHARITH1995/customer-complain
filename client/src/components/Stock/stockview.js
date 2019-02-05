@@ -186,28 +186,7 @@ class Stockview extends Component {
                         <div className="col-sm-2 sidenav ">
                             <div className="list-group ">
                                 <a className="list-group-item active">Item Types</a>
-                                {
-                                    this.state.view ? (
-                                        <div>
-                                            <Modal.Dialog>
-                                                <Modal.Header closeButton>
-                                                    <Modal.Title>Delete Item Type</Modal.Title>
-                                                </Modal.Header>
-
-                                                <Modal.Body>
-                                                    <p>Do you want to delete this?</p>
-                                                </Modal.Body>
-
-                                                <Modal.Footer>
-                                                    <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
-                                                    <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
-                                                </Modal.Footer>
-                                            </Modal.Dialog>;
-                                             </div>
-                                    ) : (
-                                            <div></div>
-                                        )
-                                }
+                               
                                 {
                                     this.state.show ? (
                                         this.state.stockitems.map(data =>
@@ -261,6 +240,28 @@ class Stockview extends Component {
                                         <div className="message">
 
                                         </div>
+                                    )
+                            } 
+                            {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                         </div>
+                                ) : (
+                                        <div></div>
                                     )
                             }
                             {

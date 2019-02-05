@@ -68,9 +68,10 @@ router.get('/getpurchase/:item',jwtHelper.verifyJwtToken,purch.item);
 router.delete('/removepurch/:id',jwtHelper.verifyJwtToken,purch.deletepurch);
 
 router.post('/complainreports',jwtHelper.verifyJwtToken,reports.complainreport);
+router.post('/totalqty',jwtHelper.verifyJwtToken,reports.soldqty);
 router.post('/salesreports',jwtHelper.verifyJwtToken,reports.salesreport);
 router.get('/manualreports/:year/:month',jwtHelper.verifyJwtToken,reports.manualreports);
-router.get('/manualreports/:subarea',jwtHelper.verifyJwtToken,reports.manualsubareareports);
+router.get('/manualreports/:subarea',jwtHelper.verifyJwtToken,reports.manualsubareareports);//totalqty
 
 router.post('/additemtype',jwtHelper.verifyJwtToken,items.additemtype);
 router.post('/showitems',jwtHelper.verifyJwtToken,items.itemtypes);

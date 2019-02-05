@@ -198,14 +198,7 @@ handleChange(e) {
                                                                 </div>
                                                             )
                                                     }
-                                                     {
-                                                        !(this.state.item.text != null) ? (
-                                                            <li className="list-group-item">Note : <span className="names"> {this.state.item.text}  </span></li>
-                                                        ) : (
-                                                                <div>
-                                                                </div>
-                                                            )
-                                                    }
+                                                     
                                                     <div className="viewbuttongroup">
                                                         <a href="/purchaseview" className="glyphicon glyphicon-circle-arrow-left">Purchases</a>
                                                         {

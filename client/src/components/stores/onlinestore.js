@@ -238,7 +238,19 @@ class Onlinestore extends Component {
                                                     <li className="list-group-item">Item Type : <span className="names">{item.item}</span></li>
                                                     <li key={item.id} className="list-group-item">Warrenty Period : <span className="names">{item.warrenty} years </span></li>
                                                     <li className="list-group-item">Price:  <span className="names">Rs {item.price} /=</span></li>
-                                                    <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="success" now={item.qty} label={`${item.qty}`} /></li>
+                                                    {
+                                                        item.qty >2?(
+                                                            <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="success" now={item.qty} label={`${item.qty}`} /></li>
+                                                        ):(
+                                                            item.qty >0?(
+                                                                <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="warning" now={item.qty} label={`${item.qty}`} /></li>
+                                                            ):(
+                                                                <li className="list-group-item">Available Stock: <ProgressBar striped bsStyle="danger" now={100} label={`${item.qty}`} /></li>
+                                                            )
+                                                           
+                                                        )
+                                                    }
+                                                    
                                                     <li className="list-group-item">Device color :<svg height="100" width="100" className="identify">
                                                         <circle cx="50" cy="50" r="15" stroke-width="3" fill={item.color} />
                                                     </svg></li>
