@@ -64,9 +64,9 @@ class Storedata extends Component {
                 this.setState({
                     items: data.data,
                 })
-                console.log(this.state.items)
+          //      console.log(this.state.items)  
             } else {
-                this.setState({
+                this.setState({                    // error msg (store qut have not item)
                     showitems: false,
                     showerr: true,
                     msg: data.msg
@@ -82,7 +82,7 @@ class Storedata extends Component {
             showd:false,
             showdel:false
         });
-        fetch("http://localhost:4000/stores/removeitem/" + id, {
+        fetch("http://localhost:4000/stores/removeitem/" + id, {   // send data id which need to delete to the backend  
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -159,7 +159,7 @@ class Storedata extends Component {
                                     <Table responsive className="table">
                                         <thead>
                                             <tr>
-                                                <th>Stocket Id:</th>
+                                                <th>Store Id:</th>
                                                 <th>Equipment Name:</th>
                                                 <th>Available Amount:</th>
                                                 <th>Sold Amount:</th>
@@ -177,7 +177,7 @@ class Storedata extends Component {
                                                     <td>{item.qty}<ProgressBar striped bsStyle="infor" now={item.qty} label={`${item.qty}`} /></td>
                                                     <td>{item.soldqty}<ProgressBar striped bsStyle="success" now={item.soldqty} label={`${item.soldqty}`} /></td>
                                                     <td>{item.insertdate}</td>
-                                                    <td><ProgressBar striped bsStyle="danger" now={5} label={`${5}`} /></td>
+                                                    <td><ProgressBar striped bsStyle="danger" now={2} label={`${2}`} /></td>
                                                     <td><OverlayTrigger
                                                         trigger={['hover', 'focus']}
                                                         placement="bottom"

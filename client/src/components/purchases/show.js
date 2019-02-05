@@ -173,6 +173,13 @@ class Purchases extends Component {
                                                     <li className="list-group-item">Purchase Id   : <span className="names">{data._id}</span></li>
                                                     <li className="list-group-item">Is Delivered : <span className="names">{data.is_delivered}</span></li>
                                                     {
+                                                        data.text !== null ?(
+                                                            <li className="list-group-item">note : <span className="names">{data.text}</span></li>
+                                                        ):(
+                                                            <div></div>
+                                                        )
+                                                    }
+                                                    {
                                                         data.is_delivered === 'yes' ? (
                                                             <div>
                                                                 <li className="list-group-item">Delivered Date :    <span className="names"> {data.deliverd_date}  </span></li>

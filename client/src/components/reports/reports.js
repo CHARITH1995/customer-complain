@@ -49,7 +49,7 @@ class Reports extends Component {
             this.setState({
                 complains: reports
             })
-            for (var i = 1; i <= this.state.complains.length; i++) {
+            for (var i = 1; i <= this.state.complains.length; i++) {      // push backend data to (report genarat)array
                 this.setState({
                     data: {
                         title: this.state.complains[i - 1]._id.subarea,
@@ -166,7 +166,7 @@ componentWillUnmount(){
                         </div>
                         <div className="col-md-5">
                             <div className="area">
-                                {this.state.sales.map(sale =>
+                                {this.state.sales.map(sale =>       // sales eke object call
                                     <div className="cards-body" style={{ background: sale._id.color }}>
                                     <ul className="list-group list-group-flush">
                                             <li key={sale._id}><span className="names">Item Type : {sale._id.item}</span></li>

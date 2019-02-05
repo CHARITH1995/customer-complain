@@ -59,7 +59,7 @@ io.on("connection", socket => {
 
   const getApiAndEmit = async socket => {
     try {
-      Stores.aggregate([{$match:{qty:{$lt:5}}}]).then(function(data){
+      Stores.aggregate([{$match:{qty:{$lt:2}}}]).then(function(data){
         if(data.length != 0){
           data.map(d=>{
             var transporter = nodemailer.createTransport({

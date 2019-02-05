@@ -241,7 +241,8 @@ class Stockview extends Component {
 
                                         </div>
                                     )
-                            } {
+                            } 
+                            {
                                 this.state.view ? (
                                     <div>
                                         <Modal.Dialog>

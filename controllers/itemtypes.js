@@ -4,6 +4,7 @@ const routerComplain = express.Router();
 var ObjectID = require('mongoose').Types.ObjectId;
 const Stores = require('../models/stores');
 const Items = require('../models/itemtypes');
+const Stock = require('../models/stock');
 var jwt = require('jsonwebtoken');
 
 
@@ -25,7 +26,6 @@ module.exports.additemtype = (req, res, next) => {
                         if (doc) {
                             return res.json({ success: false, msg: 'Please select another color!' })
                         } else {
-                            var today = new Date();
                             var det = new Items({
                                 name: req.body.name,
                                 identifier: req.body.identifier,
@@ -47,7 +47,7 @@ module.exports.additemtype = (req, res, next) => {
         }
     });
 }
-module.exports.itemtypes = (req, res, next) => {
+module.exports.itemtypes = (req, res, next) => {    // show item types 
     jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey', (err, authorizedData) => {
         if (err) {
             console.log('ERROR: Could not connect to the protected route');
@@ -57,7 +57,7 @@ module.exports.itemtypes = (req, res, next) => {
                 if (details.length == 0) {
                     res.send({ success: false, msg: 'no Items Types' });
                 } else {
-                    res.send({ success: true, data: details });
+                    res.send({ success: true, data:details });
                 }
             })
 
@@ -76,12 +76,28 @@ module.exports.removeitemtypes = (req, res, next) => {
                 Stores.findOne({
                     item:data.name
                 }).then(docs=>{
-                    if(docs == null){
+                    if(docs == null){                   
                         Items.findOneAndDelete({ _id: req.params.id }).then(function (err) {
                             if (!err) {
                                 res.send({ success: false, msg: 'not success' });
                             } else {
-                                res.send({ success: true, msg: 'delete successfully' });
+                                Stock.find({
+                                    item:data.name
+                                }).then(function(detail){
+                                    if(detail.length >0){
+                                        detail.map(d=>{
+                                            Stock.findOneAndDelete({item:d.item}).then(function(dt){
+                                                if(dt){    
+                                                   return  res.send({ success: true, msg: 'delete successfully' });
+                                                }else{
+                                                    return res.json({success:false,msg:'delete not complete'})
+                                                }
+                                            })
+                                        })
+                                    }else{
+                                        return  res.send({ success: true, msg: 'delete successfully' });
+                                    }
+                                })
                             }
                         })
                     }else{
