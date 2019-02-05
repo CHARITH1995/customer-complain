@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { SwatchesPicker } from 'react-color';
 import {
-    Image, OverlayTrigger, Popover, Panel, FormGroup, FormControl, HelpBlock, ControlLabel, Button
+    Image, OverlayTrigger, Popover, Panel, Modal , Button 
     , Table , ProgressBar
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -17,8 +16,13 @@ class Storedata extends Component {
             identifier: '',
             show: true,
             msg: '',
-            delmsg: ''
+            delmsg: '',
+            id: '',
+            view: false,
+            showd:false,
+            showdel:false
         }
+        this.handleClose = this.handleClose.bind(this);
     }
     navbar() {
         return (
@@ -73,7 +77,12 @@ class Storedata extends Component {
     }
     removeitem(id) {
         var authToken = localStorage.token;
-        fetch("http://localhost:4000/items/removeitems/" + id, {
+        this.setState({
+            view: false,
+            showd:false,
+            showdel:false
+        });
+        fetch("http://localhost:4000/stores/removeitem/" + id, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -93,6 +102,11 @@ class Storedata extends Component {
                 })
             }
         })
+    }
+    handleClose() {
+        this.setState({
+            view: false,
+        });
     }
     render() {
         const popoverHoverFocus = (
@@ -118,6 +132,28 @@ class Storedata extends Component {
                             </div>  
                         </div>
                         <div className="col-sm-8">
+                        {
+                                this.state.view ? (
+                                    <div>
+                                        <Modal.Dialog>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Delete Item Type</Modal.Title>
+                                            </Modal.Header>
+
+                                            <Modal.Body>
+                                                <p>Do you want to delete this?</p>
+                                            </Modal.Body>
+
+                                            <Modal.Footer>
+                                                <Button variant="secondary" className="btn btn-info" onClick={this.handleClose}>Close</Button>
+                                                <Button variant="primary" className="btn btn-danger" onClick={this.removeitem.bind(this, this.state.id)}>Delete</Button>
+                                            </Modal.Footer>
+                                        </Modal.Dialog>;
+                                         </div>
+                                ) : (
+                                        <div></div>
+                                    )
+                            }
                             {
                                 this.state.show ? (
                                     <Table responsive className="table">
@@ -147,7 +183,12 @@ class Storedata extends Component {
                                                         placement="bottom"
                                                         overlay={popoverHoverFocus}
                                                     >
-                                                        <button className="btn btn-danger" onClick={this.removeitem.bind(this, item._id)}>Remove</button>
+                                                        <button className="btn btn-danger" onClick={() => {
+                                                                        this.setState({
+                                                                            view: true,
+                                                                            id: item._id
+                                                                        })
+                                                                    }}>Remove</button>
                                                     </OverlayTrigger></td>
                                                 </tr>
                                             )}

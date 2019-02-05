@@ -27,7 +27,8 @@ class Stores extends Component {
             showerr: false,
             file: null,
             background: '#fff',
-            new:null
+            new:null,
+            stockitems:[]
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -113,6 +114,19 @@ class Stores extends Component {
                     items: details.data
                 })
             }
+        });
+        fetch("http://localhost:4000/stock/items", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer' + authToken
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(details => {
+            this.setState({
+                stockitems: details
+            })
         });
     }
 
@@ -255,7 +269,25 @@ class Stores extends Component {
                             <div>
                                 {this.formfield()}
                             </div>
-                            <div >
+                        </div>
+                        <div className="col-sm-2 sidenav ">
+                            <div className="list-group ">
+                                <a className="list-group-item active">Item Types</a>
+                               
+                                {
+                                    this.state.show ? (
+                                        this.state.stockitems.map(data =>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                {data._id.item}
+                                                <span class="badge badge-primary badge-pill">unsold :{data.total}</span>
+                                            </li>
+                                        )
+                                    ) : (
+                                            <div >
+                                               
+                                            </div>
+                                        )
+                                }
                             </div>
                         </div>
                     </div>
