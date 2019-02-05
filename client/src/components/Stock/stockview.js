@@ -83,7 +83,6 @@ class Stockview extends Component {
                     showitems: false,
                     showerr: true,
                     msg: details.msg,
-                    loading:false
                 })
             }
         });
@@ -116,7 +115,8 @@ class Stockview extends Component {
             } else {
                 this.setState({
                     shownopurch: true,
-                    purchmsg: data.msg
+                    purchmsg: data.msg,
+                    loading:false
                 })
             }
         })

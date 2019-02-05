@@ -27,6 +27,9 @@ class Stores extends Component {
             showerr: false,
             file: null,
             background: '#fff',
+            warrantyeerr:'',
+            qtyerr:'',
+            priceerr:'',
             new:null,
             stockitems:[]
         }
@@ -50,6 +53,9 @@ class Stores extends Component {
             showsuc: false,
             msg: '',
             showerr: false,
+            warrantyeerr:'',
+            qtyerr:'',
+            priceerr:'',
         });
     }
     handleSubmit(e) {
@@ -71,8 +77,8 @@ class Stores extends Component {
         data.append('Item',this.state.type);
         data.append('warrenty',this.state.warrenty);
         data.append('brand',this.state.Brand);
-      
-        fetch("http://localhost:4000/stores/newdetails", {
+        if(this.handleValidation()){
+            fetch("http://localhost:4000/stores/newdetails", {
             method: "POST",
             headers: {
                 'Authorization': 'Bearer' + authToken
@@ -94,8 +100,7 @@ class Stores extends Component {
                     })
                 }
             })
-
-
+        }
     }
     componentDidMount() {
         var authToken = localStorage.token;
@@ -129,14 +134,35 @@ class Stores extends Component {
             })
         });
     }
-
+    handleValidation() {
+        let formvalid =true
+        if(this.state.warrenty<0){
+            this.setState({
+                warrantyeerr: 'warrenty period invalid!',
+            })
+            formvalid = false
+        }
+        if(this.state.qty<0){
+            this.setState({
+               qtyerr: 'quantity invalid!',
+            })
+            formvalid = false
+        }
+        if(this.state.Price<0){
+            this.setState({
+               priceerr: 'price invalid!',
+            })
+            formvalid = false
+        }
+        return formvalid
+    }
     resetForm = () => {
         this.setState({
             ...this.state,
             Brand: '',
             Color: '',
             type: '',
-            warrenty: '',
+            warrenty:'',
             Price: '',
             imagepath: '',
             Description: '',
@@ -183,10 +209,12 @@ class Stores extends Component {
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Available Stock :</label>
                                 <input type="number" className="form-control" id="exampleFormControlInput1" name="qty" placeholder="available stock" value={this.state.qty} onChange={this.handleChange} required />
+                                <span style={{ color: "#FD6571" }}>{this.state.qtyerr}</span>
                             </div>
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">warrenty period :</label>
                                 <input type="number" className="form-control" id="exampleFormControlInput1" name="warrenty" placeholder="available stock" value={this.state.warrenty} onChange={this.handleChange} required />
+                                <span style={{ color: "#FD6571" }}>{this.state.warrantyeerr}</span>
                             </div>
                              <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Image :</label>  
@@ -197,6 +225,7 @@ class Stores extends Component {
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Price :</label>
                                 <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} required />
+                                <span style={{ color: "#FD6571" }}>{this.state.priceerr}</span>
                             </div>
                             <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">Description :</label>
@@ -228,7 +257,7 @@ class Stores extends Component {
                                 <a className="list-group-item active">Quick LInks</a>
                                 <a className="list-group-item"><Link to={"/stock"}>Add E-Stock</Link></a>
                                 <a className="list-group-item"><Link to={"/onlinestore"}>E-shop</Link></a>
-                                <a className="list-group-item"><Link to={"/stockview"}>E-shop</Link></a>
+                                <a className="list-group-item"><Link to={"/stockview"}>E-Stock</Link></a>
                             </div>
                         </div>
                         <div className="col-md-8 contain">

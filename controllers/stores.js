@@ -55,7 +55,6 @@ module.exports.addnewDetail = (req, res, next) => {
                             Items.findOne({
                                 name: req.body.Item
                             }).then(function (doc) {
-                                console.log(req.body.imagepath)
                                 if (doc) {
                                     var today = new Date();
                                     var month = today.getMonth() + 1;

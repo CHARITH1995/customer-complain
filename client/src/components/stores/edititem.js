@@ -20,7 +20,10 @@ class Edititem extends Component {
             showerr: false,
             show: true,
             addError: '',
-            background: ''
+            background: '',
+            warrantyeerr:'',
+            qtyerr:'',
+            priceerr:'',
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -101,7 +104,32 @@ class Edititem extends Component {
             msg: '',
             showsuc: false,
             showerr: false,
+            warrantyeerr:'',
+            qtyerr:'',
+            priceerr:'',
         });
+    }
+    handleValidation() {
+        let formvalid =true
+        if(this.state.warrenty<0){
+            this.setState({
+                warrantyeerr: 'warrenty period invalid!',
+            })
+            formvalid = false
+        }
+        if(this.state.qty<0){
+            this.setState({
+               qtyerr: 'quantity invalid!',
+            })
+            formvalid = false
+        }
+        if(this.state.Price<0){
+            this.setState({
+               priceerr: 'price invalid!',
+            })
+            formvalid = false
+        }
+        return formvalid
     }
     handleSubmit(e) {
         var authToken = localStorage.token;
@@ -121,7 +149,8 @@ class Edititem extends Component {
             Item: this.state.type,
             price: parseFloat(this.state.Price),
         }
-        fetch("http://localhost:4000/stores/edititem/" + this.props.match.params.id, {
+        if(this.handleValidation()){
+            fetch("http://localhost:4000/stores/edititem/" + this.props.match.params.id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -144,6 +173,7 @@ class Edititem extends Component {
                     })
                 }
             })
+        }
     }
 
     resetForm = () => {
@@ -188,14 +218,17 @@ class Edititem extends Component {
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Available Stock :</label>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="qty" placeholder="available stock" value={this.state.qty} onChange={this.handleChange} required />
+                            <span style={{ color: "#FD6571" }}>{this.state.qtyerr}</span>
                         </div>
                         <div className="form-group col-md-8">
                                 <label htmlFor="exampleFormControlInput1">warrenty period :</label>
                                 <input type="number" className="form-control" id="exampleFormControlInput1" name="warrenty" placeholder="warrenty period" value={this.state.warrenty} onChange={this.handleChange} required />
+                                <span style={{ color: "#FD6571" }}>{this.state.warrantyeerr}</span>
                             </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Price :</label>
                             <input type="number" className="form-control" id="exampleFormControlInput1" name="Price" placeholder="Price in Rupees" value={this.state.Price} onChange={this.handleChange} />
+                            <span style={{ color: "#FD6571" }}>{this.state.priceerr}</span>
                         </div>
                         <div className="form-group col-md-8">
                             <label htmlFor="exampleFormControlInput1">Description :</label>
