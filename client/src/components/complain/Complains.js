@@ -4,8 +4,15 @@ import Nav from '../front/nav';
 import './Complains.css';
 import { Image ,Panel} from 'react-bootstrap';
 import Pagination from "react-js-pagination";
+import { css } from '@emotion/core';
+import { HashLoader } from 'react-spinners';
 
 
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 class Complains extends Component {
     constructor(props) {
         super(props)
@@ -14,7 +21,7 @@ class Complains extends Component {
             complains: [],
             searchfield: '',
             length: true,
-            activePage: 1
+            loading:true
         };
         this.onSearch = this.onSearch.bind(this);
     }
@@ -53,10 +60,12 @@ class Complains extends Component {
                     this.setState({
                         length: true,
                         complains: data.details,
+                        loading:false
                     })
                 } else {
                     this.setState({
-                        length: false
+                        length: false,
+                        loading:false
                     })
                 }
             })
@@ -70,7 +79,19 @@ class Complains extends Component {
         if (localStorage.token) {
             return (
                 <div>
-                    <div className="head">
+                    {
+                        this.state.loading ?(
+                            <div className='sweet-loading'>
+                            <HashLoader
+                                css={override}
+                                sizeUnit={"px"}
+                                size={50}
+                                color={'#0073F5'}
+                                loading={this.state.loading} />
+                        </div>
+                        ):(
+                            <div>
+                                 <div className="head">
                         <Nav />
                     </div>
                     <div className="container-fluid">
@@ -135,6 +156,9 @@ class Complains extends Component {
                             />
                         </div> */}
                     </div>
+                            </div>
+                        )
+                    }
                 </div>
             );
         }

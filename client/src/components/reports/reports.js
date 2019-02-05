@@ -32,7 +32,8 @@ class Reports extends Component {
                 color: ''
             }],
             details: [],
-            total:''
+            total:'',
+            loading:true,
         }
     }
     logout = (e) => {
@@ -94,6 +95,21 @@ class Reports extends Component {
                     this.state.salesdetails.push(this.state.salesdata);
                 }
             })
+            fetch("http://localhost:4000/reports/totalqty", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer' + authToken
+        },
+    }).then(function (response) {
+        return response.json();
+    }).then(data => {
+       this.setState({
+           total:data,
+           loading:false
+       })
+    })
+
         }
     }
     componentWillUnmount() {
@@ -121,7 +137,7 @@ class Reports extends Component {
                                         <Nav />
                                         <h2 className="text-center">Reports</h2>
                                         <br />
-                                        <div className="contain col-md-12 slideanim ">
+                                        <div className="contain col-md-12 ">
                                             <div className="shadow p-3 mb-5 bg-white rounded">
                                                 <div className="col-md-5 ">
                                                     <h2 className="text-center"> Complains of this month</h2>
@@ -179,6 +195,13 @@ class Reports extends Component {
                                                                 <ul className="list-group list-group-flush">
                                                                     <li key={sale._id}><span className="names">Item Type : {sale._id.item}</span></li>
                                                                     <li><span className="names">Sold Items : </span>{sale._id.soldqty}</li>
+                                                                    {
+                                                                        this.state.total != 0 ?(
+                                                                            <li><span className="names">Percentage : </span>{parseInt(((sale._id.soldqty/this.state.total)*100))}%</li>
+                                                                        ):(
+                                                                            <div></div>
+                                                                        )
+                                                                    }
                                                                 </ul>
                                                             </div>
                                                         )
