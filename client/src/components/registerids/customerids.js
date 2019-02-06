@@ -144,7 +144,7 @@ class Customerid extends Component {
 
         }
         if (this.state.id !== 'undefined') {
-            if (!this.state.id.match(/^[1-9]{9}[vVxX]$/i)) {
+            if (!this.state.id.match(/^[0-9]{9}[vVxX]$/i)) {
                 this.setState({
                     Iderr: 'NIC invalid!',
 
@@ -159,7 +159,7 @@ class Customerid extends Component {
             formvalid = false
 
         }
-        if ((this.state.postalcode == 'undefined')) {
+        if ((this.state.postalcode == 0)) {
             this.setState({
                 postalcodeerr: 'insert your postal code',
             })

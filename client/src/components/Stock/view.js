@@ -263,7 +263,7 @@ class View extends Component {
                                                                             placement="bottom"
                                                                             overlay={popoverHover}
                                                                         >
-                                                                            <input type="submit" name="submit" value="update" className="btn btn-info" />
+                                                                            <input type="submit" name="submit" value="sold" className="btn btn-info" />
                                                                         </OverlayTrigger>
                                                                     </div>
                                                                 </form>

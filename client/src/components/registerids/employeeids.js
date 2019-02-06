@@ -139,7 +139,7 @@ class Employeeid extends Component {
 
         }
         if (this.state.Id !== 'undefined') {
-            if (!this.state.Id.match(/^[1-9]{9}[vVxX]$/i)) {
+            if (!this.state.Id.match(/^[0-9]{9}[vVxX]$/i)) {
                 this.setState({
                     Iderr: 'NIC invalid!',
 

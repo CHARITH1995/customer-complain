@@ -60,7 +60,6 @@ class Updatecustomer extends Component {
                 this.setState({
                     fnameerr:'first name invalid!',  
                 })
-                console.log("f")
                 formvalid=false
             }
         }
@@ -69,7 +68,6 @@ class Updatecustomer extends Component {
                 this.setState({
                     lnameerr:'first name invalid!',
                 })
-                console.log("l")
                 formvalid=false
             }
         }
@@ -78,7 +76,6 @@ class Updatecustomer extends Component {
                 this.setState({
                     emailerr:'email invalid!',  
                 })
-                console.log("e")
                 formvalid=false
             }
         }
@@ -88,7 +85,6 @@ class Updatecustomer extends Component {
                     tperr:'telephone invalid!',
                   
                 })
-                console.log("tp")
                 formvalid=false
             }
         }
@@ -97,7 +93,6 @@ class Updatecustomer extends Component {
                     subareaerr:'please select the subarea',
                    
                 })
-                console.log("sub")
                 formvalid=false
             
         }
@@ -107,7 +102,6 @@ class Updatecustomer extends Component {
                     Iderr:'NIC invalid!',
                  
                 })
-                console.log("nic")
                 formvalid=false
             }
         }
@@ -115,7 +109,6 @@ class Updatecustomer extends Component {
                 this.setState({
                     addresserr:'check address field',
                 })
-                console.log("add")
                 formvalid=false
             
         }
@@ -123,7 +116,6 @@ class Updatecustomer extends Component {
             this.setState({
                 postalcodeerr:'insert your postal code',
             })
-            console.log("pc")
             formvalid=false
         
     }
@@ -179,11 +171,12 @@ class Updatecustomer extends Component {
             lastname: this.state.lname,
             subarea: this.state.subarea,
             accountNumber: this.state.accountNumber,
-            laneone:this.state.laneone,
-            lanetwo:this.state.lanetwo,
-            Tp:this.state.tp,
-            city:this.state.city,
-            postalcode:parseInt(this.state.postalcode),
+            address:{
+                laneone:this.state.laneone,
+                lanetwo:this.state.lanetwo,
+                city:this.state.city,
+                postalcode:parseInt(this.state.postalcode),
+            },
             Id: this.state.id,
             email: this.state.email,
         }

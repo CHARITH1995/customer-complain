@@ -26,7 +26,6 @@ class Nav extends Component{
                         <ul className="nav navbar-nav navbar-right">
                             <li><a href="/Home">HOME</a></li>
                             <li className="custname"><a href="#">{sessionStorage.getItem('fname')}</a></li>
-                            <li><a href="#" onClick={this.logout}>LOGOUT</a></li>
                         </ul>
                     </div>
                 </div>

@@ -24,6 +24,7 @@ class Edititem extends Component {
             warrantyeerr:'',
             qtyerr:'',
             priceerr:'',
+            stockitems:[]
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -93,6 +94,19 @@ class Edititem extends Component {
                     show: true
                 })
             }
+        });
+        fetch("http://localhost:4000/stock/items", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer' + authToken
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(details => {
+            this.setState({
+                stockitems: details
+            })
         });
     }
     handleChange(e) {
@@ -259,6 +273,24 @@ class Edititem extends Component {
                             <a className="list-group-item active">Quick Links</a>
                             <a className="list-group-item"><Link to={"/onlinestore"}>E-shop</Link></a>
                         </div>
+                        <div className="list-group ">
+                                <a className="list-group-item active">Item Types</a>
+                               
+                                {
+                                    this.state.show ? (
+                                        this.state.stockitems.map(data =>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                {data._id.item}
+                                                <span class="badge badge-primary badge-pill">unsold :{data.total}</span>
+                                            </li>
+                                        )
+                                    ) : (
+                                            <div >
+                                               
+                                            </div>
+                                        )
+                                }
+                            </div>
                     </div>
                             <div className="col-md-8 contain">
                                 <hr />

@@ -187,7 +187,7 @@ handleChange(e) {
                                                                             placement="bottom"
                                                                             overlay={popoverHoverFocus}
                                                                         >
-                                                                            <input type="submit" name="submit" value="update" className="btn btn-info" />
+                                                                            <input type="submit" name="submit" value="delivered" className="btn btn-info" />
                                                                         </OverlayTrigger>
                                                                     </div>
                                                                 </form>

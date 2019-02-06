@@ -271,7 +271,6 @@ module.exports.editcustomer=(req,res,next)=>{
             res.send({success:false , msg:'please log again'});
         } else {
             Customer.findOne({_id:req.params.id}).then(function (details) {
-                //console.log(details)
                 if(!details){
                     res.send({ success: false, msg: 'not success' });
                 }else{
